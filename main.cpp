@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include <sstream>
 #include <algorithm>
-
+#include "LibroIndex.h"
 class Word {
 public:
     std::string text;

@@ -11,9 +11,9 @@ class Libro {
 public:
     string titulo;
     string autor;
+    string cont;
 
-
-    Libro(string& _titulo, string& _autor);
+    Libro(string& _titulo, const char *_autor, string&_cont);
 };
 
 
