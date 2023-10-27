@@ -1,79 +1,55 @@
 #include "LibroIndex.h"
-#include <fstream>
-#include <sstream>
-#include <algorithm>
-#include <iterator>
-#include <dirent.h>
 
 LibrosIndex::LibrosIndex() {
-    // Constructor: inicializa las estructuras de datos
+    // Constructor
 }
 
 LibrosIndex::~LibrosIndex() {
-    // Destructor: libera la memoria de los libros
+    // Destructor
 }
 
 void LibrosIndex::cargarLibrosDesdeCarpeta(const std::string& carpeta) {
-    DIR* directorio;
-    struct dirent* archivo;
-
-    directorio = opendir(carpeta.c_str());
-    if (directorio) {
-        while ((archivo = readdir(directorio)) != nullptr) {
-            std::string nombreArchivo = archivo->d_name;
-            if (nombreArchivo != "." && nombreArchivo != ".." && nombreArchivo.rfind(".txt") != std::string::npos) {
-                std::string rutaCompleta = carpeta + "/" + nombreArchivo;
-                std::ifstream archivoStream(rutaCompleta);
-                if (archivoStream.is_open()) {
-                    std::string contenido((std::istreambuf_iterator<char>(archivoStream)), std::istreambuf_iterator<char>());
-                    Libro libroTemporal(nombreArchivo, "", contenido); // Crea un objeto temporal Libro
-                    libros.push_back(libroTemporal); // Agrega el objeto temporal a la colección
-                    archivoStream.close();
-                }
-            }
-        }
-        closedir(directorio);
-    }
+    // Implementa la lógica para cargar libros desde una carpeta
+    // Supongamos que llena el vector de libros
 }
 
 void LibrosIndex::indexarLibros() {
-    for (const auto& libro : libros) {
-        std::istringstream stream(libro.cont);
-        std::string palabra;
-        while (stream >> palabra) {
-            std::transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);  // Convierte a minúsculas
-            indicePorPalabra[palabra].insert(libro.titulo);
-        }
+    for (const Libro& libro : libros) {
+        // Insertar el libro en el árbol AVL por título
+        arbolAVL.insertarPorTitulo(libro);
+
+        // Indexar palabras clave en la tabla hash
+        indexarPalabrasClave(libro);
     }
 }
 
 std::vector<std::string> LibrosIndex::buscarLibrosPorFrase(const std::string& frase) {
     std::vector<std::string> resultados;
-    std::istringstream stream(frase);
-    std::string palabra;
-    while (stream >> palabra) {
-        std::transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);  // Convierte a minúsculas
+    std::vector<std::string> palabrasClave = dividirFraseEnPalabras(frase);
+
+    for (const std::string& palabra : palabrasClave) {
+        // Buscar la palabra clave en la tabla hash
         if (indicePorPalabra.find(palabra) != indicePorPalabra.end()) {
-            // Si se encuentra la palabra en el índice, agrega los títulos de los libros relacionados
-            for (const std::string& titulo : indicePorPalabra[palabra]) {
-                resultados.push_back(titulo);
+            for (const std::string& libroId : indicePorPalabra[palabra]) {
+                resultados.push_back(libroId);
             }
         }
     }
+
     return resultados;
 }
 
 void LibrosIndex::mostrarRankingPorTitulo() {
-    std::unordered_map<std::string, int> rankingTitulos;
+    arbolAVL.inOrdenTitulo();
+}
 
-    for (const Libro& libro : libros) {
-        rankingTitulos[libro.titulo]++;
-    }
+void LibrosIndex::indexarPalabrasClave(const Libro& libro) {
+    // Implementa la lógica para extraer y indexar palabras clave del libro
+    // Agrega los identificadores de libro al conjunto correspondiente en la tabla hash
+}
 
-    std::cout << "Ranking de Títulos:" << std::endl;
-
-    // Itera a través del mapa y muestra el ranking
-    for (const auto& pair : rankingTitulos) {
-        std::cout << pair.first << ": " << pair.second << " veces" << std::endl;
-    }
+std::vector<std::string> LibrosIndex::dividirFraseEnPalabras(const std::string& frase) {
+    std::vector<std::string> palabras;
+    // Implementa la lógica para dividir la frase en palabras clave
+    return palabras;
 }

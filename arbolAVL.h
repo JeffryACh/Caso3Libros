@@ -7,11 +7,11 @@ using namespace std;
 class AVL_Libros {
 public:
     AVL_Libros* Hizq, * Hder;
-    int FB;
+    int FB; // Factor de balance
 
-   string libro;
-   string titulo;
-   string autor;
+    string libro;
+    string titulo;
+    string autor;
 
 
 
