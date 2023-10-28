@@ -174,3 +174,7 @@ void AVL_Principal::RotacionSimpleIzquierda(AVL_Libros** n, AVL_Libros* n1) {
     }
     (*n) = n1;
 }
+
+void insertarPorTitulo(const std::string& titulo) {
+    InsertarBalanceado(&(this->raiz), &(this->Hh), libro, titulo, autor);
+}

@@ -4,3 +4,6 @@ clean:
 	rm -rf *.o
 run:
 	./main.o
+GPT:
+	g++ chatGPT.cpp -o GPT.o -lcurl
+	./GPT.o

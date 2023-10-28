@@ -6,7 +6,7 @@ using namespace std;
 
 class AVL_Libros {
 public:
-    AVL_Libros* Hizq, * Hder;
+    AVL_Libros* Hizq, * Hder; // Hijos izquierdo y derecho
     int FB; // Factor de balance
 
     string libro;
@@ -16,6 +16,15 @@ public:
 
 
 
+    /**
+     * @brief Constructor de la clase AVL_Libros
+     * 
+     * @param libro Nombre del libro
+     * @param titulo Título del libro
+     * @param autor Autor del libro
+     * @param der Puntero al subárbol derecho
+     * @param izq Puntero al subárbol izquierdo
+     */
     AVL_Libros( string libro,string titulo,string autor,AVL_Libros* der = NULL, AVL_Libros* izq = NULL) {
         Hizq = izq;
         Hder = der;
@@ -23,10 +32,10 @@ public:
         this->titulo=titulo;
         this->autor=autor;
 
-        FB = 0;
+        FB = 0; // Factor de balance
     }
 
-    friend class AVL_Principal;
+    friend class AVL_Principal; // AVL_Principal puede acceder a los miembros privados de AVL_Libros
 };
 
 class AVL_Principal {
@@ -40,8 +49,13 @@ private:
 
 public:
     AVL_Libros* raiz;
-    bool Hh;
+    bool Hh; // Verdadero si la altura del árbol ha crecido
 
+    /**
+     * @brief Constructor de la clase AVL_Principal
+     * 
+     * Inicializa el puntero raiz en NULL y el booleano Hh en true.
+     */
     AVL_Principal() {
         raiz = NULL;
         Hh = true;
@@ -50,5 +64,8 @@ public:
 
     void insertarNodo(string libro,string titulo,string autor);
     AVL_Libros* buscarLibro(AVL_Libros* raiz, string titulo);
+
+    void insertarPorTitulo(string titulo);
+    AVL_Libros* buscarLibroPorTitulo(string titulo);
 
 };
