@@ -7,3 +7,6 @@ run:
 GPT:
 	g++ chatGPT.cpp -o GPT.o -lcurl
 	./GPT.o
+sus:
+	g++ Sustantivos.cpp -o sus.o -lcurl
+	./sus.o
