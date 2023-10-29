@@ -1,12 +1,11 @@
-#pragma once
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <set>
-
 #include "arbolAVL.h"
-#include "libro.h"
+#include "Libro.h"
 
 class LibrosIndex {
 public:
@@ -15,14 +14,13 @@ public:
 
     void cargarLibrosDesdeCarpeta(const std::string& carpeta);
     void indexarLibros();
-    std::vector<std::string> buscarLibrosPorFrase(const std::string& frase);
-    void mostrarRankingPorTitulo();
+    void buscarLibrosPorFrase(const std::string& frase);
 
 private:
     std::vector<Libro> libros;
     AVL_Principal arbolAVL;
-    std::unordered_map<std::string, std::set<std::string>> indicePorPalabra;
+    std::unordered_map<std::string, std::vector<Libro>> tablaHash;
 
-    void indexarPalabrasClave(const Libro& libro);
-    std::vector<std::string> dividirFraseEnPalabras(const std::string& frase);
+    // Función auxiliar para tokenizar una cadena en palabras
+    std::vector<std::string> tokenizar(const std::string& texto);
 };
