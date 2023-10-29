@@ -1,55 +1,73 @@
 #include "LibroIndex.h"
+#include <filesystem>
+#include <algorithm>
 
 LibrosIndex::LibrosIndex() {
-    // Constructor
+    // Constructor: inicializa las estructuras de datos
 }
 
 LibrosIndex::~LibrosIndex() {
-    // Destructor
+    // Destructor: libera la memoria de los libros
 }
 
 void LibrosIndex::cargarLibrosDesdeCarpeta(const std::string& carpeta) {
-    // Implementa la lógica para cargar libros desde una carpeta
-    // Supongamos que llena el vector de libros
+    for (const auto& entry : std::filesystem::directory_iterator(carpeta)) {
+        if (entry.is_regular_file() && entry.path().extension() == ".txt") {
+            std::ifstream archivo(entry.path());
+            if (archivo.is_open()) {
+                std::string contenido((std::istreambuf_iterator<char>(archivo)), std::istreambuf_iterator<char>());
+                libros.emplace_back(entry.path().stem().string(), "", contenido);
+                archivo.close();
+            }
+        }
+    }
 }
 
 void LibrosIndex::indexarLibros() {
     for (const Libro& libro : libros) {
         // Insertar el libro en el árbol AVL por título
-        arbolAVL.insertarPorTitulo(libro);
+        arbolAVL.insertarNodo(libro.titulo, libro);
 
         // Indexar palabras clave en la tabla hash
         indexarPalabrasClave(libro);
     }
 }
 
-std::vector<std::string> LibrosIndex::buscarLibrosPorFrase(const std::string& frase) {
-    std::vector<std::string> resultados;
-    std::vector<std::string> palabrasClave = dividirFraseEnPalabras(frase);
+void LibrosIndex::buscarLibrosPorFrase(const std::string& frase) {
+    // Tokeniza la frase en palabras
+    std::vector<std::string> palabras = tokenizar(frase);
 
-    for (const std::string& palabra : palabrasClave) {
-        // Buscar la palabra clave en la tabla hash
-        if (indicePorPalabra.find(palabra) != indicePorPalabra.end()) {
-            for (const std::string& libroId : indicePorPalabra[palabra]) {
-                resultados.push_back(libroId);
+    // Realiza la búsqueda en la tabla hash por palabras clave
+    std::vector<Libro> librosRelevantes;
+
+    for (const std::string& palabra : palabras) {
+        if (tablaHash.find(palabra) != tablaHash.end()) {
+            for (const Libro& libro : tablaHash[palabra]) {
+                if (std::find(librosRelevantes.begin(), librosRelevantes.end(), libro) == librosRelevantes.end()) {
+                    librosRelevantes.push_back(libro);
+                }
             }
         }
     }
 
-    return resultados;
+    // Imprime los libros relevantes
+    std::cout << "Libros relevantes para la frase '" << frase << "':" << std::endl;
+    for (const Libro& libro : librosRelevantes) {
+        std::cout << "Título: " << libro.titulo << std::endl;
+        std::cout << "Autor: " << libro.autor << std::endl;
+        std::cout << "Contenido: " << libro.cont << std::endl;
+        std::cout << std::endl;
+    }
 }
 
-void LibrosIndex::mostrarRankingPorTitulo() {
-    arbolAVL.inOrdenTitulo();
-}
-
-void LibrosIndex::indexarPalabrasClave(const Libro& libro) {
-    // Implementa la lógica para extraer y indexar palabras clave del libro
-    // Agrega los identificadores de libro al conjunto correspondiente en la tabla hash
-}
-
-std::vector<std::string> LibrosIndex::dividirFraseEnPalabras(const std::string& frase) {
+std::vector<std::string> LibrosIndex::tokenizar(const std::string& texto) {
     std::vector<std::string> palabras;
-    // Implementa la lógica para dividir la frase en palabras clave
+    std::string palabra;
+    std::istringstream stream(texto);
+
+    while (stream >> palabra) {
+        palabras.push_back(palabra);
+    }
+
     return palabras;
 }
