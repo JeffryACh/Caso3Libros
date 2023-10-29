@@ -12,12 +12,12 @@ int main() {
     if (curl) {
         cout << "Hola mundo 2.0" << endl;
         // URL de la API de OpenAI
-        const char *url = "https://api.openai.com/v1/engines/curie/completions";
+        const char *url = "https://api.openai.com/v1/engines/davinci/completions";
 
         cout << "Hola mundo 3.0" << endl;
 
         // Tu token de autenticación de la API de OpenAI
-        const char *token = "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";
+        const char *token = "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";
 
         cout << "Hola mundo 4.0" << endl;
 
