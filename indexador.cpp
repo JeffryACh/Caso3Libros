@@ -32,42 +32,66 @@ void IndexadorLibros::indexar(std::string ruta) {
     this->procesarRuta(ruta);
     // se itera por el mapa de documentos
     for (auto const& x : this->mapaDocumentos) {
-        this->indexarArchivo(x.first, x.second);
+        this->indexarArchivo(x.second, x.first);
     }
 }
+
+std::vector<std::string> dividir(std::string s, std::string delimitadores) {
+    std::vector<std::string> tokens;
+    std::string token;
+    size_t pos = 0;
+    while ((pos = s.find_first_of(delimitadores)) != std::string::npos) {
+        token = s.substr(0, pos);
+        if (!token.empty())
+            tokens.push_back(token);
+        s.erase(0, pos + 1);
+    }
+    tokens.push_back(s);
+    return tokens;
+}
+
 
 void IndexadorLibros::indexarArchivo(const std::string &archivo, int id_doc) {
     std::cout << "Indexando archivo: " << archivo << std::endl;
     std::ifstream file = std::ifstream(archivo);
-    std::string palabra;
+    std::string linea;
     int posicion = 0;
-    while (file >> palabra) {
-        // std::cout << palabra << std::endl;
-        // se agrega la palabra al indice
-        transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-        if (this->indice.find(palabra) == this->indice.end()) {
-            // si no existe la palabra en el indice, se crea
-            this->indice[palabra] = std::vector<PosicionDocumento>();
-            this->indice[palabra].push_back(PosicionDocumento(id_doc));
-            this->indice[palabra].back().agregarPosicion(posicion);
-            continue;
-        }
-        // se agrega la posicion de la palabra en el documento
-        // pero primero hay que buscar si ya existe el documento
-        // en el vector de documentos, y si así es, se agrega la posicion
-        bool existe = false;
-        for (auto &pos_doc : this->indice[palabra]) {
-            if (pos_doc.getDocumento() == id_doc) {
-                pos_doc.agregarPosicion(posicion);
-                existe = true;
-                break;
+    if (file.is_open()) {
+        while (getline(file, linea)) {
+            // dividir la linea en palabras
+            std::vector<string> palabras = dividir(linea, " ,.;\":()[]{}-_!¡¿?'*+&%$#@/");
+            for (auto &palabra: palabras) {
+                // std::cout << palabra << std::endl;
+                // se agrega la palabra al indice
+                transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
+                if (this->indice.find(palabra) == this->indice.end()) {
+                    // si no existe la palabra en el indice, se crea
+                    this->indice[palabra] = std::vector<PosicionDocumento>();
+                    this->indice[palabra].push_back(PosicionDocumento(id_doc));
+                    this->indice[palabra].back().agregarPosicion(posicion);
+                    continue;
+                }
+                // se agrega la posicion de la palabra en el documento
+                // pero primero hay que buscar si ya existe el documento
+                // en el vector de documentos, y si así es, se agrega la posicion
+                bool existe = false;
+                for (auto &pos_doc: this->indice[palabra]) {
+                    if (pos_doc.getDocumento() == id_doc) {
+                        pos_doc.agregarPosicion(posicion);
+                        existe = true;
+                        break;
+                    }
+                }
+                if (!existe) {
+                    this->indice[palabra].push_back(PosicionDocumento(id_doc));
+                    this->indice[palabra].back().agregarPosicion(posicion);
+                }
+                posicion++;
             }
         }
-        if (!existe) {
-            this->indice[palabra].push_back(PosicionDocumento(id_doc));
-            this->indice[palabra].back().agregarPosicion(posicion);
-        }
-        posicion++;
+        file.close();
+    } else {
+        std::cerr << "Error abriendo archivo " << archivo << std::endl;
     }
 }
 
@@ -90,8 +114,8 @@ void IndexadorLibros::procesarRuta(const std::string& ruta) {
         if (str_entrada == "." || str_entrada == "..") {
             continue;
         }
-        this->mapaDocumentos[ruta + slash + str_entrada] = id_doc;
-        std::cout << "Procesando archivo " << str_entrada << std::endl;
+        this->mapaDocumentos[id_doc] = ruta + slash + str_entrada;
+        std::cout << "Agregando archivo " << str_entrada << " para indexar." << std::endl;
         id_doc++;
     }
 
@@ -123,7 +147,6 @@ vector<int> IndexadorLibros::calcularInterseccion(vector<int> &v1, vector<int> &
 }
 
 vector<int> IndexadorLibros::buscar(std::string consulta) {
-    std::cout << "Buscando: " << consulta << std::endl;
     std::vector<std::string> palabras;
     std::string palabra;
     std::istringstream iss(consulta);
@@ -139,11 +162,13 @@ vector<int> IndexadorLibros::buscar(std::string consulta) {
         if (this->indice.find(palabra) == this->indice.end()) {
             continue;
         }
-        std::cout << "Se encontró la palabra " << palabra << std::endl;
         for (auto &pos_doc : this->indice[palabra]) {
             docs.push_back(pos_doc.getDocumento());
         }
         sort(docs.begin(), docs.end());
+        if (docs.size() > 0) {
+            std::cout << "Se encontró la palabra " << palabra << " en " << docs.size() << " documentos." << std::endl;
+        }
         if (!inicializado) {
             resultado = docs;
             inicializado = true;
@@ -156,3 +181,6 @@ vector<int> IndexadorLibros::buscar(std::string consulta) {
     return resultado;
 }
 
+std::string IndexadorLibros::getDocumento(int id_doc) {
+    return this->mapaDocumentos[id_doc];
+}
