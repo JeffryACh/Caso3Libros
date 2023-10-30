@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <sstream>
 #include <dirent.h>
+#include <cctype>
+#include <algorithm>
 #include "indexador.h"
 
 
