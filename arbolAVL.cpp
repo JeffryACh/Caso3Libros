@@ -4,6 +4,10 @@
 // *	   ARBOL AVL de Libros                  *
 // **********************************************
 
+/**
+ * @brief Destructor de la clase AVL_Principal que destruye el árbol AVL.
+ * 
+ */
 AVL_Principal::~AVL_Principal() {
     destruirArbol(&(this->raiz));
 }
@@ -34,6 +38,22 @@ void AVL_Principal::insertarNodo(string libro, string titulo, string autor) {
     InsertarBalanceado(&(this->raiz), &(this->Hh), libro, titulo,autor);
 }
 
+/**
+ * Inserta un nuevo nodo en el árbol AVL de manera balanceada.
+ * @param ra Puntero al puntero de la raíz del árbol.
+ * @param Hh Puntero a una variable booleana que indica si hubo un cambio de altura en el árbol.
+ * @param libro Cadena de caracteres que representa el identificador del libro a insertar.
+ * @param titulo Cadena de caracteres que representa el título del libro a insertar.
+ * @param autor Cadena de caracteres que representa el autor del libro a insertar.
+ */
+/**
+ * Inserta un nuevo nodo en el árbol AVL de manera balanceada.
+ * @param ra Puntero doble a la raíz del árbol AVL.
+ * @param Hh Puntero a un booleano que indica si hubo un cambio en la altura del árbol.
+ * @param libro Cadena de caracteres que representa el código del libro a insertar.
+ * @param titulo Cadena de caracteres que representa el título del libro a insertar.
+ * @param autor Cadena de caracteres que representa el autor del libro a insertar.
+ */
 void AVL_Principal::InsertarBalanceado(AVL_Libros** ra, bool* Hh, string libro, string titulo, string autor ) {
     AVL_Libros* n1;
 
@@ -101,6 +121,11 @@ void AVL_Principal::InsertarBalanceado(AVL_Libros** ra, bool* Hh, string libro, 
     }
 }
 
+/**
+ * Realiza una rotación doble a la izquierda en un árbol AVL.
+ * @param n Puntero al puntero de la raíz del árbol AVL.
+ * @param n1 Puntero al nodo que se encuentra desbalanceado.
+ */
 void AVL_Principal::RotacionDobleIzquierda(AVL_Libros** n, AVL_Libros* n1) {
     AVL_Libros* n2;
     n2 = n1->Hder;
@@ -123,6 +148,11 @@ void AVL_Principal::RotacionDobleIzquierda(AVL_Libros** n, AVL_Libros* n1) {
     (*n) = n2;
 }
 
+/**
+ * Realiza una rotación doble a la derecha en un árbol AVL.
+ * @param n Puntero al puntero de la raíz del árbol AVL.
+ * @param n1 Puntero al nodo que se encuentra en la posición del desbalanceo.
+ */
 void AVL_Principal::RotacionDobleDerecha(AVL_Libros** n, AVL_Libros* n1) {
     AVL_Libros* n2;
     n2 = n1->Hizq;
@@ -145,6 +175,11 @@ void AVL_Principal::RotacionDobleDerecha(AVL_Libros** n, AVL_Libros* n1) {
     (*n) = n2;
 }
 
+/**
+ * Realiza una rotación simple a la derecha en un árbol AVL.
+ * @param n Puntero doble al nodo raíz del árbol.
+ * @param n1 Puntero al nodo que será la nueva raíz del subárbol.
+ */
 void AVL_Principal::RotacionSimpleDerecha(AVL_Libros** n, AVL_Libros* n1) {
     (*n)->Hder = n1->Hizq;
     n1->Hizq = (*n);
@@ -160,6 +195,11 @@ void AVL_Principal::RotacionSimpleDerecha(AVL_Libros** n, AVL_Libros* n1) {
     (*n) = n1;
 }
 
+/**
+ * Realiza una rotación simple a la izquierda en un árbol AVL.
+ * @param n Puntero doble al nodo raíz del subárbol a rotar.
+ * @param n1 Puntero al nodo que será la nueva raíz del subárbol rotado.
+ */
 void AVL_Principal::RotacionSimpleIzquierda(AVL_Libros** n, AVL_Libros* n1) {
     (*n)->Hizq = n1->Hder;
     n1->Hder = (*n);
@@ -175,6 +215,11 @@ void AVL_Principal::RotacionSimpleIzquierda(AVL_Libros** n, AVL_Libros* n1) {
     (*n) = n1;
 }
 
+/**
+ * @brief Inserta un libro en el árbol AVL por su título.
+ * 
+ * @param titulo El título del libro a insertar.
+ */
 void insertarPorTitulo(const std::string& titulo) {
     InsertarBalanceado(&(this->raiz), &(this->Hh), libro, titulo, autor);
 }

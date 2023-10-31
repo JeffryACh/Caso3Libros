@@ -6,15 +6,31 @@
 #include <sstream>
 #include <algorithm>
 #include "LibroIndex.h"
+/**
+ * @brief Clase que representa una palabra con su tipo.
+ * 
+ */
 class Word {
 public:
-    std::string text;
-    std::string type;
+    std::string text; /**< Texto de la palabra */
+    std::string type; /**< Tipo de la palabra */
 
+    /**
+     * @brief Constructor de la clase Word.
+     * 
+     * @param t Texto de la palabra.
+     * @param ty Tipo de la palabra.
+     */
     Word(const std::string &t, const std::string &ty) : text(t), type(ty) {}
 };
 
 // Función para procesar una frase y retornar sustantivos y adjetivos.
+/**
+ * @brief Procesa una frase para identificar sustantivos y adjetivos únicos y repetidos.
+ * 
+ * @param frase La frase a procesar.
+ * @return Un vector de palabras únicas con su tipo (sustantivo o adjetivo).
+ */
 std::vector<Word> procesarFrase(const std::string &frase) {
     std::vector<Word> palabrasUnicas;
     std::unordered_map<std::string, std::string> wordTypes;
