@@ -9,19 +9,40 @@
 #include "indexador.h"
 
 
+/**
+ * @brief Constructor de la clase PosicionDocumento.
+ * 
+ * @param doc_id Identificador del documento.
+ */
 PosicionDocumento::PosicionDocumento(int doc_id) {
     this->doc_id = doc_id;
 }
 
 PosicionDocumento::~PosicionDocumento() {}
 
+/**
+ * @brief Agrega una posición al vector de posiciones del documento.
+ * 
+ * @param posicion La posición a agregar.
+ */
 void PosicionDocumento::agregarPosicion(int posicion) {
     this->posiciones.push_back(posicion);
 }
 
+/**
+ * @brief Obtiene las posiciones del documento.
+ * 
+ * @return vector<int>& Vector con las posiciones del documento.
+ */
 vector<int> &PosicionDocumento::getPosiciones() {
     return this->posiciones;
 }
+
+/**
+ * @brief Obtiene el identificador del documento asociado a la posición.
+ * 
+ * @return int El identificador del documento.
+ */
 int PosicionDocumento::getDocumento() {
     return this->doc_id;
 }
