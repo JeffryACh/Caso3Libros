@@ -91,12 +91,20 @@ public:
     vector<int> buscar(std::string consulta);
     
     /**
+     * Obtiene el ranking de los documentos que contienen la consulta dada.
+     * @param docs Los ids de los documentos que contienen la consulta.
+     * @return Un vector con los ids de los documentos que contienen la consulta.
+     */
+    vector<string> ranking(vector<int> &docs);
+    
+    /**
      * Obtiene el contenido del documento con el id dado.
      * @param id_doc El id del documento a obtener.
      * @return El contenido del documento con el id dado.
      */
     std::string getDocumento(int id_doc);
     
+
 private:
     /**
      * Procesa la ruta dada para obtener los archivos a indexar.

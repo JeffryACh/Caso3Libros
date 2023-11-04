@@ -3,7 +3,7 @@
 #include <fstream>
 #include <filesystem>
 #include <sstream>
-#include <dirent.h>
+#include <dirent.h> 
 #include <cctype>
 #include <algorithm>
 #include "indexador.h"
@@ -26,10 +26,15 @@ int PosicionDocumento::getDocumento() {
     return this->doc_id;
 }
 
-IndexadorLibros::IndexadorLibros() {}
+IndexadorLibros::IndexadorLibros() {} // constructor
 
-IndexadorLibros::~IndexadorLibros() {}
+IndexadorLibros::~IndexadorLibros() {} // destructor
 
+/**
+ * @brief Indexa los documentos en la ruta especificada.
+ * 
+ * @param ruta La ruta donde se encuentran los documentos a indexar.
+ */
 void IndexadorLibros::indexar(std::string ruta) {
     this->procesarRuta(ruta);
     // se itera por el mapa de documentos
@@ -38,6 +43,12 @@ void IndexadorLibros::indexar(std::string ruta) {
     }
 }
 
+/**
+ * @brief Vector de cadenas de caracteres.
+ * @param s La cadena de caracteres a dividir.
+ * @param delimitadores Los delimitadores para dividir la cadena.
+ * @return Un vector con las cadenas de caracteres divididas.
+ */
 std::vector<std::string> dividir(std::string s, std::string delimitadores) {
     std::vector<std::string> tokens;
     std::string token;
@@ -53,6 +64,12 @@ std::vector<std::string> dividir(std::string s, std::string delimitadores) {
 }
 
 
+/**
+ * @brief Indexa un archivo de texto y lo agrega al índice de palabras del objeto IndexadorLibros.
+ * 
+ * @param archivo Ruta del archivo a indexar.
+ * @param id_doc Identificador del documento.
+ */
 void IndexadorLibros::indexarArchivo(const std::string &archivo, int id_doc) {
     std::cout << "Indexando archivo: " << archivo << std::endl;
     std::ifstream file = std::ifstream(archivo);
@@ -99,6 +116,11 @@ void IndexadorLibros::indexarArchivo(const std::string &archivo, int id_doc) {
 
 // procesa una ruta a un directorio, buscando todos los archivos, y los guarda en un mapa que asocia
 // el nombre completo del archivo a un identificador (entero)
+/**
+ * @brief Procesa una ruta de directorio y agrega los archivos encontrados al mapa de documentos.
+ * 
+ * @param ruta La ruta del directorio a procesar.
+ */
 void IndexadorLibros::procesarRuta(const std::string& ruta) {
     DIR *dp;
     struct dirent *entrada;
@@ -124,12 +146,24 @@ void IndexadorLibros::procesarRuta(const std::string& ruta) {
     closedir(dp);
 }
 
+/**
+ * @brief Ordena un vector de enteros de forma ascendente.
+ * 
+ * @param v Vector de enteros a ordenar.
+ * @return Vector ordenado de forma ascendente.
+ */
 vector<int> ordenarVector(vector<int> &v) {
     vector<int> ordenado = v;
     sort(ordenado.begin(), ordenado.end());
     return ordenado;
 }
 
+/**
+ * Calcula la intersección entre dos vectores de enteros.
+ * @param v1 Vector de enteros.
+ * @param v2 Vector de enteros.
+ * @return Vector de enteros con la intersección entre v1 y v2.
+ */
 vector<int> IndexadorLibros::calcularInterseccion(vector<int> &v1, vector<int> &v2) {
     vector<int> interseccion;
     int i = 0;
@@ -149,38 +183,42 @@ vector<int> IndexadorLibros::calcularInterseccion(vector<int> &v1, vector<int> &
 }
 
 vector<int> IndexadorLibros::buscar(std::string consulta) {
-    std::vector<std::string> palabras;
-    std::string palabra;
-    std::istringstream iss(consulta);
-    while (iss >> palabra) {
-        palabras.push_back(palabra);
-    }
     std::vector<int> resultado;
-    bool inicializado = false;
     // se busca en el indice
-    for (auto &palabra : palabras) {
-        std::vector<int> docs;
-        transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-        if (this->indice.find(palabra) == this->indice.end()) {
-            continue;
-        }
-        for (auto &pos_doc : this->indice[palabra]) {
-            docs.push_back(pos_doc.getDocumento());
-        }
-        sort(docs.begin(), docs.end());
-        if (docs.size() > 0) {
-            std::cout << "Se encontró la palabra " << palabra << " en " << docs.size() << " documentos." << std::endl;
-        }
-        if (!inicializado) {
-            resultado = docs;
-            inicializado = true;
-            continue;
-        }
-        else {
-            resultado = this->calcularInterseccion(resultado, docs);
-        }
+    std::vector<int> docs; // vector de documentos donde se encontró la palabra
+    transform(consulta.begin(), consulta.end(), consulta.begin(), ::tolower); // se convierte a minúsculas
+    for (auto &pos_doc : this->indice[consulta]) {
+        docs.push_back(pos_doc.getDocumento());
     }
+    sort(docs.begin(), docs.end());
+    if (docs.size() > 0) {
+        std::cout << "Se encontró la palabra " << consulta << " en " << docs.size() << " documentos." << std::endl;
+    }
+    
+    resultado = this->calcularInterseccion(resultado, docs);
+    
     return resultado;
+}
+
+/**
+ * @brief Retorna un vector de strings con los nombres de los documentos en el orden especificado por el vector de enteros docs.
+ * 
+ * @param docs Vector de enteros que especifica el orden en que se deben retornar los nombres de los documentos.
+ * @return vector<string> Vector de strings con los nombres de los documentos en el orden especificado por el vector de enteros docs.
+ */
+vector<string> IndexadorLibros::ranking(vector<int> &docs) {
+    vector<string> ranking;
+    // se calcula el ranking
+    for (auto &doc_id : docs) {
+        if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end()) {
+            std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
+            continue;
+        } else {
+            std::cout << "Se encontró el documento con id " << doc_id << std::endl;
+        }
+        ranking.push_back(std::to_string(doc_id));
+    }
+    return ranking;
 }
 
 std::string IndexadorLibros::getDocumento(int id_doc) {
