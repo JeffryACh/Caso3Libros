@@ -182,6 +182,12 @@ vector<int> IndexadorLibros::calcularInterseccion(vector<int> &v1, vector<int> &
     return interseccion;
 }
 
+/**
+ * @brief Busca una consulta en el índice de libros y devuelve los documentos donde se encontró la palabra.
+ * 
+ * @param consulta La palabra a buscar en el índice.
+ * @return std::vector<int> Un vector con los documentos donde se encontró la palabra consultada.
+ */
 vector<int> IndexadorLibros::buscar(std::string consulta) {
     std::vector<int> resultado;
     // se busca en el indice
@@ -221,21 +227,37 @@ vector<string> IndexadorLibros::ranking(vector<int> &docs) {
     return ranking;
 }
 
+/**
+ * @brief Devuelve el documento correspondiente al id dado.
+ * 
+ * @param id_doc El id del documento a buscar.
+ * @return std::string El documento correspondiente al id dado.
+ */
 std::string IndexadorLibros::getDocumento(int id_doc) {
     return this->mapaDocumentos[id_doc];
 }
 
-vector<string> IndexadorLibros::rankeadorDeLibros(vector<int> &docs) {
+/**
+ * @brief Función que calcula el ranking de los libros que contienen una palabra específica en su título.
+ * 
+ * @param docs Vector de enteros que contiene los ids de los documentos que contienen la palabra buscada.
+ * @param consulta Palabra que se desea buscar en los títulos de los libros.
+ * @return Vector de strings que contiene los títulos de los libros ordenados por ranking.
+ */
+vector<string> IndexadorLibros::rankeadorDeLibros(vector<int> &docs, string consulta) {
     vector<string> ranking;
     // se calcula el ranking
+    std::cout << "Se encontró la palabra " << consulta << " en " << docs.size() << " documentos." << std::endl;
     for (auto &doc_id : docs) {
-        if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end()) {
+        if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end() || doc_id == 0) {
             std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
             continue;
-        } else {
+        } else if (this->mapaDocumentos.find(doc_id) != this->mapaDocumentos.end() && this->mapaDocumentos[doc_id] == "Libros/." + consulta) {
             std::cout << "Se encontró el documento con id " << doc_id << std::endl;
         }
-        ranking.push_back(std::to_string(doc_id));
+        ranking.push_back(this->mapaDocumentos[doc_id]);
+        std::cout << "Se encontró el documento con id " << doc_id << std::endl;
+        std::cout << "El libro se llama: " << this->mapaDocumentos[doc_id] << std::endl;
     }
     return ranking;
 }

@@ -4,7 +4,7 @@
 int main(int argc, char **argv) {
     IndexadorLibros indexador = IndexadorLibros();
     string ruta = "Libros";
-    argc = 2;
+    argc = 30;
     if (argc > 1) {
         indexador.indexar(ruta);
         bool salir = false;
@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
                 salir = true;
             }
             else if (consulta.empty()) {
+                std::cout << "Debe ingresar una consulta" << std::endl;
                 continue;
             }
             else {
@@ -25,8 +26,8 @@ int main(int argc, char **argv) {
                 vector<string> ranking;
                 ranking = indexador.ranking(resultado);
                 vector<string> ranking2;
-                ranking2 = indexador.rankeadorDeLibros(resultado);
-                if (resultado.size() >= 0) {
+                ranking2 = indexador.rankeadorDeLibros(resultado, consulta);
+                if (resultado.size() > 0) {
                     std::cout << "Ranking: " << std::endl;
                     std ::cout << "Los siguientes archivos contienen ALGUNA de las palabras buscadas: " << std::endl;
                     std::cout << ranking.size() << std::endl;
@@ -35,8 +36,9 @@ int main(int argc, char **argv) {
                         std::cout << "Puntaje: " << std::stoi(doc_id) << std::endl;
                         std::cout << doc_id << std::endl;
                     }
-                    //std::cout << "Los siguientes archivos contienen TODAS las palabras buscadas: " << std::endl;
+                    std::cout << "Los siguientes archivos contienen TODAS las palabras buscadas: " << std::endl;
                     for (auto &doc_id : resultado) {
+                        std::cout << "Documento: " << indexador.getDocumento(doc_id) << std::endl;
                         std::cout << indexador.getDocumento(doc_id) << std::endl;
                     }
                 } else {
