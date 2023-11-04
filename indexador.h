@@ -104,6 +104,12 @@ public:
      */
     std::string getDocumento(int id_doc);
     
+    /**
+     * Obtiene el nombre del documento con el id dado.
+     * @param id_doc El id del documento a obtener.
+     * @return El nombre del documento con el id dado.
+     */
+    vector<string> rankeadorDeLibros(vector<int> &docs);
 
 private:
     /**

@@ -224,3 +224,18 @@ vector<string> IndexadorLibros::ranking(vector<int> &docs) {
 std::string IndexadorLibros::getDocumento(int id_doc) {
     return this->mapaDocumentos[id_doc];
 }
+
+vector<string> IndexadorLibros::rankeadorDeLibros(vector<int> &docs) {
+    vector<string> ranking;
+    // se calcula el ranking
+    for (auto &doc_id : docs) {
+        if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end()) {
+            std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
+            continue;
+        } else {
+            std::cout << "Se encontró el documento con id " << doc_id << std::endl;
+        }
+        ranking.push_back(std::to_string(doc_id));
+    }
+    return ranking;
+}

@@ -24,16 +24,18 @@ int main(int argc, char **argv) {
                 resultado = indexador.buscar(consulta);
                 vector<string> ranking;
                 ranking = indexador.ranking(resultado);
-                if (resultado.size() > 0) {
+                vector<string> ranking2;
+                ranking2 = indexador.rankeadorDeLibros(resultado);
+                if (resultado.size() >= 0) {
                     std::cout << "Ranking: " << std::endl;
                     std ::cout << "Los siguientes archivos contienen ALGUNA de las palabras buscadas: " << std::endl;
                     std::cout << ranking.size() << std::endl;
-                    for (auto &doc_id : ranking) {
+                    for (auto &doc_id : ranking2) {
                         std::cout << "Documento: " << indexador.getDocumento(std::stoi(doc_id)) << std::endl;
                         std::cout << "Puntaje: " << std::stoi(doc_id) << std::endl;
                         std::cout << doc_id << std::endl;
                     }
-                    std::cout << "Los siguientes archivos contienen TODAS las palabras buscadas: " << std::endl;
+                    //std::cout << "Los siguientes archivos contienen TODAS las palabras buscadas: " << std::endl;
                     for (auto &doc_id : resultado) {
                         std::cout << indexador.getDocumento(doc_id) << std::endl;
                     }
