@@ -204,26 +204,45 @@ vector<int> IndexadorLibros::calcularInterseccion(vector<int> &v1, vector<int> &
 }
 
 /**
+ * @brief Separa una frase en palabras individuales y las almacena en un vector.
+ * 
+ * @param frase La frase a separar.
+ * @return std::vector<string> El vector que contiene las palabras individuales.
+ */
+vector<string> IndexadorLibros::separarFrase(std::string frase) {
+    std::vector<string> tokens;
+    std::string token;
+    size_t pos = 0;
+    while ((pos = frase.find_first_of(" ")) != std::string::npos) {
+        token = frase.substr(0, pos);
+        if (!token.empty())
+            tokens.push_back(token);
+        frase.erase(0, pos + 1);
+    }
+    tokens.push_back(frase);
+    return tokens;
+}
+
+/**
  * @brief Busca una consulta en el índice de libros y devuelve los documentos donde se encontró la palabra.
  * 
  * @param consulta La palabra a buscar en el índice.
  * @return std::vector<int> Un vector con los documentos donde se encontró la palabra consultada.
  */
-vector<int> IndexadorLibros::buscar(std::string consulta) {
+vector<int> IndexadorLibros::buscar(vector<string> consultas) {
     std::vector<int> resultado;
-    // se busca en el indice
-    std::vector<int> docs; // vector de documentos donde se encontró la palabra
-    transform(consulta.begin(), consulta.end(), consulta.begin(), ::tolower); // se convierte a minúsculas
-    for (auto &pos_doc : this->indice[consulta]) {
-        docs.push_back(pos_doc.getDocumento());
+    for (auto &consulta: consultas) {
+        transform(consulta.begin(), consulta.end(), consulta.begin(), ::tolower);
+        if (this->indice.find(consulta) == this->indice.end()) {
+            std::cerr << "No se encontró la palabra " << consulta << std::endl;
+            continue;
+        }
+        std::cout << "Se encontró la palabra " << consulta << std::endl;
+        std::vector<PosicionDocumento> posiciones = this->indice[consulta];
+        for (auto &posicion: posiciones) {
+            resultado.push_back(posicion.getDocumento());
+        }
     }
-    sort(docs.begin(), docs.end());
-    if (docs.size() > 0) {
-        std::cout << "Se encontró la palabra " << consulta << " en " << docs.size() << " documentos." << std::endl;
-    }
-    
-    resultado = this->calcularInterseccion(resultado, docs);
-    
     return resultado;
 }
 
