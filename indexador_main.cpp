@@ -1,4 +1,3 @@
-#include <iostream>
 #include "indexador.h"
 
 int main(int argc, char **argv) {
@@ -21,20 +20,21 @@ int main(int argc, char **argv) {
             }
             else {
                 cout << "Buscando " << consulta << endl;
+                vector<string> consultaVector;
+                consultaVector = indexador.separarFrase(consulta);
                 vector<int> resultado;
-                resultado = indexador.buscar(consulta);
+                resultado = indexador.buscar(consultaVector);
                 vector<string> ranking;
                 ranking = indexador.ranking(resultado);
-                vector<string> ranking2;
-                ranking2 = indexador.rankeadorDeLibros(resultado, consulta);
+                unordered_map<int, std::string> ranking2;
+                ranking2 = indexador.rankeadorDeLibros(resultado, consultaVector);
                 if (resultado.size() > 0) {
                     std::cout << "Ranking: " << std::endl;
                     std ::cout << "Los siguientes archivos contienen ALGUNA de las palabras buscadas: " << std::endl;
                     std::cout << ranking.size() << std::endl;
-                    for (auto &doc_id : ranking2) {
-                        std::cout << "Documento: " << indexador.getDocumento(std::stoi(doc_id)) << std::endl;
-                        std::cout << "Puntaje: " << std::stoi(doc_id) << std::endl;
-                        std::cout << doc_id << std::endl;
+                    for (auto &doc_id : ranking) {
+                        std::cout << "Documento: " << indexador.getDocumento(stoi(doc_id)) << std::endl;
+                        std::cout << indexador.getDocumento(stoi(doc_id)) << std::endl;
                     }
                     std::cout << "Los siguientes archivos contienen TODAS las palabras buscadas: " << std::endl;
                     for (auto &doc_id : resultado) {

@@ -3,6 +3,15 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <filesystem>
+#include <sstream>
+#include <dirent.h> 
+#include <unordered_map>
+#include <cctype>
+#include <algorithm>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 static const std::string slash="\\";
@@ -88,7 +97,15 @@ public:
      * @param consulta La consulta a buscar en los libros.
      * @return Un vector con los ids de los documentos que contienen la consulta.
      */
-    vector<int> buscar(std::string consulta);
+    vector<int> buscar(vector<string> consulta);
+
+    /**
+     * @brief Función que recibe un string y devuelve un vector de strings con las palabras que contiene el string.
+     * 
+     * @param consulta String que contiene las palabras a separar.
+     * @return vector<string> Vector de strings con las palabras que contiene el string.
+     */
+    vector<string> separarFrase(string consulta);
     
     /**
      * Obtiene el ranking de los documentos que contienen la consulta dada.
@@ -112,7 +129,7 @@ public:
      * @param consulta String que representa la consulta a utilizar para rankear los documentos.
      * @return vector<string> Vector de strings con los libros rankeados según su relevancia con respecto a la consulta.
      */
-    vector<string> rankeadorDeLibros(vector<int> &docs, string consulta);
+    unordered_map<int, std::string> rankeadorDeLibros(vector<int> &docs, vector<string> consulta);
 
 private:
     /**

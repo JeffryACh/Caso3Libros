@@ -1,11 +1,3 @@
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <filesystem>
-#include <sstream>
-#include <dirent.h> 
-#include <cctype>
-#include <algorithm>
 #include "indexador.h"
 
 
@@ -284,20 +276,22 @@ std::string IndexadorLibros::getDocumento(int id_doc) {
  * @param consulta Palabra que se desea buscar en los títulos de los libros.
  * @return Vector de strings que contiene los títulos de los libros ordenados por ranking.
  */
-vector<string> IndexadorLibros::rankeadorDeLibros(vector<int> &docs, string consulta) {
-    vector<string> ranking;
-    // se calcula el ranking
-    std::cout << "Se encontró la palabra " << consulta << " en " << docs.size() << " documentos." << std::endl;
+unordered_map<int, std::string> IndexadorLibros::rankeadorDeLibros(vector<int> &docs, vector<string> consulta) {
+    std::unordered_map<int, std::string> ranking;
+
+    int i = 0;
     for (auto &doc_id : docs) {
         if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end() || doc_id == 0) {
             std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
             continue;
-        } else if (this->mapaDocumentos.find(doc_id) != this->mapaDocumentos.end() && this->mapaDocumentos[doc_id] == "Libros/." + consulta) {
+        } else if (this->mapaDocumentos.find(doc_id) != this->mapaDocumentos.end() && this->mapaDocumentos[doc_id] == "Libros/." + consulta[i]) {
             std::cout << "Se encontró el documento con id " << doc_id << std::endl;
         }
-        ranking.push_back(this->mapaDocumentos[doc_id]);
+        ranking[doc_id] = this->mapaDocumentos[doc_id];
         std::cout << "Se encontró el documento con id " << doc_id << std::endl;
         std::cout << "El libro se llama: " << this->mapaDocumentos[doc_id] << std::endl;
+        i++;
     }
+
     return ranking;
 }
