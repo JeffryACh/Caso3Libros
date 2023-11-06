@@ -42,9 +42,7 @@ public:
      * @param pd Objeto de tipo PosicionDocumento a comparar.
      * @return true si los objetos son iguales, false en caso contrario.
      */
-    bool operator==(const PosicionDocumento &pd) const {
-        return this->doc_id == pd.doc_id;
-    }
+    bool operator==(const PosicionDocumento &pd) const;
 
 private:
     std::vector<int> posiciones; // Vector con las posiciones del documento.

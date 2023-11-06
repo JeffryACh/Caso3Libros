@@ -1,54 +1,26 @@
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
 
-using namespace utility;                    // Common utilities like string conversions
-using namespace web;                        // Common features like URIs.
-using namespace web::http;                  // Common HTTP functionality
-using namespace web::http::client;          // HTTP client features
-using namespace concurrency::streams;       // Asynchronous streams
+using namespace utility;
+using namespace web;
+using namespace web::http;
+using namespace web::http::client;
+using namespace concurrency::streams;
 
-int main(int argc, char* argv[])
-{
-    auto fileStream = std::make_shared<ostream>(); // Stream para escribir datos en un archivo.
+int main() {
+    http_client client(U("https://<your-region>.api.cognitive.microsoft.com/text/analytics/v3.0/languages"));
 
-    // Abre un flujo de archivo para escribir la respuesta del servidor.
-    pplx::task<void> requestTask = fstream::open_ostream(U("results.html")).then([=](ostream outFile)
-    {
-        *fileStream = outFile;
+    http_request request(methods::POST);
+    request.headers().add("Ocp-Apim-Subscription-Key", "<your-key>");
 
-        // Crea un cliente http para enviar la solicitud.
-        http_client client(U("http://www.bing.com"));
+    // Añade tu texto aquí
+    request.set_body(U("{\"documents\": [{\"id\": \"1\",\"text\": \"Hello world\"}]}"));
 
-        // Construye la URI de la solicitud y comienza la solicitud.
-        uri_builder builder(U("/search"));
-        builder.append_query(U("q"), U("cpprestsdk github"));
-        return client.request(methods::GET, builder.to_string());
-    })
-
-    // Maneja la llegada de los encabezados de respuesta.
-    .then([=](http_response response)
-    {
-        printf("Recibido código de estado de respuesta:%u\n", response.status_code());
-
-        // Escribe el cuerpo de la respuesta en el archivo.
-        return response.body().read_to_end(fileStream->streambuf());
-    })
-
-    // Cierra el flujo de archivo.
-    .then([=](size_t)
-    {
-        return fileStream->close();
-    });
-
-    // Espera a que se completen todas las operaciones de entrada/salida pendientes y maneja cualquier excepción.
-    try
-    {
-        requestTask.wait();
-    }
-    catch (const std::exception &e)
-    {
-        printf("Error de excepción:%s\n", e.what());
-    }
+    client.request(request).then( {
+        return response.extract_json();
+    }).then( {
+        std::cout << jsonValue.serialize() << std::endl;
+    }).wait();
 
     return 0;
 }

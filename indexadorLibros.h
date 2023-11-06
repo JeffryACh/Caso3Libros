@@ -9,10 +9,10 @@
 #include <filesystem>
 #include <sstream>
 #include <dirent.h> 
+#include "PosicionDocumento.h"
 #include <unordered_map>
 #include <cctype>
 #include <algorithm>
-#include "PosicionDocumento.h"
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 static const std::string slash="\\";
 #else

@@ -1,6 +1,5 @@
 #include "indexadorLibros.h"
 
-
 IndexadorLibros::IndexadorLibros() {} // constructor
 
 IndexadorLibros::~IndexadorLibros() {} // destructor

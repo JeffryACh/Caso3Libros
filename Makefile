@@ -11,7 +11,7 @@ sus:
 	g++ Sustantivos.cpp -o sus.o -lcurl
 	./sus.o
 indexador:
-	g++ indexador.cpp indexador_main.cpp -o indexador.o -std=c++11
+	g++ indexadorLibros.cpp indexador_main.cpp PosicionDocumento.cpp -o indexador.o
 	./indexador.o
 http:
 	g++ httpServer.cpp -o httpServer.o -lboost_system -lcpprest -lssl -lcrypto
