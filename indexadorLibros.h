@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <cctype>
 #include <algorithm>
-
+#include "PosicionDocumento.h"
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 static const std::string slash="\\";
 #else
@@ -26,50 +26,7 @@ using namespace std;
 /**
  * Clase que representa la posición de un documento en el índice invertido.
  */
-class PosicionDocumento {
-public:
-    /**
-     * Constructor de la clase PosicionDocumento.
-     * @param doc_id Identificador del documento.
-     */
-    PosicionDocumento(int doc_id);
 
-    /**
-     * Destructor de la clase PosicionDocumento.
-     */
-    ~PosicionDocumento();
-
-    /**
-     * Agrega una posición al documento.
-     * @param posicion Posición a agregar.
-     */
-    void agregarPosicion(int posicion);
-
-    /**
-     * Obtiene las posiciones del documento.
-     * @return Referencia a un vector con las posiciones del documento.
-     */
-    vector<int> &getPosiciones();
-
-    /**
-     * Obtiene el identificador del documento.
-     * @return Identificador del documento.
-     */
-    int getDocumento();
-
-    /**
-     * Sobrecarga del operador == para comparar dos objetos de tipo PosicionDocumento.
-     * @param pd Objeto de tipo PosicionDocumento a comparar.
-     * @return true si los objetos son iguales, false en caso contrario.
-     */
-    bool operator == (const PosicionDocumento& pd) const {
-        return this->doc_id == pd.doc_id;
-    }
-
-private:
-    vector<int> posiciones; // Vector con las posiciones del documento.
-    int doc_id; // Identificador del documento.
-};
 
 /**
  * Clase que se encarga de indexar y buscar libros en una ruta dada.
