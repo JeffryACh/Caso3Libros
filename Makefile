@@ -3,6 +3,7 @@ all:
 	./main.o
 clean:
 	rm -rf *.o
+	rm -rf *.html
 GPT:
 	g++ chatGPT.cpp -o GPT.o -lcurl
 	./GPT.o
