@@ -1,4 +1,5 @@
 #include "indexadorLibros.h"
+#include "RankingLibros.h"
 
 IndexadorLibros::IndexadorLibros() {} // constructor
 
