@@ -242,7 +242,7 @@ unordered_map<int, std::string> IndexadorLibros::rankeadorDeLibros(vector<int> &
 
     int i = 0;
     for (auto &doc_id : docs) {
-        if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end() || doc_id == 0) {
+        if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end()) {
             std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
             continue;
         } else if (this->mapaDocumentos.find(doc_id) != this->mapaDocumentos.end() && this->mapaDocumentos[doc_id] == "Libros/." + consulta[i]) {

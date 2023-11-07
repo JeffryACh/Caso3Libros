@@ -32,10 +32,10 @@ int main(int argc, char **argv) {
                 if (resultado.size() > 0) {
                     std::cout << "Ranking: " << std::endl;
                     std ::cout << "Los siguientes archivos contienen ALGUNA de las palabras buscadas: " << std::endl;
-                    std::cout << ranking.size() << std::endl;
-                    for (auto &doc_id : ranking) {
-                        std::cout << "Documento: " << indexador.getDocumento(stoi(doc_id)) << std::endl;
-                        std::cout << indexador.getDocumento(stoi(doc_id)) << std::endl;
+                    std::cout << ranking2.size() << std::endl;
+                    for (auto &doc_id : ranking2) {
+                        std::cout << "Documento: " << doc_id.second << std::endl;
+                        std::cout << doc_id.second << std::endl;
                     }
                     std::cout << "Los siguientes archivos contienen TODAS las palabras buscadas: " << std::endl;
                     for (auto &doc_id : resultado) {
