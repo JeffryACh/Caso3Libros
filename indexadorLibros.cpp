@@ -1,5 +1,4 @@
 #include "indexadorLibros.h"
-#include "RankingLibros.h"
 
 IndexadorLibros::IndexadorLibros() {} // constructor
 
@@ -38,6 +37,13 @@ std::vector<std::string> dividir(std::string s, std::string delimitadores) {
     return tokens;
 }
 
+bool IndexadorLibros::contieneTermino(std::string termino) {
+    for (auto &indice: this->indice) {
+        if (indice.first == termino) {
+            return true;
+        }
+    }
+}
 
 /**
  * @brief Indexa un archivo de texto y lo agrega al índice de palabras del objeto IndexadorLibros.

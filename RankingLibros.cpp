@@ -65,12 +65,13 @@ std::unordered_map<std::string, int> RankingLibros::getTopMatches(const std::str
  * @return Un unordered_map con los sustantivos y su frecuencia.
  */
 std::unordered_map<std::string, int> RankingLibros::obtenerSustantivos(const std::string& frase) {
+    // Mapa para almacenar los sustantivos.
     std::unordered_map<std::string, int> sustantivos;
 
-    // Separa la frase en palabras.
-    std::vector<std::string> palabras = indexador.separarFrase(frase);
-
-    
+    for (const auto& palabra : indexador.separarFrase(frase)) {
+        // Verifica si la palabra es un sustantivo.
+        sustantivos[palabra] += 1;
+    }
 
     return sustantivos;
 }

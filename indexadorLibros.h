@@ -44,6 +44,13 @@ public:
     ~IndexadorLibros();
     
     /**
+     * @brief Función que recibe un string y devuelve un vector de strings con las palabras que contiene el string.
+     * @param termino String que contiene las palabras a separar.
+     * @return bool True si el término se encuentra en el índice, false en caso contrario.
+    */
+    bool contieneTermino(std::string termino);
+
+    /**
      * Indexa los libros en la ruta dada.
      * @param ruta La ruta donde se encuentran los libros a indexar.
      */
