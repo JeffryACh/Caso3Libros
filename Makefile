@@ -8,7 +8,7 @@ GPT:
 	g++ chatGPT.cpp -o GPT.o -lcurl
 	./GPT.o
 sus:
-	g++ Sustantivos.cpp -o sus.o -lcurl
+	g++ Sustantivos.cpp -o sus.o -lcurl -ljson-c
 	./sus.o
 indexador:
 	g++  indexadorLibros.cpp RankingLibros.cpp indexador_main.cpp PosicionDocumento.cpp -o indexador.o
