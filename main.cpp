@@ -6,6 +6,10 @@
 #include <sstream>
 #include <algorithm>
 #include "LibroIndex.h"
+#include "TipoDePalabra.cpp"
+#include "RankingLibros.h"
+#include "IndexadorLibros.h"
+
 /**
  * @brief Clase que representa una palabra con su tipo.
  * 

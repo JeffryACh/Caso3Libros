@@ -1,4 +1,5 @@
 #include "RankingLibros.h"
+#include "TipoDePalabra.cpp"
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -70,7 +71,17 @@ std::unordered_map<std::string, int> RankingLibros::obtenerSustantivos(const std
 
     for (const auto& palabra : indexador.separarFrase(frase)) {
         // Verifica si la palabra es un sustantivo.
-        sustantivos[palabra] += 1;
+        if (tipoDePalabra2(palabra) == "sustantivo" || tipoDePalabra2(palabra) == "adjetivo") {
+            // Almacena el sustantivo en el mapa.
+            sustantivos[palabra] += 1;
+            std::cout << palabra << std::endl;
+            std::cout << sustantivos[palabra] << std::endl;
+            std::cout << std::endl;
+            std::cout << std::endl;
+            std::cout << std::endl;
+        } else{
+            continue;
+        }
     }
 
     return sustantivos;
