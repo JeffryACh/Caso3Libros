@@ -5,6 +5,7 @@
 #include <sstream>
 #include <dirent.h>
 #include <cctype>
+#include <cmath>
 #include <algorithm>
 #include <set>
 #include "IndexadorTFIDF.h"
@@ -64,6 +65,9 @@ bool cadenaVacia(std::string str) {
     return str.find_first_not_of(' ') == std::string::npos;
 }
 
+std::string removerUltimoCaracter(std::string str) {
+    return str.substr(0, str.size() - 1);
+}
 
 void IndexadorLibros::indexarDocumento(Documento &documento) {
     std::cout << "Indexando archivo: " << documento.getRuta() << std::endl;
@@ -75,11 +79,12 @@ void IndexadorLibros::indexarDocumento(Documento &documento) {
     if (file.is_open()) {
         long ult_pos = file.tellg();
         while (getline(file, linea)) {
+            linea = removerUltimoCaracter(linea);
             // verificar si la linea es vacia o contiene solo espacios
             if (cadenaVacia(linea)) {
                 if (lineasParrafo > 0) {
                     long pos = file.tellg();
-                    pos = pos - linea.length() - 3; // se le resta 3 por los dos caracteres de fin de linea
+                    pos = pos - linea.length() - 2 * (LARGO_CAMBIOLINEA) - 1; // se le restan dos cambios de linea por los dos caracteres de fin de linea
                     // se almacena el numero de parrafo, junto con las posiciones fisicas de inicio y final del mismo
                     // dentro del archivo
                     documento.agregarParrafo(contadorParrafos, ult_pos, pos);
@@ -276,7 +281,7 @@ vector<pair<int, double>> IndexadorLibros::buscarConOperador(std::string consult
             double tf = tf_num / tf_denom;
             double  idf_num = this->mapaDocumentos.size();
             double idf_denom = this->indice[palabra].size();
-            double idf = log10(idf_num / (idf_denom + 1)) + 1;
+            double idf = std::log10(idf_num / (idf_denom + 1)) + 1;
             // se suman los scores para cada palabra
             tf_idf += (tf * idf);
         }
