@@ -9,8 +9,10 @@
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 static const std::string slash="\\";
+#define LARGO_CAMBIOLINEA 2
 #else
 static const std::string slash="/";
+#define LARGO_CAMBIOLINEA 1
 #endif
 
 #define INDEXADOR_AND 0
