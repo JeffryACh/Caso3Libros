@@ -1,7 +1,7 @@
 #include "Parrafo.h"
 
 // Inicio y final son las posiciones en el archivo correspondiente del documento
-Parrafo::Parrafo(int id, int inicio, int final) {
+Parrafo::Parrafo(int id, long inicio, long final) {
     this->id = id;
     this->inicio = inicio;
     this->final = final;
@@ -13,11 +13,11 @@ Parrafo::Parrafo(const Parrafo &otro) {
     this->final = otro.final;
 }
 
-int Parrafo::getFinal() {
+long Parrafo::getFinal() {
     return this->final;
 }
 
-int Parrafo::getInicio() {
+long Parrafo::getInicio() {
     return this->inicio;
 }
 
