@@ -4,13 +4,15 @@
 Documento::Documento(const Documento& otro) {
     this->id = otro.id;
     this->ruta = otro.ruta;
-    this->nombre = otro.nombre;
+    this->titulo = otro.titulo;
     this->autor = otro.autor;
+    this->parrafos = otro.parrafos;
 }
 
 Documento::Documento(int id, std::string ruta) {
     this->id = id;
     this->ruta = ruta;
+    this->parrafos = std::map<int, Parrafo>();
 }
 
 int Documento::getId() {
@@ -21,16 +23,16 @@ const std::string Documento::getRuta() {
     return this->ruta;
 }
 
-const std::string Documento::getNombre() {
-    return this->nombre;
+const std::string Documento::getTitulo() {
+    return this->titulo;
 }
 
 const std::string Documento::getAutor() {
     return this->autor;
 }
 
-void Documento::setNombre(std::string nombre) {
-    this->nombre = nombre;
+void Documento::setTitulo(std::string titulo) {
+    this->titulo = titulo;
 }
 
 void Documento::setAutor(std::string autor) {
@@ -39,4 +41,10 @@ void Documento::setAutor(std::string autor) {
 
 Documento::Documento() = default;
 
+void Documento::agregarParrafo(int id, long inicio, long final) {
+    this->parrafos[id] = Parrafo(id, inicio, final);
+}
 
+Parrafo& Documento::getParrafo(int id) {
+    return this->parrafos[id];
+}
