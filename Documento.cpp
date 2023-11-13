@@ -1,6 +1,6 @@
 #include "Documento.h"
 #include <string>
-
+// Constructor de copia de Documento
 Documento::Documento(const Documento& otro) {
     this->id = otro.id;
     this->ruta = otro.ruta;
@@ -8,6 +8,7 @@ Documento::Documento(const Documento& otro) {
     this->autor = otro.autor;
     this->parrafos = otro.parrafos;
 }
+// Constructor parametrizado de Documento
 
 Documento::Documento(int id, std::string ruta) {
     this->id = id;
