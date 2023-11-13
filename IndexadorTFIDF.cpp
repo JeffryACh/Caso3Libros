@@ -79,7 +79,10 @@ void IndexadorLibros::indexarDocumento(Documento &documento) {
     if (file.is_open()) {
         long ult_pos = file.tellg();
         while (getline(file, linea)) {
-            linea = removerUltimoCaracter(linea);
+            if (EN_WINDOWS) {
+                // en el caso de Windows, se remueve el caracter \r del final
+                linea = removerUltimoCaracter(linea);
+            }
             // verificar si la linea es vacia o contiene solo espacios
             if (cadenaVacia(linea)) {
                 if (lineasParrafo > 0) {
