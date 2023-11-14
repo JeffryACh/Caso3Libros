@@ -4,12 +4,25 @@
 #include <json-c/json.h>
 #include <string>
 
+/**
+ * @brief Función que se utiliza como callback para escribir los datos recibidos en una cadena de caracteres.
+ * 
+ * @param contents Puntero a los datos recibidos.
+ * @param size Tamaño de cada elemento recibido.
+ * @param nmemb Número de elementos recibidos.
+ * @param userp Puntero a la cadena de caracteres donde se escribirán los datos recibidos.
+ * @return size_t Tamaño total de los datos recibidos.
+ */
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* userp) {
     size_t totalSize = size * nmemb;
     userp->append((char*)contents, totalSize);
     return totalSize;
 }
 
+/**
+ * @brief Tipo de dato que representa una cadena de caracteres.
+ * @param readBuffer Cadena de caracteres donde se escribirán los datos recibidos.
+ */
 std::string tipoDePalabra(std::string readBuffer) {
     // Parse the JSON response
     json_object* jobj = json_tokener_parse(readBuffer.c_str());
@@ -59,6 +72,14 @@ std::string tipoDePalabra(std::string readBuffer) {
     return "otro";
 }
 
+/**
+ * @brief Clase que representa una cadena de caracteres.
+ * 
+ * Esta clase se utiliza para almacenar y manipular cadenas de caracteres.
+ * 
+ * @param palabra Cadena de caracteres que se va a analizar.
+ * 
+ */
 std::string tipoDePalabra2(std::string palabra) {
     CURL *hnd = curl_easy_init();
     std::string readBuffer;
@@ -105,13 +126,4 @@ std::string tipoDePalabra2(std::string palabra) {
         std::cerr << "Error al inicializar el manipulador CURL." << std::endl;
         return "otro";
     }
-}
-
-int main() {
-    try {
-        std::cout << tipoDePalabra2("fighter") << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "Excepción: " << e.what() << std::endl;
-    }
-    return 0;
 }
