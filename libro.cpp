@@ -3,8 +3,8 @@
 //
 
 #include "libro.h"
-Libro::Libro(std::string &_titulo, std::string &_autor) : titulo(_titulo), autor(_autor) {
-
-
-
+Libro::Libro(std::string &_titulo, std::string &_autor, std::vector<std::string> &_palabrasClave) {
+    titulo = _titulo;
+    autor = _autor;
+    palabrasClave = _palabrasClave;
 }
