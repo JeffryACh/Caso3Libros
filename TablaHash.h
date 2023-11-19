@@ -4,7 +4,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
-#include <pair>
+#include <utility>
 #include "libro.h"
 using namespace std;
 
@@ -18,6 +18,7 @@ public:
     void imprimir();
     void imprimirLibros();
     Libro buscarLibroConMasApariciones(string palabra);
+    vector<Libro> getTopMatches(string palabra);
 };
 
 #endif // CASO3_EDATOS_TABLAHASH_H

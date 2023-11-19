@@ -10,6 +10,7 @@
 #include <sstream>
 #include <dirent.h> 
 #include "PosicionDocumento.h"
+#include "TablaHash.h"
 #include <unordered_map>
 #include <cctype>
 #include <algorithm>
@@ -67,7 +68,7 @@ public:
      * @brief Función que recibe un string y devuelve un vector de strings con las palabras que contiene el string.
      * 
      * @param consulta String que contiene las palabras a separar.
-     * @return vector<string> Vector de strings con las palabras que contiene el string.
+     * @return vector<string> Vector de strings con las palabras que contiene la consulta.
      */
     vector<string> separarFrase(string consulta);
     
@@ -86,14 +87,14 @@ public:
     std::string getDocumento(int id_doc);
     
     
-    /**
-     * @brief Función que recibe un vector de enteros y una consulta en forma de string, y devuelve un vector de strings con los libros rankeados según su relevancia con respecto a la consulta.
-     * 
-     * @param docs Vector de enteros que representa los documentos a rankear.
-     * @param consulta String que representa la consulta a utilizar para rankear los documentos.
-     * @return vector<string> Vector de strings con los libros rankeados según su relevancia con respecto a la consulta.
-     */
-    unordered_map<int, std::string> rankeadorDeLibros(vector<int> &docs, vector<string> consulta);
+    // /**
+    //  * @brief Función que recibe un vector de enteros y una consulta en forma de string, y devuelve un vector de strings con los libros rankeados según su relevancia con respecto a la consulta.
+    //  * 
+    //  * @param docs Vector de enteros que representa los documentos a rankear.
+    //  * @param consulta String que representa la consulta a utilizar para rankear los documentos.
+    //  * @return vector<string> Vector de strings con los libros rankeados según su relevancia con respecto a la consulta.
+    //  */
+    // unordered_map<int, std::string> rankeadorDeLibros(vector<int> &docs, vector<string> consulta);
 
 private:
     /**
@@ -116,8 +117,7 @@ private:
      * @return Un vector con los elementos que se encuentran en ambos vectores.
      */
     vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2);
-    
-    std::map<std::string, std::vector<PosicionDocumento>> indice; /**< Mapa que almacena el índice de los términos en los documentos. */
-    std::map<int, std::string> mapaDocumentos; /**< Mapa que almacena los documentos indexados. */
+    TablaHash tablaHash;
+
 };
 #endif

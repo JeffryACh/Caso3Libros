@@ -15,11 +15,7 @@ public:
     string autor;
     vector<string> palabrasClave;
 
-    Libro(string& _titulo, const char *_autor, vector<string>& _palabrasClave) {
-        titulo = _titulo;
-        autor = _autor;
-        palabrasClave = _palabrasClave;
-    }
+    Libro();
 };
 
 

@@ -12,8 +12,9 @@ IndexadorLibros::~IndexadorLibros() {} // destructor
 void IndexadorLibros::indexar(std::string ruta) {
     this->procesarRuta(ruta);
     // se itera por el mapa de documentos
-    for (auto const& x : this->mapaDocumentos) {
-        this->indexarArchivo(x.second, x.first);
+    for (auto &doc: this->tablaHash) {
+        // se indexa el documento
+        this->indexarArchivo(doc.second, doc.first);
     }
 }
 
@@ -127,17 +128,17 @@ void IndexadorLibros::procesarRuta(const std::string& ruta) {
     closedir(dp);
 }
 
-/**
- * @brief Ordena un vector de enteros de forma ascendente.
- * 
- * @param v Vector de enteros a ordenar.
- * @return Vector ordenado de forma ascendente.
- */
-vector<int> ordenarVector(vector<int> &v) {
-    vector<int> ordenado = v;
-    sort(ordenado.begin(), ordenado.end());
-    return ordenado;
-}
+// /**
+//  * @brief Ordena un vector de enteros de forma ascendente.
+//  * 
+//  * @param v Vector de enteros a ordenar.
+//  * @return Vector ordenado de forma ascendente.
+//  */
+// vector<int> ordenarVector(vector<int> &v) {
+//     vector<int> ordenado = v;
+//     sort(ordenado.begin(), ordenado.end());
+//     return ordenado;
+// }
 
 /**
  * Calcula la intersección entre dos vectores de enteros.
@@ -206,25 +207,25 @@ vector<int> IndexadorLibros::buscar(vector<string> consultas) {
     return resultado;
 }
 
-/**
- * @brief Retorna un vector de strings con los nombres de los documentos en el orden especificado por el vector de enteros docs.
- * 
- * @param docs Vector de enteros que especifica el orden en que se deben retornar los nombres de los documentos.
- * @return vector<string> Vector de strings con los nombres de los documentos en el orden especificado por el vector de enteros docs.
- */
-vector<string> IndexadorLibros::ranking(vector<int> &docs) {
-    vector<string> ranking;
-    // se calcula el ranking
-    for (auto &doc_id : docs) {
-        if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end()) {
-            std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
-            continue;
-        } else {
-            std::cout << "Se encontró el documento con id " << doc_id << std::endl;
-        }
-        ranking.push_back(std::to_string(doc_id));
-    }
-    return ranking;
+// /**
+//  * @brief Retorna un vector de strings con los nombres de los documentos en el orden especificado por el vector de enteros docs.
+//  * 
+//  * @param docs Vector de enteros que especifica el orden en que se deben retornar los nombres de los documentos.
+//  * @return vector<string> Vector de strings con los nombres de los documentos en el orden especificado por el vector de enteros docs.
+//  */
+// vector<string> IndexadorLibros::ranking(vector<int> &docs) {
+//     vector<string> ranking;
+//     // se calcula el ranking
+//     for (auto &doc_id : docs) {
+//         if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end()) {
+//             std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
+//             continue;
+//         } else {
+//             std::cout << "Se encontró el documento con id " << doc_id << std::endl;
+//         }
+//         ranking.push_back(std::to_string(doc_id));
+//     }
+//     return ranking;
 }
 
 /**
@@ -237,29 +238,29 @@ std::string IndexadorLibros::getDocumento(int id_doc) {
     return this->mapaDocumentos[id_doc];
 }
 
-/**
- * @brief Función que calcula el ranking de los libros que contienen una palabra específica en su título.
- * 
- * @param docs Vector de enteros que contiene los ids de los documentos que contienen la palabra buscada.
- * @param consulta Palabra que se desea buscar en los títulos de los libros.
- * @return Vector de strings que contiene los títulos de los libros ordenados por ranking.
- */
-unordered_map<int, std::string> IndexadorLibros::rankeadorDeLibros(vector<int> &docs, vector<string> consulta) {
-    std::unordered_map<int, std::string> ranking;
+// /**
+//  * @brief Función que calcula el ranking de los libros que contienen una palabra específica en su título.
+//  * 
+//  * @param docs Vector de enteros que contiene los ids de los documentos que contienen la palabra buscada.
+//  * @param consulta Palabra que se desea buscar en los títulos de los libros.
+//  * @return Vector de strings que contiene los títulos de los libros ordenados por ranking.
+//  */
+// unordered_map<int, std::string> IndexadorLibros::rankeadorDeLibros(vector<int> &docs, vector<string> consulta) {
+//     std::unordered_map<int, std::string> ranking;
 
-    int i = 0;
-    for (auto &doc_id : docs) {
-        if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end()) {
-            std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
-            continue;
-        } else if (this->mapaDocumentos.find(doc_id) != this->mapaDocumentos.end() && this->mapaDocumentos[doc_id] == "Libros/." + consulta[i]) {
-            std::cout << "Se encontró el documento con id " << doc_id << std::endl;
-        }
-        ranking[doc_id] = this->mapaDocumentos[doc_id];
-        std::cout << "Se encontró el documento con id " << doc_id << std::endl;
-        std::cout << "El libro se llama: " << this->mapaDocumentos[doc_id] << std::endl;
-        i++;
-    }
+//     int i = 0;
+//     for (auto &doc_id : docs) {
+//         if (this->mapaDocumentos.find(doc_id) == this->mapaDocumentos.end()) {
+//             std::cerr << "No se encontró el documento con id " << doc_id << std::endl;
+//             continue;
+//         } else if (this->mapaDocumentos.find(doc_id) != this->mapaDocumentos.end() && this->mapaDocumentos[doc_id] == "Libros/." + consulta[i]) {
+//             std::cout << "Se encontró el documento con id " << doc_id << std::endl;
+//         }
+//         ranking[doc_id] = this->mapaDocumentos[doc_id];
+//         std::cout << "Se encontró el documento con id " << doc_id << std::endl;
+//         std::cout << "El libro se llama: " << this->mapaDocumentos[doc_id] << std::endl;
+//         i++;
+//     }
 
-    return ranking;
-}
+//     return ranking;
+// }
