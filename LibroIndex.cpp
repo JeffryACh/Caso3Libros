@@ -41,7 +41,7 @@ void LibrosIndex::cargarLibrosDesdeCarpeta(const std::string& carpeta) {
 void LibrosIndex::indexarLibros() {
     for (const Libro& libro : libros) {
         // Insertar el libro en el árbol AVL por título
-        arbolAVL.insertarNodo(libro.titulo, libro);
+        arbol.insertarNodo(libro.titulo, libro);
 
         // Indexar palabras clave en la tabla hash
         indexarPalabrasClave(libro);

@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "arbolAVL.h"
+#include "ArbolAVL.h"
 #include "Libro.h"
 #include "TablaHash.h"
 
@@ -43,7 +43,7 @@ public:
 
 private:
     std::vector<Libro> libros; /**< Vector que almacena los libros cargados. */
-    AVL_Principal arbolAVL; /**< Árbol AVL que indexa los libros. */
+    ArbolAVL arbol; /**< Árbol AVL que indexa los libros. */
     TablaHash tablaHash; /**< Tabla hash que almacena los libros indexados por palabra clave. */
 
     /**
