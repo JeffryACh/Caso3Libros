@@ -75,9 +75,9 @@ void SusAndAdj::cargarNAdjetivos(int n) {
 }
 
 string SusAndAdj::setearPalabra(string palabra) {
-    cout << palabra << endl;
+    //cout << palabra << endl;
     palabra.erase(std::remove_if(palabra.begin(), palabra.end(), [](char c) { return c == '\"' || c == '[' || c == ']'; }), palabra.end());
-    cout << palabra << endl;
+    //cout << palabra << endl;
     return palabra;
 }
 
@@ -131,22 +131,4 @@ SusAndAdj::SusAndAdj() {
         }
         inputFile.close(); // Close the file
     }
-}
-
-int main() {
-    SusAndAdj sa;
-    sa.cargarNSustantivos(20);
-    sa.cargarNAdjetivos(20);
-    cout << sa.esSustantivo("dog") << endl;
-    cout << sa.esAdjetivo("dog") << endl;
-
-    cout << sa.esSustantivo("cat") << endl;
-    cout << sa.esAdjetivo("cat") << endl;
-
-    cout << sa.esSustantivo("house") << endl;
-    cout << sa.esAdjetivo("house") << endl;
-
-    cout << sa.esSustantivo("beautiful") << endl;
-    cout << sa.esAdjetivo("beautiful") << endl;
-    return 0;
 }
