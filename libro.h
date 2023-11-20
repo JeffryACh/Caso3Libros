@@ -1,7 +1,3 @@
-//
-// Created by aquir on 27/10/2023.
-//
-
 #ifndef CASO3_EDATOS_LIBRO_H
 #define CASO3_EDATOS_LIBRO_H
 #include <string>
@@ -15,7 +11,11 @@ public:
     string autor;
     vector<string> palabrasClave;
 
+
+
     Libro();
+
+
 };
 
 

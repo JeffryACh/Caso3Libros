@@ -1,7 +1,8 @@
-
-
 #pragma once
 #include <iostream>
+#include <string>
+#include <vector>
+#include "TablaHash.h"
 using namespace std;
 
 class AVL_Libros {
@@ -9,9 +10,7 @@ public:
     AVL_Libros* Hizq, * Hder; // Hijos izquierdo y derecho
     int FB; // Factor de balance
 
-    string libro;
-    string titulo;
-    string autor;
+    TablaHash tablaHash; // Tabla hash que almacena las palabras clave del libro
 
 
 

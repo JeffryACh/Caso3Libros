@@ -55,28 +55,7 @@ void LibrosIndex::indexarLibros() {
 void LibrosIndex::buscarLibrosPorFrase(const std::string& frase) {
     // Tokeniza la frase en palabras
     std::vector<std::string> palabras = tokenizar(frase);
-
-    // Realiza la búsqueda en la tabla hash por palabras clave
-    std::vector<Libro> librosRelevantes;
-
-    for (const std::string& palabra : palabras) {
-        if (tablaHash.find(palabra) != tablaHash.end()) {
-            for (const Libro& libro : tablaHash[palabra]) {
-                if (std::find(librosRelevantes.begin(), librosRelevantes.end(), libro) == librosRelevantes.end()) {
-                    librosRelevantes.push_back(libro);
-                }
-            }
-        }
-    }
-
-    // Imprime los libros relevantes
-    std::cout << "Libros relevantes para la frase '" << frase << "':" << std::endl;
-    for (const Libro& libro : librosRelevantes) {
-        std::cout << "Título: " << libro.titulo << std::endl;
-        std::cout << "Autor: " << libro.autor << std::endl;
-        std::cout << "Contenido: " << libro.cont << std::endl;
-        std::cout << std::endl;
-    }
+    
 }
 
 /**

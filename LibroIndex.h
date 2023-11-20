@@ -3,9 +3,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <unordered_map>
 #include "arbolAVL.h"
 #include "Libro.h"
+#include "TablaHash.h"
 
 class LibrosIndex {
 public:
@@ -44,7 +44,7 @@ public:
 private:
     std::vector<Libro> libros; /**< Vector que almacena los libros cargados. */
     AVL_Principal arbolAVL; /**< Árbol AVL que indexa los libros. */
-    std::unordered_map<std::string, std::vector<Libro>> tablaHash; /**< Tabla hash que almacena los libros indexados por palabra clave. */
+    TablaHash tablaHash; /**< Tabla hash que almacena los libros indexados por palabra clave. */
 
     /**
      * @brief Función auxiliar que tokeniza una cadena en palabras.
