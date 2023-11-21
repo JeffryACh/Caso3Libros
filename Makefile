@@ -3,7 +3,6 @@ all:
 	./main.o
 clean:
 	rm -rf *.o
-	cd ./Palabras && rm -rf *.txt
 GPT:
 	g++ chatGPT.cpp -o GPT.o -lcurl
 	./GPT.o

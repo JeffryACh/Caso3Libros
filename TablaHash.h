@@ -10,7 +10,8 @@ using namespace std;
 
 class TablaHash {
 private:
-    unordered_map<string, vector<pair<Libro, int> > > tabla; // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
+    unordered_map<string, vector<pair<Libro, int> > > tabla; 
+// la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
 
 public:
     void insertar(string palabra, Libro libro);

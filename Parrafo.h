@@ -10,13 +10,13 @@ private:
     long inicio;
     long final;
 public:
-    Parrafo(int id, long inicio, long final);
-    Parrafo(const Parrafo& otro);
-    Parrafo() = default;;
+    Parrafo(int id, long inicio, long final); // Constructor
+    Parrafo(const Parrafo& otro); // Constructor por copia
+    Parrafo() = default;; // Constructor por defecto
     ~Parrafo() = default;
 
-    int getId();
-    long getInicio();
-    long getFinal();
+    int getId(); // Devuelve el id del párrafo
+    long getInicio(); // Devuelve el offset de inicio del párrafo
+    long getFinal(); // Devuelve el offset de fin del párrafo
 };
 #endif //__PARRAFO_H__
