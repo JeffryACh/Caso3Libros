@@ -5,21 +5,23 @@
 #include <unordered_map>
 #include <vector>
 #include <utility>
-#include "libro.h"
+#include "Documento.h"
 using namespace std;
 
 class TablaHash {
 private:
-    unordered_map<string, vector<pair<Libro, int> > > tabla; 
+    unordered_map<string, vector<pair<Documento, int> > > tabla; 
 // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
 
 public:
-    void insertar(string palabra, Libro libro);
-    vector<pair<Libro, int> > buscar(string palabra);
+    TablaHash();
+    bool estaVacia();
+    void insertar(string palabra, Documento libro);
+    vector<pair<Documento, int> > buscar(string palabra);
     void imprimir();
     void imprimirLibros();
-    Libro buscarLibroConMasApariciones(string palabra);
-    vector<Libro> getTopMatches(string palabra);
+    Documento buscarLibroConMasApariciones(string palabra);
+    vector<Documento> getTopMatches(string palabra);
 };
 
 #endif // CASO3_EDATOS_TABLAHASH_H

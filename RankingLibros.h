@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include "IndexadorLibros.h"
-#include "RankingLibros.h"
+#include "SusAndAdj.h"
 
 /**
  * Clase que representa un ranking de libros a partir de una frase.

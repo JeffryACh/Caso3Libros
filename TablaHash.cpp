@@ -4,15 +4,15 @@
 
 using namespace std;
 
-void TablaHash::insertar(string palabra, Libro libro) {
+void TablaHash::insertar(string palabra, Documento libro) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se crea un vector vacío
-        vector<pair<Libro, int>> libros;
+        vector<pair<Documento, int>> libros;
         libros.push_back(make_pair(libro, 1));
         tabla[palabra] = libros;
     } else {
         bool libroEncontrado = false;
         for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
-            if (it->first.titulo == libro.titulo) {
+            if (it->first.getTitulo() == libro.getTitulo()) {
                 it->second++;
                 libroEncontrado = true;
                 break;
@@ -24,9 +24,9 @@ void TablaHash::insertar(string palabra, Libro libro) {
     }
 }
 
-vector<pair<Libro, int> > TablaHash::buscar(string palabra) {
+vector<pair<Documento, int> > TablaHash::buscar(string palabra) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna un vector vacío
-        return vector<pair<Libro, int>>();
+        return vector<pair<Documento, int>>();
     } else {
         return tabla[palabra];
     }
@@ -36,7 +36,7 @@ void TablaHash::imprimir() {
     for (auto it = tabla.begin(); it != tabla.end(); it++) {
         cout << it->first << ": " << endl;
         for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++) {
-            cout << "\t" << it2->first.titulo << " (" << it2->second << ")" << endl;
+            cout << "\t" << it2->first.getTitulo() << " (" << it2->second << ")" << endl;
         }
     }
 }
@@ -45,17 +45,19 @@ void TablaHash::imprimirLibros() {
     for (auto it = tabla.begin(); it != tabla.end(); it++) {
         cout << it->first << ": " << endl;
         for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++) {
-            cout << "\t" << it2->first.titulo << endl;
+            cout << "\t" << it2->first.getTitulo() << endl;
+            cout << "\t" << it2->first.getAutor() << endl;
+
         }
     }
 }
 
-Libro TablaHash::buscarLibroConMasApariciones(string palabra) {
+Documento TablaHash::buscarLibroConMasApariciones(string palabra) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna un libro vacío
-        return Libro();
+        return Documento();
     } else {
         int max = 0;
-        Libro libroConMasApariciones;
+        Documento libroConMasApariciones;
         for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
             if (it->second > max) {
                 max = it->second;
@@ -66,11 +68,11 @@ Libro TablaHash::buscarLibroConMasApariciones(string palabra) {
     }
 }
 
-vector<Libro> TablaHash::getTopMatches(string palabra) {
+vector<Documento> TablaHash::getTopMatches(string palabra) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna un vector vacío
-        return vector<Libro>();
+        return vector<Documento>();
     } else {
-        vector<Libro> topMatches;
+        vector<Documento> topMatches;
         int max = 0;
         for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
             if (it->second > max) {
@@ -84,4 +86,8 @@ vector<Libro> TablaHash::getTopMatches(string palabra) {
         }
         return topMatches;
     }
+}
+
+bool TablaHash::estaVacia() {
+    return tabla.empty();
 }
