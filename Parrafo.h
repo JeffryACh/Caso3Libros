@@ -6,14 +6,14 @@
  */
 class Parrafo {
 private:
-    int id;
-    long inicio;
-    long final;
+    int id; // Identificador del párrafo
+    long inicio; // Offset de inicio del párrafo
+    long final; // Offset de fin del párrafo
 public:
     Parrafo(int id, long inicio, long final); // Constructor
     Parrafo(const Parrafo& otro); // Constructor por copia
-    Parrafo() = default;; // Constructor por defecto
-    ~Parrafo() = default;
+    Parrafo() = default; // Constructor por defecto
+    ~Parrafo() = default; // Destructor
 
     int getId(); // Devuelve el id del párrafo
     long getInicio(); // Devuelve el offset de inicio del párrafo

@@ -7,6 +7,17 @@ using namespace std;
 TablaHash::TablaHash() {
 }
 
+/**
+ * @brief Inserta una palabra y un libro en la tabla hash.
+ * 
+ * Si la palabra no se encuentra en la tabla, se crea un nuevo vector vacío y se agrega el libro con una frecuencia de 1.
+ * Si la palabra ya existe en la tabla, se busca el libro en el vector asociado a la palabra.
+ * Si el libro se encuentra, se incrementa su frecuencia en 1.
+ * Si el libro no se encuentra, se agrega al vector con una frecuencia de 1.
+ * 
+ * @param palabra La palabra a insertar.
+ * @param libro El libro asociado a la palabra.
+ */
 void TablaHash::insertar(string palabra, Documento libro) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se crea un vector vacío
         vector<pair<Documento, int>> libros;
@@ -27,6 +38,13 @@ void TablaHash::insertar(string palabra, Documento libro) {
     }
 }
 
+/**
+ * @brief Busca una palabra en la tabla hash y devuelve los documentos asociados a esa palabra.
+ * 
+ * @param palabra La palabra a buscar en la tabla hash.
+ * @return Un vector de pares (Documento, int) que representa los documentos asociados a la palabra.
+ *         Si la palabra no se encuentra, se retorna un vector vacío.
+ */
 vector<pair<Documento, int> > TablaHash::buscar(string palabra) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna un vector vacío
         return vector<pair<Documento, int>>();
@@ -35,6 +53,14 @@ vector<pair<Documento, int> > TablaHash::buscar(string palabra) {
     }
 }
 
+/**
+ * Imprime los elementos almacenados en la tabla hash.
+ * 
+ * Recorre la tabla hash e imprime cada elemento junto con su cantidad.
+ * 
+ * @param None
+ * @return None
+ */
 void TablaHash::imprimir() {
     for (auto it = tabla.begin(); it != tabla.end(); it++) {
         cout << it->first << ": " << endl;
@@ -44,17 +70,30 @@ void TablaHash::imprimir() {
     }
 }
 
+/**
+ * Imprime los libros almacenados en la tabla hash.
+ * 
+ * Recorre la tabla hash e imprime los títulos y autores de los libros almacenados.
+ */
 void TablaHash::imprimirLibros() {
     for (auto it = tabla.begin(); it != tabla.end(); it++) {
         cout << it->first << ": " << endl;
         for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++) {
             cout << "Titulo:" << "\t" << it2->first.getTitulo() << endl;
             cout << "Autor:" << "\t" << it2->first.getAutor() << endl;
-
         }
     }
 }
 
+/**
+ * @brief Clase que representa un documento.
+ * 
+ * @param palabra La palabra a buscar en la tabla hash.
+ * 
+ * Esta clase representa un documento y contiene información sobre el mismo, como el título, el autor y el número de apariciones de una palabra en el documento.
+ * 
+ * @return Un Documento que representa el libro con más apariciones de la palabra.
+ */
 Documento TablaHash::buscarLibroConMasApariciones(string palabra) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna un libro vacío
         return Documento();
@@ -71,6 +110,13 @@ Documento TablaHash::buscarLibroConMasApariciones(string palabra) {
     }
 }
 
+/**
+ * Obtiene los documentos con las mejores coincidencias para una palabra dada.
+ * 
+ * @param palabra La palabra para la cual se desean obtener las mejores coincidencias.
+ * @return Un vector de Documento con los documentos que tienen las mejores coincidencias para la palabra dada.
+ *         Si no se encuentra la palabra, se retorna un vector vacío.
+ */
 vector<Documento> TablaHash::getTopMatches(string palabra) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna un vector vacío
         return vector<Documento>();
@@ -91,6 +137,11 @@ vector<Documento> TablaHash::getTopMatches(string palabra) {
     }
 }
 
+/**
+ * Verifica si la tabla hash está vacía.
+ * 
+ * @return true si la tabla hash está vacía, false en caso contrario.
+ */
 bool TablaHash::estaVacia() {
     return tabla.empty();
 }

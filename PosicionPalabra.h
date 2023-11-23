@@ -10,15 +10,15 @@ using namespace std;
 // se usa como valor en la clase del indexador
 class PosicionPalabra {
 public:
-    PosicionPalabra(string palabra, Documento &documento);
+    PosicionPalabra(string palabra, Documento &documento); // constructor
 
     ~PosicionPalabra();
-    void agregarPosicion(int posicion);
-    vector<int> &getPosiciones();
-    Documento& getDocumento();
+    void agregarPosicion(int posicion); // agrega una posicion a la lista de posiciones de la palabra
+    vector<int> &getPosiciones();   // devuelve una referencia al vector de posiciones
+    Documento& getDocumento();  // devuelve el documento asociado a la posicion de la palabra
 private:
-    vector<int> posiciones;
-    Documento& doc;
-    string palabra;
+    vector<int> posiciones; // las posiciones de la palabra en el documento
+    Documento& doc; // el documento asociado a la posicion de la palabra
+    string palabra; // la palabra a buscar en el documento
 };
 #endif //__POSDOCUMENTO_H__

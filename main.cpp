@@ -12,6 +12,13 @@
 //#include "RankingLibros.h"
 //#include "IndexadorLibros.h"
 
+/**
+ * @brief Divide a string into substrings based on a delimiter.
+ * 
+ * @param str The string to be split.
+ * @param delimiter The character used to separate the substrings.
+ * @return vector<string> A vector containing the substrings.
+ */
 vector <string> split(string str, char delimiter) {
     vector<string> internal;
     stringstream ss(str);

@@ -7,6 +7,12 @@
 
 using namespace std;
 
+/**
+ * @brief Función que elimina los caracteres '\"', '[' y ']' de una cadena de texto.
+ * 
+ * @param palabra La cadena de texto a modificar.
+ * @return La cadena de texto modificada.
+ */
 string setearPalabra(string palabra) {
     //cout << palabra << endl;
     palabra.erase(std::remove_if(palabra.begin(), palabra.end(), [](char c) { return c == '\"' || c == '[' || c == ']'; }), palabra.end());
@@ -14,6 +20,12 @@ string setearPalabra(string palabra) {
     return palabra;
 }
 
+/**
+ * @brief Verifica si una palabra es un sustantivo.
+ * 
+ * @param palabra La palabra a verificar.
+ * @return true si la palabra es un sustantivo, false en caso contrario.
+ */
 bool esSustantivo(string palabra) {
     ifstream inputFile("Palabras/sus.txt"); // Open the input file stream
     if (inputFile.is_open()) {
@@ -31,6 +43,11 @@ bool esSustantivo(string palabra) {
     return false;
 }
 
+/**
+ * Verifica si una palabra es un adjetivo.
+ * @param palabra La palabra a verificar.
+ * @return true si la palabra es un adjetivo, false en caso contrario.
+ */
 bool esAdjetivo(string palabra) {
     ifstream inputFile("Palabras/adj.txt"); // Open the input file stream
     if (inputFile.is_open()) {
