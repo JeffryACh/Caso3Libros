@@ -36,6 +36,8 @@ int main() {
             std::cout << palabra << " es un sustantivo" << std::endl;
         } else if (esAdjetivo(palabra)) {
             std::cout << palabra << " es un adjetivo" << std::endl;
+        } else {
+            continue;
         }
     }
 
