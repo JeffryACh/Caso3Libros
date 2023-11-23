@@ -14,14 +14,14 @@ private:
 // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
 
 public:
-    TablaHash();
-    bool estaVacia();
-    void insertar(string palabra, Documento libro);
-    vector<pair<Documento, int> > buscar(string palabra);
-    void imprimir();
-    void imprimirLibros();
-    Documento buscarLibroConMasApariciones(string palabra);
-    vector<Documento> getTopMatches(string palabra);
-};
+    TablaHash(); // constructor
+    bool estaVacia(); // retorna true si la tabla hash está vacía
+    void insertar(string palabra, Documento libro); // inserta una palabra y un libro en la tabla hash
+    vector<pair<Documento, int> > buscar(string palabra); // busca una palabra en la tabla hash y devuelve los documentos asociados a esa palabra
+    void imprimir(); // imprime los elementos almacenados en la tabla hash
+    void imprimirLibros(); // imprime los libros almacenados en la tabla hash
+    Documento buscarLibroConMasApariciones(string palabra); // busca el libro con más apariciones de una palabra
+    vector<Documento> getTopMatches(string palabra);    // retorna los 10 mejores matches de una palabra
+}; 
 
 #endif // CASO3_EDATOS_TABLAHASH_H
