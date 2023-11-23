@@ -3,9 +3,8 @@
 
 #include <string>
 #include <unordered_map>
-#include "IndexadorLibros.h"
+#include "indexarLibro.h"
 #include "SusAndAdj.cpp"
-#include "SusAndAdj.h"
 
 /**
  * Clase que representa un ranking de libros a partir de una frase.
@@ -16,7 +15,7 @@ public:
      * Constructor de la clase RankingLibros.
      * @param indexador Referencia al indexador de libros.
      */
-    RankingLibros(IndexadorLibros& indexador);
+    RankingLibros(indexarLibro& indexador);
 
     /**
      * Función para crear un ranking de los 10 mejores matches a partir de una frase.
@@ -49,7 +48,7 @@ public:
     int calcularRelevancia(const std::string& palabra, const std::string& documento, int frecuencia);
 
 private:
-    IndexadorLibros& indexador; // Referencia al indexador de libros.
+    indexarLibro& indexador; // Referencia al indexador de libros.
 };
 
 #endif

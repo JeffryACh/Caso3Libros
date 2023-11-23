@@ -9,7 +9,7 @@
  * 
  * @param indexador Objeto de la clase IndexadorLibros utilizado para indexar los libros.
  */
-RankingLibros::RankingLibros(IndexadorLibros& indexador) : indexador(indexador) {
+RankingLibros::RankingLibros(indexarLibro& indexador) : indexador(indexador) {
     // Constructor de la clase RankingLibros.
 }
 
