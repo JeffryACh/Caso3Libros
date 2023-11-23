@@ -5,7 +5,7 @@
 using namespace std;
 
 TablaHash::TablaHash() {
-}
+} // constructor
 
 /**
  * @brief Inserta una palabra y un libro en la tabla hash.

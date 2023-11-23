@@ -85,15 +85,8 @@ public:
      */
     std::string getDocumento(int id_doc);
     
+
     
-    // /**
-    //  * @brief Función que recibe un vector de enteros y una consulta en forma de string, y devuelve un vector de strings con los libros rankeados según su relevancia con respecto a la consulta.
-    //  * 
-    //  * @param docs Vector de enteros que representa los documentos a rankear.
-    //  * @param consulta String que representa la consulta a utilizar para rankear los documentos.
-    //  * @return vector<string> Vector de strings con los libros rankeados según su relevancia con respecto a la consulta.
-    //  */
-    // unordered_map<int, std::string> rankeadorDeLibros(vector<int> &docs, vector<string> consulta);
 
 private:
     /**

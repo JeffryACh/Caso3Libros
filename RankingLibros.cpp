@@ -69,20 +69,47 @@ std::unordered_map<std::string, int> RankingLibros::obtenerSustantivos(const std
     // Mapa para almacenar los sustantivos.
     std::unordered_map<std::string, int> sustantivos;
 
-    for (const auto& palabra : indexador.separarFrase(frase)) {
-        // Verifica si la palabra es un sustantivo.
-        if (tipoDePalabra2(palabra) == "sustantivo" || tipoDePalabra2(palabra) == "adjetivo") {
-            // Almacena el sustantivo en el mapa.
-            sustantivos[palabra] += 1;
-            std::cout << palabra << std::endl;
-            std::cout << sustantivos[palabra] << std::endl;
-            std::cout << std::endl;
-            std::cout << std::endl;
-            std::cout << std::endl;
-        } else{
-            continue;
+    for (const auto& palabra : split(frase, ' ')) {
+        if (esSustantivo(palabra)) {
+            sustantivos[palabra]++;
         }
     }
 
     return sustantivos;
+}
+
+/**
+ * @brief An unordered map that maps strings to integers.
+ * @param palabra La palabra a buscar en el índice.
+ * @return Un unordered_map con los adjetivos y su frecuencia.
+ */
+std::unordered_map<std::string, int> RankingLibros::obtenerAdjetivos(const std::string& frase) {
+    // Mapa para almacenar los adjetivos.
+    std::unordered_map<std::string, int> adjetivos;
+
+    for (const auto& palabra : split(frase, ' ')) {
+        if (esAdjetivo(palabra)) {
+            adjetivos[palabra]++;
+        }
+    }
+
+    return adjetivos;
+}
+
+/**
+ * @brief Función para calcular la relevancia de un documento.
+ * @param palabra La palabra a buscar en el documento.
+ * @param documento El documento en el cual se buscará la palabra.
+ * @param frecuencia La frecuencia de la palabra en el documento.
+ * @return La relevancia del documento.
+ */
+int RankingLibros::calcularRelevancia(const std::string& palabra, const std::string& documento) {
+    // Obtiene el número de apariciones de la palabra en el documento.
+    int frecuencia = indexador.getFrecuenciaTerminoEnDocumento(palabra, documento);
+
+    // Obtiene el número de apariciones de la palabra en el índice.
+    int frecuenciaTotal = indexador.getFrecuenciaTerminoEnIndice(palabra);
+
+    // Calcula la relevancia.
+    return frecuencia * frecuenciaTotal;
 }

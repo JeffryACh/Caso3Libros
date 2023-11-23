@@ -5,12 +5,9 @@
 #include <unordered_set>
 #include <sstream>
 #include <algorithm>
-//#include "LibroIndex.h"
-//#include "Libro.h"
 #include "SusAndAdj.cpp"
-//#include "TipoDePalabra.cpp"
 //#include "RankingLibros.h"
-//#include "IndexadorLibros.h"
+#include "IndexarLibro.h"
 
 /**
  * @brief Divide a string into substrings based on a delimiter.

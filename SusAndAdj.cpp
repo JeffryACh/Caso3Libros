@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <curl/curl.h>
 #include <fstream> // Add this line to import the fstream library
 #include <algorithm>
 
