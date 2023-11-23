@@ -4,6 +4,9 @@
 
 using namespace std;
 
+TablaHash::TablaHash() {
+}
+
 void TablaHash::insertar(string palabra, Documento libro) {
     if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se crea un vector vacío
         vector<pair<Documento, int>> libros;
@@ -45,8 +48,8 @@ void TablaHash::imprimirLibros() {
     for (auto it = tabla.begin(); it != tabla.end(); it++) {
         cout << it->first << ": " << endl;
         for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++) {
-            cout << "\t" << it2->first.getTitulo() << endl;
-            cout << "\t" << it2->first.getAutor() << endl;
+            cout << "Titulo:" << "\t" << it2->first.getTitulo() << endl;
+            cout << "Autor:" << "\t" << it2->first.getAutor() << endl;
 
         }
     }
