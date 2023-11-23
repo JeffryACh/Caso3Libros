@@ -8,7 +8,7 @@
 using namespace std;
 
 /**
- * @brief Función que elimina los caracteres '\"', '[' y ']' de una cadena de texto.
+ * @brief Función que elimina los caracteres '"', '[' y ']' de una cadena de texto.
  * 
  * @param palabra La cadena de texto a modificar.
  * @return La cadena de texto modificada.
