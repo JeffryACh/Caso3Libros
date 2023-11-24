@@ -5,6 +5,10 @@
 
 using namespace std;
 
+/**
+ * Clase que representa un árbol B.
+ * @tparam T Tipo de dato genérico.
+*/
 template <typename T> // Clase genérica para el tipo de dato T
 class ArbolB {
 public:
@@ -12,6 +16,8 @@ public:
   ArbolB(int orden); // Constructor
 
   ~ArbolB();  // Destructor
+
+  // Métodos públicos
 
   void insertar(T valor); // Insertar un valor en el árbol
 
@@ -25,6 +31,11 @@ private:
 
   int orden;  // Orden del árbol
 
+  /**
+   * @brief Estructura de datos para representar un nodo de un árbol B.
+   * 
+   * Esta estructura contiene el valor del nodo y los punteros a sus hijos izquierdo y derecho.
+   */
   struct Nodo {
     T valor;  // Valor del nodo
     Nodo *hijoIzquierdo;  // Puntero al hijo izquierdo
@@ -32,6 +43,8 @@ private:
   };
 
   Nodo *raiz; // Puntero a la raíz del árbol
+
+  // Métodos privados
 
   void insertar(T valor, Nodo *nodo); // Insertar un valor en el árbol
 

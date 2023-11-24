@@ -6,6 +6,7 @@
 
 class Documento {
 private:
+    // atributos privados
     int id{}; // identificador del documento
     std::string ruta; // ruta del documento
     std::string titulo; // titulo del documento
@@ -16,6 +17,8 @@ public:
     Documento(const Documento& otro); // constructor por copia
     Documento(int id, std::string ruta); // constructor con parametros
     ~Documento() = default; // destructor
+
+    // metodos publicos
     int getId(); // devuelve el id del documento
     const std::string getTitulo(); // devuelve el titulo del documento
     const std::string getAutor(); // devuelve el autor del documento

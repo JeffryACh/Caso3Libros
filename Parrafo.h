@@ -2,7 +2,7 @@
 #define __PARRAFO_H__
 /**
  * Esta clase almacena la información de un párrafo, en particular el offset de donde
- * inicia y donde termina en el archivo correspondiente al documento.
+ * inicia y donde termina en el archivo correspondiente al documento que lo contiene.
  */
 class Parrafo {
 private:

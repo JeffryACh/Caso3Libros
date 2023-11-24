@@ -4,7 +4,7 @@
 #include <vector>
 
 /**
- * Clase que representa la posición de una palabra en un documento.
+ * Clase que representa la posición de una palabra en un documento dado por su identificador (doc_id).
  */
 class PosicionDocumento {
 public:

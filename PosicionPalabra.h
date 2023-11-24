@@ -5,18 +5,25 @@
 #include "Documento.h"
 
 using namespace std;
-// esta clase almacena la posicion de una palabra en un documento
-// la posicion se refiere al número de párrafo
-// se usa como valor en la clase del indexador
+/**
+ * Clase que representa la posición de una palabra en un documento.
+ * Contiene un vector de posiciones y una referencia al documento asociado a la posición de la palabra.
+ * La posición de la palabra es el índice de la palabra en el documento.
+ * La clase se utiliza para almacenar las posiciones de una palabra en un documento.
+ * @see Documento
+*/
 class PosicionPalabra {
 public:
     PosicionPalabra(string palabra, Documento &documento); // constructor
 
-    ~PosicionPalabra();
+    ~PosicionPalabra(); // destructor
+
+    // metodo publicos
     void agregarPosicion(int posicion); // agrega una posicion a la lista de posiciones de la palabra
     vector<int> &getPosiciones();   // devuelve una referencia al vector de posiciones
     Documento& getDocumento();  // devuelve el documento asociado a la posicion de la palabra
 private:
+    // atributos privados
     vector<int> posiciones; // las posiciones de la palabra en el documento
     Documento& doc; // el documento asociado a la posicion de la palabra
     string palabra; // la palabra a buscar en el documento
