@@ -63,6 +63,8 @@ public:
     vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2); // calcula la intersección entre dos vectores
     int contarPalabrasEnDocumento(string palabra, int id_doc); // cuenta la cantidad de veces que aparece una palabra en un documento
     vector<pair<int, double>> buscarConOperador(string consulta, int operador); // retorna los documentos que contienen la consulta
+    void imprimirIndice(); // imprime el índice invertido
+    void imprimirDocumentos(); // imprime los documentos indexados
 };
 
 #endif //CASO3_INDEXARLIBRO_H

@@ -13,7 +13,7 @@ indexarLibro::indexarLibro() {
 
 indexarLibro::indexarLibro(string ruta) {
     indexar(ruta);
-} // constructor
+} // constructor con parámetros
 
 /**
  * @brief Indexa un libro a partir de una ruta especificada.
@@ -25,6 +25,42 @@ void indexarLibro::indexar(string ruta) {
     // se itera por el mapa de documentos
     for (auto &x : this->mapaDocumentos) {
         this->indexarDocumento(x.second);
+    }
+}
+
+/**
+ * @brief imprime el indice invertido
+ * 
+*/
+void indexarLibro::imprimirIndice() {
+    for (auto &x : this->indice) {
+        std::cout << x.first << std::endl;
+        for (auto &y : x.second) {
+            cout << "\t" << y.getDocumento().getTitulo() << endl;
+            cout << "\t" << y.getDocumento().getAutor() << endl;
+            std::cout << "\t" << y.getDocumento().getId() << std::endl;
+            for (auto &z : y.getPosiciones()) {
+                std::cout << "\t\t" << z << std::endl;
+            }
+        }
+    }
+}
+
+/**
+ * @brief imprime los documentos indexados
+ * 
+*/
+void indexarLibro::imprimirDocumentos() {
+    for (auto &x : this->mapaDocumentos) {
+        std::cout << x.first << std::endl;
+        std::cout << "\t" << x.second.getTitulo() << std::endl;
+        std::cout << "\t" << x.second.getAutor() << std::endl;
+        std::cout << "\t" << x.second.getRuta() << std::endl;
+        for (auto &y : x.second.getParrafos()) {
+            std::cout << "\t\t" << y.first << std::endl;
+            std::cout << "\t\t" << y.second.getInicio() << std::endl;
+            std::cout << "\t\t" << y.second.getFinal() << std::endl;
+        }
     }
 }
 

@@ -53,11 +53,11 @@ vector <string> split(string str, char delimiter) {
 
 
 int main() {
-    string ruta = "Libros/";
-
-    indexarLibro indexador = indexarLibro(ruta);
+    indexarLibro indexador;
+    string ruta = "Libros";
     bool salir = false;
-
+    indexador.indexar(ruta);
+    indexador.imprimirDocumentos();
     while(!salir){
         string consulta;
         cout << "Ingrese la consulta a buscar (\"salir\" termina el programa): ";
@@ -70,7 +70,16 @@ int main() {
             continue;
         }
         else {
-            continue;
+            vector<pair<int, double>> resultados = indexador.buscar(consulta);
+            if (resultados.empty()) {
+                cout << "No se encontraron resultados" << endl;
+            }
+            else {
+                cout << "Resultados de la búsqueda:" << endl;
+                for (auto& resultado : resultados) {
+                    cout << "Documento: " << indexador.getDocumento(resultado.first).getTitulo() << " - Relevancia: " << resultado.second << endl;
+                }
+            }
         }
     }
 
