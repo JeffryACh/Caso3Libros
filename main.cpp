@@ -58,6 +58,7 @@ int main() {
     bool salir = false;
     indexador.indexar(ruta);
     indexador.imprimirDocumentos();
+    cout << indexador.cantidadDocumentos() << endl;
     while(!salir){
         string consulta;
         cout << "Ingrese la consulta a buscar (\"salir\" termina el programa): ";

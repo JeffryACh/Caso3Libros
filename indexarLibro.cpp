@@ -126,89 +126,29 @@ std::string removerUltimoCaracter(std::string str) {
  * @param ruta La ruta del directorio a procesar.
  */
 void indexarLibro::procesarRuta(const string& ruta) {
-    Documento documento(ruta);
-    std::cout << "Indexando archivo: " << documento.getRuta() << std::endl;
-    std::ifstream file = std::ifstream(documento.getRuta());
-    std::string linea;
-    int contadorParrafos = 0;
-    // para controlar si hay lineas vacias entre parrafos
-    int lineasParrafo = 0;
-    if (file.is_open()) {
-        long ult_pos = file.tellg();
-        while (getline(file, linea)) {
-            if (EN_WINDOWS) {
-                // en el caso de Windows, se remueve el caracter \r del final
-                linea = removerUltimoCaracter(linea);
-            }
-            // verificar si la linea es vacia o contiene solo espacios
-            if (cadenaVacia(linea)) {
-                if (lineasParrafo > 0) {
-                    long pos = file.tellg();
-                    pos = pos - linea.length() - 2 * (LARGO_CAMBIOLINEA) - 1; // se le restan dos cambios de linea por los dos caracteres de fin de linea
-                    // se almacena el numero de parrafo, junto con las posiciones fisicas de inicio y final del mismo
-                    // dentro del archivo
-                    documento.agregarParrafo(contadorParrafos, ult_pos, pos);
-                    // se actualiza la ultima posicion para el siguiente parrafo
-                    ult_pos = file.tellg();
-                    contadorParrafos++;
-                    lineasParrafo = 0;
-                }
-                continue;
-            }
-            // revisar si la linea es el titulo
-            if (linea.find("Title:") != std::string::npos) {
-                // se remueve el titulo del documento
-                linea = linea.substr(linea.find("Title:") + 6);
-                documento.setTitulo(linea);
-                continue;
-            }
-            else if (linea.find("Author:") != std::string::npos) {
-                // se remueve el autor del documento
-                linea = linea.substr(linea.find("Author:") + 7);
-                documento.setAutor(linea);
-                continue;
-            }
+    DIR *dp;
+    struct dirent *entrada;
 
-            lineasParrafo++;
-            // dividir la linea en palabras
-            std::vector<string> palabras = dividir(linea, " ,.;\":()[]{}-_!¡¿?'*+&%$#@/");
-            for (auto &palabra: palabras) {
-                // std::cout << palabra << std::endl;
-                // se agrega la palabra al indice
-                palabra = removerCaracteresEspeciales(palabra);
-                if (cadenaVacia(palabra))
-                    continue;
-                transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-                if (this->indice.find(palabra) == this->indice.end()) {
-                    // si no existe la palabra en el indice, se crea
-                    this->indice[palabra] = std::vector<PosicionPalabra>();
-                    this->indice[palabra].push_back(PosicionPalabra(palabra, documento));
-                    this->indice[palabra].back().agregarPosicion(contadorParrafos);
-                    continue;
-                }
-                // se agrega la posicion de la palabra en el documento (nivel parrafo)
-                // pero primero hay que buscar si ya existe el documento
-                // en el vector de documentos, y si así es, se agrega la contadorParrafos
-                bool existe = false;
-                for (auto &pos_doc: this->indice[palabra]) {
-                    if (pos_doc.getDocumento().getId() == documento.getId()) {
-                        pos_doc.agregarPosicion(contadorParrafos);
-                        existe = true;
-                        break;
-                    }
-                }
-                if (!existe) {
-                    this->indice[palabra].push_back(PosicionPalabra(palabra, documento));
-                    this->indice[palabra].back().agregarPosicion(contadorParrafos);
-                }
-                // incrementa el contador de palabras del documento
-                this->contadorDocumentos[documento.getId()]++;
-            }
-        }
-        file.close();
-    } else {
-        std::cerr << "Error abriendo archivo " << documento.getRuta() << std::endl;
+    dp = opendir(ruta.c_str());
+    if (dp == NULL) {
+        std::cerr << "Error abriendo directorio " << ruta << std::endl;
+        return;
     }
+    std::cout << "Procesando directorio " << ruta << " ..." << std::endl;
+
+    int id_doc = 0;
+    while((entrada = readdir(dp))) {
+        std::string str_entrada = std::string(entrada->d_name);
+        if (str_entrada == "." || str_entrada == "..") {
+            continue;
+        }
+        this->mapaDocumentos[id_doc] = Documento(id_doc, ruta + slash + str_entrada);
+        this->contadorDocumentos[id_doc] = 0;
+        std::cout << "Agregando archivo " << str_entrada << " para indexar." << std::endl;
+        id_doc++;
+    }
+
+    closedir(dp);
 }
 
 /**
