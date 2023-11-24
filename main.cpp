@@ -28,6 +28,28 @@ vector <string> split(string str, char delimiter) {
     return internal;
 }
 
+
+/*void eliminarPalabrasRepetidas(string archivo) {
+    ifstream file(archivo);
+    unordered_set<string> palabras;
+    string palabra;
+
+    while (file >> palabra) {
+        palabras.insert(palabra);
+    }
+
+    file.close();
+
+    ofstream file2(archivo);
+    for (auto& palabra : palabras) {
+        file2 << palabra << endl;
+    }
+
+    file2.close();
+}
+*/
+
+
 int main() {
     std::string frase;
 
