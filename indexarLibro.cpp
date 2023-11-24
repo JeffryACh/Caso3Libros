@@ -212,3 +212,116 @@ vector<pair<int, double>> indexarLibro::buscar(string consulta) {
 
     return resultado;
 }
+
+vector<int> indexarLibro::calcularInterseccion(vector<int> &v1, vector<int> &v2) {
+    vector<int> resultado;
+    int i = 0, j = 0;
+    while (i < v1.size() && j < v2.size()) {
+        if (v1[i] == v2[j]) {
+            resultado.push_back(v1[i]);
+            i++;
+            j++;
+        } else if (v1[i] < v2[j]) {
+            i++;
+        } else {
+            j++;
+        }
+    }
+    return resultado;
+}
+
+vector<int> indexarLibro::calcularUnion(vector<int> &v1, vector<int> &v2) {
+    vector<int> resultado;
+    int i = 0, j = 0;
+    while (i < v1.size() && j < v2.size()) {
+        if (v1[i] == v2[j]) {
+            resultado.push_back(v1[i]);
+            i++;
+            j++;
+        } else if (v1[i] < v2[j]) {
+            resultado.push_back(v1[i]);
+            i++;
+        } else {
+            resultado.push_back(v2[j]);
+            j++;
+        }
+    }
+    while (i < v1.size()) {
+        resultado.push_back(v1[i]);
+        i++;
+    }
+    while (j < v2.size()) {
+        resultado.push_back(v2[j]);
+        j++;
+    }
+    return resultado;
+}
+
+Documento& indexarLibro::getDocumento(int id_doc) {
+    return documentos[id_doc];
+}
+
+vector<pair<int, int>> indexarLibro::obtenerParrafosRelevantes(string consulta, int id_doc) {
+    vector<pair<int, int>> resultado;
+    vector<string> palabras;
+    string palabra;
+    int pos = 0;
+    while (obtenerPalabra(consulta, palabra, pos)) {
+        transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
+        palabras.push_back(palabra);
+    }
+
+    int tipo = INDEXADOR_AND;
+    if (palabras.size() > 0 && palabras[palabras.size() - 1] == "or") {
+        tipo = INDEXADOR_OR;
+        palabras.pop_back();
+    }
+
+    if (palabras.size() > 0) {
+        vector<int> docs = tabla[palabras[0]][0];
+        for (int i = 1; i < palabras.size(); i++) {
+            if (tipo == INDEXADOR_AND) {
+                docs = calcularInterseccion(docs, tabla[palabras[i]][0]);
+            } else {
+                docs = calcularUnion(docs, tabla[palabras[i]][0]);
+            }
+        }
+
+        for (int i = 0; i < docs.size(); i++) {
+            if (docs[i] == id_doc) {
+                for (int j = 0; j < palabras.size(); j++) {
+                    for (auto &pos_doc: indice[palabras[j]]) {
+                        if (pos_doc.getDocumento().getId() == id_doc) {
+                            for (auto &pos: pos_doc.getPosiciones()) {
+                                resultado.push_back(make_pair(pos, pos_doc.getDocumento().getParrafos()[pos]));
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    return resultado;
+}
+
+string indexarLibro::textoParrafo(int id_doc, int id_parrafo) {
+    string resultado;
+    Documento doc = documentos[id_doc];
+    ifstream file = ifstream(doc.getRuta());
+    if (file.is_open()) {
+        file.seekg(doc.getParrafos()[id_parrafo].first);
+        char c;
+        while (file.tellg() < doc.getParrafos()[id_parrafo].second) {
+            file.get(c);
+            resultado += c;
+        }
+        file.close();
+    }
+    return resultado;
+}
+
+int indexarLibro::cantidadDocumentos() {
+    return documentos.size();
+}
