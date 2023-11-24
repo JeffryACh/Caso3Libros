@@ -1,10 +1,15 @@
-#include "indexarLibro.h"
+#include "indexarLibro.h" // incluye el archivo indexarLibro.h
 
-using namespace std;
+using namespace std; // para no tener que escribir std::vector, std::string, etc.
 
 indexarLibro::indexarLibro() {
-}
+} // constructor
 
+/**
+ * @brief Indexa un libro a partir de una ruta especificada.
+ * 
+ * @param ruta La ruta del libro a indexar.
+ */
 void indexarLibro::indexar(string ruta) {
     procesarRuta(ruta);
 
@@ -18,6 +23,15 @@ void indexarLibro::indexar(string ruta) {
     }
 }
 
+/**
+ * @brief Vector de cadenas de texto.
+ * 
+ * Un std::vector<std::string> es una estructura de datos que almacena una secuencia de cadenas de texto.
+ * Permite agregar, eliminar y acceder a las cadenas de texto de manera eficiente.
+ * @param s La cadena de texto a dividir.
+ * @param delimitadores Los delimitadores que se utilizarán para dividir la cadena de texto.
+ * @return Un vector de cadenas de texto.
+ */
 std::vector<std::string> dividir(std::string s, std::string delimitadores) {
     std::vector<std::string> tokens;
     std::string token;
@@ -32,6 +46,13 @@ std::vector<std::string> dividir(std::string s, std::string delimitadores) {
     return tokens;
 }
 
+/**
+ * Cuenta el número de veces que una palabra aparece en un documento específico.
+ * 
+ * @param palabra La palabra a contar.
+ * @param doc_id El ID del documento en el que se busca la palabra.
+ * @return El número de veces que la palabra aparece en el documento.
+ */
 int IndexadorLibros::contarPalabraEnDocumento(std::string palabra, int doc_id) {
     int contador = 0;
     for (auto &pos_doc: indice[palabra]) {
@@ -42,6 +63,12 @@ int IndexadorLibros::contarPalabraEnDocumento(std::string palabra, int doc_id) {
     return contador;
 }
 
+/**
+ * @brief Remueve los caracteres especiales de una cadena de texto.
+ * 
+ * @param str La cadena de texto de la cual se removerán los caracteres especiales.
+ * @return La cadena de texto sin caracteres especiales.
+ */
 std::string removerCaracteresEspeciales(std::string str) {
     str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char x) {
         return !std::isprint(x);
@@ -49,6 +76,12 @@ std::string removerCaracteresEspeciales(std::string str) {
     return str;
 }
 
+/**
+ * @brief Remueve los caracteres especiales de una cadena de texto.
+ * 
+ * @param str La cadena de texto de la cual se removerán los caracteres especiales.
+ * @return La cadena de texto sin caracteres especiales.
+ */
 std::string removerCaracteresEspeciales(std::string str) {
     str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char x) {
         return !std::isprint(x);
@@ -56,14 +89,31 @@ std::string removerCaracteresEspeciales(std::string str) {
     return str;
 }
 
+/**
+ * Verifica si una cadena está vacía.
+ * 
+ * @param str La cadena a verificar.
+ * @return true si la cadena está vacía, false de lo contrario.
+ */
 bool cadenaVacia(std::string str) {
     return str.find_first_not_of(' ') == std::string::npos;
 }
 
+/**
+ * @brief Función que remueve el último carácter de una cadena de texto.
+ * 
+ * @param str Cadena de texto de la cual se desea remover el último carácter.
+ * @return std::string Cadena de texto resultante después de remover el último carácter.
+ */
 std::string removerUltimoCaracter(std::string str) {
     return str.substr(0, str.size() - 1);
 }
 
+/**
+ * Procesa una ruta de directorio, indexando los documentos encontrados en ella.
+ * 
+ * @param ruta La ruta del directorio a procesar.
+ */
 void indexarLibro::procesarRuta(const string& ruta) {
     DIR *dp;
     struct dirent *entrada;
@@ -90,6 +140,11 @@ void indexarLibro::procesarRuta(const string& ruta) {
     closedir(dp);
 }
 
+/**
+ * @brief Indexa un documento, extrayendo información relevante como título, autor y palabras clave.
+ * 
+ * @param documento El documento a indexar.
+ */
 void indexarLibro::indexarDocumento(Documento &documento) {
     std::cout << "Indexando archivo: " << documento.getRuta() << std::endl;
     std::ifstream file = std::ifstream(documento.getRuta());
@@ -175,6 +230,12 @@ void indexarLibro::indexarDocumento(Documento &documento) {
     }
 }
 
+/**
+ * Busca en el índice del libro las palabras clave proporcionadas y devuelve los resultados con sus puntajes.
+ * 
+ * @param consulta La consulta de búsqueda que contiene las palabras clave.
+ * @return Un vector de pares que contiene los resultados de la búsqueda, donde el primer elemento del par es el número de documento y el segundo elemento es el puntaje.
+ */
 vector<pair<int, double>> indexarLibro::buscar(string consulta) {
     vector<pair<int, double>> resultado;
     vector<string> palabras;
@@ -213,6 +274,13 @@ vector<pair<int, double>> indexarLibro::buscar(string consulta) {
     return resultado;
 }
 
+/**
+ * Calcula la intersección entre dos vectores.
+ * 
+ * @param v1 El primer vector.
+ * @param v2 El segundo vector.
+ * @return Un vector que contiene los elementos comunes entre v1 y v2.
+ */
 vector<int> indexarLibro::calcularInterseccion(vector<int> &v1, vector<int> &v2) {
     vector<int> resultado;
     int i = 0, j = 0;
@@ -230,6 +298,13 @@ vector<int> indexarLibro::calcularInterseccion(vector<int> &v1, vector<int> &v2)
     return resultado;
 }
 
+/**
+ * Calcula la unión de dos vectores ordenados.
+ * 
+ * @param v1 El primer vector ordenado.
+ * @param v2 El segundo vector ordenado.
+ * @return Un vector que contiene la unión de los elementos de v1 y v2, en orden ascendente.
+ */
 vector<int> indexarLibro::calcularUnion(vector<int> &v1, vector<int> &v2) {
     vector<int> resultado;
     int i = 0, j = 0;
@@ -257,10 +332,23 @@ vector<int> indexarLibro::calcularUnion(vector<int> &v1, vector<int> &v2) {
     return resultado;
 }
 
+/**
+ * @brief Obtiene el documento con el ID especificado.
+ * 
+ * @param id_doc El ID del documento a obtener.
+ * @return Una referencia al documento con el ID especificado.
+ */
 Documento& indexarLibro::getDocumento(int id_doc) {
     return documentos[id_doc];
 }
 
+/**
+ * Obtiene los párrafos relevantes de un documento dado una consulta y un ID de documento.
+ * 
+ * @param consulta La consulta de búsqueda.
+ * @param id_doc El ID del documento.
+ * @return Un vector de pares de enteros que representan las posiciones y los párrafos relevantes encontrados.
+ */
 vector<pair<int, int>> indexarLibro::obtenerParrafosRelevantes(string consulta, int id_doc) {
     vector<pair<int, int>> resultado;
     vector<string> palabras;
@@ -306,6 +394,13 @@ vector<pair<int, int>> indexarLibro::obtenerParrafosRelevantes(string consulta, 
     return resultado;
 }
 
+/**
+ * @brief Obtiene el texto de un párrafo específico de un documento.
+ * 
+ * @param id_doc El ID del documento.
+ * @param id_parrafo El ID del párrafo.
+ * @return El texto del párrafo especificado.
+ */
 string indexarLibro::textoParrafo(int id_doc, int id_parrafo) {
     string resultado;
     Documento doc = documentos[id_doc];

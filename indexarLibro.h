@@ -34,10 +34,13 @@ using namespace std;
 
 class indexarLibro{
 private:
+    // atributos
     TablaHash tabla; // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
     map<int, Documento> documentos; // map que almacena los documentos indexados
     map<int, int> contadorDocumentos; // map que almacena la cantidad de palabras de cada documento
     map<string, vector<PosicionPalabra>> indice; // map que almacena el índice invertido
+
+    // métodos privados
     void procesarRuta(const std::string& ruta); // procesa la ruta de un libro
     void indexarDocumento(Documento &documento); // indexa un documento
     vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2); // calcula la intersección entre dos vectores
@@ -45,14 +48,13 @@ private:
 public:
     indexarLibro(); // constructor
 
+    // métodos públicos
     void indexar(string ruta); // indexa los libros en la ruta dada
     vector<pair<int, double>> buscar(string consulta); // retorna los documentos que contienen la consulta
     Documento& getDocumento(int id_doc); // retorna el documento con el id dado
     vector<pair<int, int>> obtenerParrafosRelevantes(string consulta, int id_doc); // retorna los párrafos relevantes de un documento
     string textoParrafo(int id_doc, int id_parrafo); // retorna el texto de un párrafo
     int cantidadDocumentos(); // retorna la cantidad de documentos indexados
-
-
 };
 
 #endif //CASO3_INDEXARLIBRO_H
