@@ -12,22 +12,32 @@
 
 
 /**
- * @brief Divide una cadena en subcadenas utilizando un delimitador específico.
- * 
+ * @brief Divide una cadena en subcadenas utilizando delimitadores como ' ' o ',' o ';' o '.' o ':'.  
  * @param str La cadena que se va a dividir.
  * @param delimiter El delimitador utilizado para separar las subcadenas.
  * @return vector<string> Un vector que contiene las subcadenas resultantes.
  */
-vector <string> split(string str, char delimiter) {
-    vector<string> internal;
+vector <string> split(string str){
+    vector <string> resultado;
     stringstream ss(str);
-    string tok;
-
-    while(getline(ss, tok, delimiter)) { // getline() lee hasta el delimitador y lo elimina de la cadena original
-        internal.push_back(tok); // Se agrega la subcadena al vector
+    string token;
+    while(getline(ss, token, ' ')){
+        resultado.push_back(token);
     }
-
-    return internal;
+    while(getline(ss, token, ',')){
+        resultado.push_back(token);
+    }
+    while(getline(ss, token, ';')){
+        resultado.push_back(token);
+    }
+    while(getline(ss, token, '.')){
+        resultado.push_back(token);
+    }
+    cout << "Resultado: " << endl;
+    for (int i = 0; i < resultado.size(); i++) {
+        cout << resultado[i] << endl;
+    }
+    return resultado;
 }
 
 
@@ -57,8 +67,7 @@ int main() {
     string ruta = "Libros";
     bool salir = false;
     indexador.indexar(ruta);
-    indexador.imprimirDocumentos();
-    cout << indexador.cantidadDocumentos() << endl;
+    //indexador.imprimirDocumentos();
     while(!salir){
         string consulta;
         cout << "Ingrese la consulta a buscar (\"salir\" termina el programa): ";
@@ -71,17 +80,8 @@ int main() {
             continue;
         }
         else {
-            vector<pair<int, double>> resultados = indexador.buscar(consulta);
-            vector<string> palabras = split(consulta, ' ');
-            if (resultados.empty()) {
-                cout << "No se encontraron resultados" << endl;
-            }
-            else {
-                cout << "Resultados de la búsqueda:" << endl;
-                for (auto& resultado : resultados) {
-                    cout << "Documento: " << indexador.getDocumento(resultado.first).getTitulo() << " - Relevancia: " << resultado.second << endl;
-                }
-            }
+            //vector<pair<int, double>> resultados = indexador.buscar(consulta);
+            vector<string> palabras = split(consulta);
             indexador.indexarTablaHash(palabras);
             indexador.getTablaHash().imprimir();
         }

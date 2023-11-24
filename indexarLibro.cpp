@@ -33,24 +33,28 @@ void indexarLibro::indexar(string ruta) {
  * @param vector de palabras para añadir a la tablahash
 */
 void indexarLibro::indexarTablaHash(vector<string> palabras) {
-    for (auto &palabra : palabras) {
-        // se pasa la palabra a minusculas
-        transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-        // no se encuentra la palabra en el indice, se continua con la siguiente
-        if (tabla.estaVacia()){
-            tabla.insertar(palabra, mapaDocumentos[0]);
+    cout << "Indexando..." << endl;
+    if (tabla.estaVacia()) {
+        cout << "La tabla hash está vacía" << endl;
+        for (auto &palabra : palabras) {
+            cout << "Palabra: " << palabra << endl;
+            for (auto &doc : documentos) {
+                cout << "Documento: " << doc.getTitulo() << endl;
+                tabla.insertar(palabra, doc); // se inserta la palabra y el documento en la tabla hash
+            }
         }
-        else{
-            for (auto &pos_doc: tabla.buscar(palabra)) {
-                if (pos_doc.first.getTitulo() == mapaDocumentos[0].getTitulo()) {
-                    pos_doc.second++;
-                    break;
-                }
-            } 
+    }
+    else {
+        cout << "La tabla hash no está vacía" << endl;
+        for (auto &palabra : palabras) {
+            cout << "Palabra: " << palabra << endl;
+            for (auto &doc : documentos) {
+                cout << "Documento: " << doc.getTitulo() << endl;
+                tabla.insertar(palabra, doc); // se inserta la palabra y el documento en la tabla hash
+            }
         }
     }
 }
-
 /**
  * @brief imprime el indice invertido
  * 
