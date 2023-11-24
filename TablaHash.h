@@ -24,6 +24,8 @@ public:
     vector<Documento> getTopMatches(string palabra);    // retorna los 10 mejores matches de una palabra
     vector<Documento> getTopMatches(vector<string> palabras); // retorna los 10 mejores matches de un conjunto de palabras
     unordered_map<string, vector<pair<Documento, int> > > getTabla(); // retorna la tabla hash
+    int cantidadDePalabrasEnLibro(string palabra, Documento libro); // retorna la cantidad de veces que aparece una palabra en un libro
+    Documento libroConMasApariciones(); // retorna el libro con más apariciones
 }; 
 
 #endif // CASO3_EDATOS_TABLAHASH_H

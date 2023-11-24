@@ -193,3 +193,43 @@ bool TablaHash::estaVacia() {
 unordered_map<string, vector<pair<Documento, int> > > TablaHash::getTabla() {
     return tabla;
 }
+
+/**
+ * Retorna la cantidad de veces que aparece una palabra en un libro.
+ * 
+ * @param palabra La palabra a buscar.
+ * @param libro El libro en el cual se busca la palabra.
+ * @return La cantidad de veces que aparece la palabra en el libro.
+ *         Si no se encuentra la palabra, se retorna 0.
+ */
+int TablaHash::cantidadDePalabrasEnLibro(string palabra, Documento libro) {
+    if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna 0
+        return 0;
+    } else {
+        for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
+            if (it->first.getTitulo() == libro.getTitulo()) {
+                return it->second;
+            }
+        }
+        return 0;
+    }
+}
+
+/**
+ * Retorna el libro con más apariciones.
+ * 
+ * @return El libro con más apariciones.
+ */
+Documento TablaHash::libroConMasApariciones() {
+    int max = 0;
+    Documento libroConMasApariciones;
+    for (auto it = tabla.begin(); it != tabla.end(); it++) {
+        for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+            if (it2->second > max) {
+                max = it2->second;
+                libroConMasApariciones = it2->first;
+            }
+        }
+    }
+    return libroConMasApariciones;
+}
