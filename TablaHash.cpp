@@ -173,6 +173,7 @@ vector<Documento> TablaHash::getTopMatches(vector<string> palabras) {
         }
     }
     return topMatches;
+}
 
 /**
  * Verifica si la tabla hash está vacía.
@@ -181,4 +182,14 @@ vector<Documento> TablaHash::getTopMatches(vector<string> palabras) {
  */
 bool TablaHash::estaVacia() {
     return tabla.empty();
+}
+
+/**
+ * Retorna la tabla hash.
+ * 
+ * @return La tabla hash.
+ */
+
+unordered_map<string, vector<pair<Documento, int> > > TablaHash::getTabla() {
+    return tabla;
 }

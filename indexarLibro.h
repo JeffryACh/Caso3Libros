@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <cctype>
 #include <algorithm>
+#include <dirent.h>
 
 #include "PosicionPalabra.h"
 #include "TablaHash.h"
@@ -34,7 +35,9 @@ using namespace std;
 class indexarLibro{
 private:
     TablaHash tabla; // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
-
+    map<int, Documento> documentos; // map que almacena los documentos indexados
+    map<int, int> contadorDocumentos; // map que almacena la cantidad de palabras de cada documento
+    map<string, vector<PosicionPalabra>> indice; // map que almacena el índice invertido
     void procesarRuta(const std::string& ruta); // procesa la ruta de un libro
     void indexarDocumento(Documento &documento); // indexa un documento
     vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2); // calcula la intersección entre dos vectores
