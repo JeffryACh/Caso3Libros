@@ -1,6 +1,12 @@
 #include "indexarLibro.h" // incluye el archivo indexarLibro.h
+#include <sstream> // incluye el archivo sstream
 
 using namespace std; // para no tener que escribir std::vector, std::string, etc.
+
+#define MAX_RESULTADOS 10
+#define MAX_PARRAFOS 3
+#define MULTIPLICADOR_AND 2
+#define MULTIPLICADOR_FRASE_COMPLETA 5
 
 indexarLibro::indexarLibro() {
 } // constructor
@@ -260,47 +266,139 @@ void indexarLibro::indexarDocumento(Documento &documento) {
 }
 
 /**
+ * @brief Busca una frase en el indice, calculando además el ranking de los documentos
+ * usando el algoritmo de TF-IDF (Term Frequency - Inverse Document Frequency)
+ * Revisar el siguiente enlace: https://en.wikipedia.org/wiki/Tf%E2%80%93idf para referencia
+ * Uno de los aspectos mas importantes es que usando TF-IDF, no es necesario filtrar palabras
+ * "relevantes", pues la formula asignará pesos muy bajos a las palabras que aparezcan muy frecuentemente
+ * en todos los documentos, y también asignará pesos relativamente más altos a palabras menos frecuentes
+ * o "raras"
+ * @param consulta La frase a consultar
+ * @param operador El operador a usar. Si se usa el operador AND, se retornan los documentos
+ * que contengan todas las palabras de la consulta. Si se usa el operador OR, se retornan los
+ * documentos que contengan al menos una de las palabras de la consulta.
+ * En todos los casos se calcula el ranking mencionado
+ * @return Un vector de pares (id_documento, ranking) ordenados por ranking descendente
+ */
+vector<pair<int, double>> indexarLibro::buscarConOperador(std::string consulta, int operador) {
+    std::istringstream iss(consulta);
+    std::vector<pair<int, double>> resultado;
+    std::vector<int> docs_resultado;
+    bool inicializado = false;
+    // se busca en el indice
+    std::vector<std::string> palabras = dividir(consulta, " ,.;\":()[]{}-_!¡¿?'*+&%$#@/");
+    for (auto &palabra : palabras) {
+        std::vector<int> docs;
+        // se pasa la palabra a minusculas
+        transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
+        // no se encuentra la palabra en el indice, se continua con la siguiente
+        if (this->indice.find(palabra) == this->indice.end()) {
+            continue;
+        }
+        // se obtienen los documentos en los que aparece la palabra
+        for (auto &pos_doc : this->indice[palabra]) {
+            docs.push_back(pos_doc.getDocumento().getId());
+        }
+        // se ordenan los documentos en orden ascendente
+        sort(docs.begin(), docs.end());
+        if (!inicializado) {
+            docs_resultado = docs;
+            inicializado = true;
+            continue;
+        }
+        else {
+            // se opera con los documentos encontrados y con los anteriormente encontrados
+            // si el operador es AND se calcula la interseccion, y si es OR se calcula la union
+            if (operador == INDEXAR_AND) {
+                docs_resultado = this->calcularInterseccion(docs_resultado, docs);
+            } else if (operador == INDEXAR_OR) {
+                docs_resultado = this->calcularUnion(docs_resultado, docs);
+            }
+
+            sort(docs_resultado.begin(), docs_resultado.end());
+        }
+    }
+    int i = 0;
+    // calcular el tf-idf de cada documento
+    for (auto &doc_id : docs_resultado) {
+        double tf_idf = 0;
+        for (auto &palabra : palabras) {
+            // se pasa la palabra a minusculas
+            transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
+            // se busca la palabra en el indice
+            if (this->indice.find(palabra) == this->indice.end()) {
+                continue;
+            }
+            // se calculan todos los valores para tf/idf
+            double tf_num = contarPalabrasEnDocumento(palabra, doc_id);
+            double tf_denom = this->contadorDocumentos[doc_id];
+            double tf = tf_num / tf_denom;
+            double  idf_num = this->mapaDocumentos.size();
+            double idf_denom = this->indice[palabra].size();
+            double idf = std::log10(idf_num / (idf_denom + 1)) + 1;
+            // se suman los scores para cada palabra
+            tf_idf += (tf * idf);
+        }
+        resultado.push_back(std::make_pair(doc_id, tf_idf));
+        if (++i > MAX_RESULTADOS) {
+            // solo se retornan los primeros MAX_RESULTADOS resultados
+            break;
+        }
+    }
+    // se ordenan los resultados en orden descendente de score
+    sort(resultado.begin(), resultado.end(), [](const std::pair<int, float> &a, const std::pair<int, float> &b) {
+        return a.second > b.second;
+    });
+    return resultado;
+}
+
+/**
  * Busca en el índice del libro las palabras clave proporcionadas y devuelve los resultados con sus puntajes.
  * 
  * @param consulta La consulta de búsqueda que contiene las palabras clave.
  * @return Un vector de pares que contiene los resultados de la búsqueda, donde el primer elemento del par es el número de documento y el segundo elemento es el puntaje.
  */
 vector<pair<int, double>> indexarLibro::buscar(string consulta) {
-    vector<pair<int, double>> resultado;
-    vector<string> palabras;
-    string palabra;
-    int pos = 0;
-    while (obtenerPalabra(consulta, palabra, pos)) {
-        transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-        palabras.push_back(palabra);
-    }
-
-    int tipo = INDEXAR_AND;
-    if (palabras.size() > 0 && palabras[palabras.size() - 1] == "or") {
-        tipo = INDEXAR_OR;
-        palabras.pop_back();
-    }
-
-    if (palabras.size() > 0) {
-        vector<int> docs = tabla[palabras[0]][0];
-        for (int i = 1; i < palabras.size(); i++) {
-            if (tipo == INDEXAR_AND) {
-                docs = calcularInterseccion(docs, tabla[palabras[i]][0]);
-            } else {
-                docs = calcularUnion(docs, tabla[palabras[i]][0]);
+    vector<pair<int, double>> resultado_and =  this->buscarConOperador(consulta, INDEXAR_AND);
+    vector<pair<int, double>> resultado_or =  this->buscarConOperador(consulta, INDEXAR_OR);
+    std::vector<std::string> palabras = dividir(consulta, " ,.;\":()[]{}-_!¡¿?'*+&%$#@/");
+    // se procesan los resultados del operador AND
+    for (auto &par : resultado_and) {
+        // se le aumenta el peso a los resultados del operador AND
+        par.second *= MULTIPLICADOR_AND;
+        // luego se obtienen los párrafos
+        vector<pair<int, int>> parrafos = this->obtenerParrafosRelevantes(consulta, par.first);
+        // se determina si hay algun elemento en el vector de parrafos cuyo segundo elemento sea igual
+        // a la cantidad de palabras
+        for (auto &parrafo : parrafos) {
+            if (parrafo.second == palabras.size()) {
+                // si se encuentra, se le aumenta el peso al resultado
+                par.second *= MULTIPLICADOR_FRASE_COMPLETA;
+                break;
             }
         }
-
-        for (int i = 0; i < docs.size(); i++) {
-            double puntaje = 0;
-            for (int j = 0; j < palabras.size(); j++) {
-                puntaje += tabla[palabras[j]][1][i];
+    }
+    // se unen los dos resultados (and y or en un solo vector)
+    resultado_and.insert(resultado_and.end(), resultado_or.begin(), resultado_or.end());
+    // si hay pares con el mismo primer elemento (id_doc) se suman los scores y se elimina uno de los dos
+    for (auto it = resultado_and.begin(); it != resultado_and.end(); ++it) {
+        for (auto it2 = it + 1; it2 != resultado_and.end(); ++it2) {
+            if (it->first == it2->first) {
+                it->second += it2->second;
+                it2 = resultado_and.erase(it2);
+                --it2;
             }
-            resultado.push_back(make_pair(docs[i], puntaje));
         }
     }
-
-    return resultado;
+    // se ordenan los resultados en orden descendente de score
+    sort(resultado_and.begin(), resultado_and.end(), [](const std::pair<int, float> &a, const std::pair<int, float> &b) {
+        return a.second > b.second;
+    });
+    // se conservan los diez primeros resultados
+    if (resultado_and.size() > MAX_RESULTADOS) {
+        resultado_and.resize(MAX_RESULTADOS);
+    }
+    return resultado_and;
 }
 
 /**
@@ -397,47 +495,42 @@ Documento& indexarLibro::getDocumento(int id_doc) {
  * @return Un vector de pares de enteros que representan las posiciones y los párrafos relevantes encontrados.
  */
 vector<pair<int, int>> indexarLibro::obtenerParrafosRelevantes(string consulta, int id_doc) {
+    // mapa que se usará para colectar cada párrafo y las palabras de la consulta que ocurren en el mismo
+    // luego usando este colector se realiza el ordenamiento según cuántas palabras de la consulta
+    // ocurren en cada párrafo
+    std::map<int, set<string>> colector;
+    // se separa la consulta en palabras
+    std::vector<std::string> palabras = dividir(consulta, " ,.;\":()[]{}-_!¡¿?'*+&%$#@/");
+    vector<int> posiciones;
     vector<pair<int, int>> resultado;
-    vector<string> palabras;
-    string palabra;
-    int pos = 0;
-    while (obtenerPalabra(consulta, palabra, pos)) {
+    // se busca en el indice
+    for (auto &palabra : palabras) {
+        // se pasa la palabra a minusculas
         transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-        palabras.push_back(palabra);
-    }
-
-    int tipo = INDEXAR_AND;
-    if (palabras.size() > 0 && palabras[palabras.size() - 1] == "or") {
-        tipo = INDEXAR_OR;
-        palabras.pop_back();
-    }
-
-    if (palabras.size() > 0) {
-        vector<int> docs = tabla[palabras[0]][0];
-        for (int i = 1; i < palabras.size(); i++) {
-            if (tipo == INDEXAR_AND) {
-                docs = calcularInterseccion(docs, tabla[palabras[i]][0]);
-            } else {
-                docs = calcularUnion(docs, tabla[palabras[i]][0]);
-            }
+        // no se encuentra la palabra en el indice, se continua con la siguiente
+        if (this->indice.find(palabra) == this->indice.end()) {
+            continue;
         }
-
-        for (int i = 0; i < docs.size(); i++) {
-            if (docs[i] == id_doc) {
-                for (int j = 0; j < palabras.size(); j++) {
-                    for (auto &pos_doc: indice[palabras[j]]) {
-                        if (pos_doc.getDocumento().getId() == id_doc) {
-                            for (auto &pos: pos_doc.getPosiciones()) {
-                                resultado.push_back(make_pair(pos, pos_doc.getDocumento().getParrafos()[pos]));
-                            }
-                        }
-                    }
+        // se obtienen los documentos en los que aparece la palabra
+        for (auto &pos_doc: this->indice[palabra]) {
+            // se buscan las ocurrencias de la palabra en el documento
+            if (pos_doc.getDocumento().getId() == id_doc) {
+                posiciones = pos_doc.getPosiciones();
+                for (auto &pos: posiciones) {
+                    colector[pos].insert(palabra);
                 }
-                break;
             }
         }
     }
-
+    // se ordenan los documentos en el colector en orden descendente según el tamano del set
+    std::vector<std::pair<int, set<string>>> colector_vec(colector.begin(), colector.end());
+    sort(colector_vec.begin(), colector_vec.end(), [](const std::pair<int, set<string>> &a, const std::pair<int, set<string>> &b) {
+        return a.second.size() > b.second.size();
+    });
+    // se carga el vector de pares que sera el resultado
+    for (int i = 0; i < colector_vec.size() && i < MAX_PARRAFOS; i++) {
+        resultado.push_back(std::make_pair(colector_vec[i].first, colector_vec[i].second.size()));
+    }
     return resultado;
 }
 
@@ -453,9 +546,9 @@ string indexarLibro::textoParrafo(int id_doc, int id_parrafo) {
     Documento doc = documentos[id_doc];
     ifstream file = ifstream(doc.getRuta());
     if (file.is_open()) {
-        file.seekg(doc.getParrafos()[id_parrafo].first);
+        file.seekg(doc.getParrafos()[id_parrafo].getInicio());
         char c;
-        while (file.tellg() < doc.getParrafos()[id_parrafo].second) {
+        while (file.tellg() < doc.getParrafos()[id_parrafo].getFinal()) {
             file.get(c);
             resultado += c;
         }

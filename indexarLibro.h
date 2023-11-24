@@ -10,7 +10,9 @@
 #include <unordered_map>
 #include <cctype>
 #include <algorithm>
+#include <sstream>
 #include <dirent.h>
+#include <set>
 
 #include "PosicionPalabra.h"
 #include "TablaHash.h"
@@ -40,6 +42,7 @@ private:
     map<int, int> contadorDocumentos; // map que almacena la cantidad de palabras de cada documento
     map<string, vector<PosicionPalabra>> indice; // map que almacena el índice invertido
     map<int, Documento> mapaDocumentos; // map que almacena los documentos indexados
+    vector<Documento> documentos; // vector que almacena los documentos indexados
 
     // métodos privados
     void procesarRuta(const std::string& ruta); // procesa la ruta de un libro
@@ -59,6 +62,7 @@ public:
     vector<int> calcularUnion(vector<int> &v1, vector<int> &v2); // calcula la unión entre dos vectores
     vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2); // calcula la intersección entre dos vectores
     int contarPalabrasEnDocumento(string palabra, int id_doc); // cuenta la cantidad de veces que aparece una palabra en un documento
+    vector<pair<int, double>> buscarConOperador(string consulta, int operador); // retorna los documentos que contienen la consulta
 };
 
 #endif //CASO3_INDEXARLIBRO_H
