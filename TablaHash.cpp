@@ -138,6 +138,43 @@ vector<Documento> TablaHash::getTopMatches(string palabra) {
 }
 
 /**
+ * Obtiene los documentos con las mejores coincidencias para un conjunto de palabras dadas.
+ * 
+ * @param palabras El conjunto de palabras para las cuales se desean obtener las mejores coincidencias.
+ * @return Un vector de Documento con los documentos que tienen las mejores coincidencias para las palabras dadas.
+ *         Si no se encuentra alguna de las palabras, se retorna un vector vacío.
+ */
+
+vector<Documento> TablaHash::getTopMatches(vector<string> palabras) {
+    vector<Documento> topMatches;
+    vector<Documento> topMatchesAux;
+    for (int i = 0; i < palabras.size(); i++) {
+        topMatchesAux = getTopMatches(palabras[i]);
+        if (topMatchesAux.empty()) {
+            return vector<Documento>();
+        } else {
+            if (topMatches.empty()) {
+                topMatches = topMatchesAux;
+            } else {
+                for (int j = 0; j < topMatches.size(); j++) {
+                    bool encontrado = false;
+                    for (int k = 0; k < topMatchesAux.size(); k++) {
+                        if (topMatches[j].getTitulo() == topMatchesAux[k].getTitulo()) {
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (!encontrado) {
+                        topMatches.erase(topMatches.begin() + j);
+                        j--;
+                    }
+                }
+            }
+        }
+    }
+    return topMatches;
+
+/**
  * Verifica si la tabla hash está vacía.
  * 
  * @return true si la tabla hash está vacía, false en caso contrario.

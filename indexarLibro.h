@@ -33,7 +33,7 @@ using namespace std;
 
 class indexarLibro{
 private:
-    TablaHash() tabla; // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
+    TablaHash tabla; // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
 
     void procesarRuta(const std::string& ruta); // procesa la ruta de un libro
     void indexarDocumento(Documento &documento); // indexa un documento

@@ -22,6 +22,7 @@ public:
     void imprimirLibros(); // imprime los libros almacenados en la tabla hash
     Documento buscarLibroConMasApariciones(string palabra); // busca el libro con más apariciones de una palabra
     vector<Documento> getTopMatches(string palabra);    // retorna los 10 mejores matches de una palabra
+    vector<Documento> getTopMatches(vector<string> palabras); // retorna los 10 mejores matches de un conjunto de palabras
 }; 
 
 #endif // CASO3_EDATOS_TABLAHASH_H
