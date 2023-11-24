@@ -31,6 +31,12 @@ Documento::Documento(int id, std::string ruta) {
     this->parrafos = std::map<int, Parrafo>();
 }
 
+Documento::Documento(std::string ruta) {
+    this->id = 1;
+    this->ruta = ruta;
+    this->parrafos = std::map<int, Parrafo>();
+}
+
 /**
  * Obtiene el identificador del documento.
  *

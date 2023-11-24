@@ -28,8 +28,8 @@ static const std::string slash="/";
 #define LARGO_CAMBIOLINEA 1
 #endif
 
-#define INDEXADOR_AND 0
-#define INDEXADOR_OR 1
+#define INDEXAR_AND 0
+#define INDEXAR_OR 1
 
 using namespace std;
 
@@ -44,7 +44,6 @@ private:
     // métodos privados
     void procesarRuta(const std::string& ruta); // procesa la ruta de un libro
     void indexarDocumento(Documento &documento); // indexa un documento
-    vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2); // calcula la intersección entre dos vectores
     
 public:
     indexarLibro(); // constructor
@@ -59,6 +58,7 @@ public:
     int cantidadDocumentos(); // retorna la cantidad de documentos indexados
     vector<int> calcularUnion(vector<int> &v1, vector<int> &v2); // calcula la unión entre dos vectores
     vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2); // calcula la intersección entre dos vectores
+    int contarPalabrasEnDocumento(string palabra, int id_doc); // cuenta la cantidad de veces que aparece una palabra en un documento
 };
 
 #endif //CASO3_INDEXARLIBRO_H

@@ -7,7 +7,7 @@
 class Documento {
 private:
     // atributos privados
-    int id{}; // identificador del documento
+    int id; // identificador del documento
     std::string ruta; // ruta del documento
     std::string titulo; // titulo del documento
     std::string autor; // autor del documento
@@ -16,6 +16,7 @@ public:
     Documento(); // constructor
     Documento(const Documento& otro); // constructor por copia
     Documento(int id, std::string ruta); // constructor con parametros
+    Documento(std::string ruta); // constructor con parametros
     ~Documento() = default; // destructor
 
     // metodos publicos

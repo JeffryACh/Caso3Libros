@@ -46,23 +46,6 @@ std::vector<std::string> dividir(std::string s, std::string delimitadores) {
 }
 
 /**
- * Cuenta el número de veces que una palabra aparece en un documento específico.
- * 
- * @param palabra La palabra a contar.
- * @param doc_id El ID del documento en el que se busca la palabra.
- * @return El número de veces que la palabra aparece en el documento.
- */
-int IndexadorLibros::contarPalabraEnDocumento(std::string palabra, int doc_id) {
-    int contador = 0;
-    for (auto &pos_doc: indice[palabra]) {
-        if (pos_doc.getDocumento().getId() == doc_id) {
-            contador += pos_doc.getPosiciones().size();
-        }
-    }
-    return contador;
-}
-
-/**
  * @brief Remueve los caracteres especiales de una cadena de texto.
  * 
  * @param str La cadena de texto de la cual se removerán los caracteres especiales.
@@ -101,6 +84,7 @@ std::string removerUltimoCaracter(std::string str) {
  * @param ruta La ruta del directorio a procesar.
  */
 void indexarLibro::procesarRuta(const string& ruta) {
+    Documento documento(ruta);
     std::cout << "Indexando archivo: " << documento.getRuta() << std::endl;
     std::ifstream file = std::ifstream(documento.getRuta());
     std::string linea;
@@ -291,16 +275,16 @@ vector<pair<int, double>> indexarLibro::buscar(string consulta) {
         palabras.push_back(palabra);
     }
 
-    int tipo = INDEXADOR_AND;
+    int tipo = INDEXAR_AND;
     if (palabras.size() > 0 && palabras[palabras.size() - 1] == "or") {
-        tipo = INDEXADOR_OR;
+        tipo = INDEXAR_OR;
         palabras.pop_back();
     }
 
     if (palabras.size() > 0) {
         vector<int> docs = tabla[palabras[0]][0];
         for (int i = 1; i < palabras.size(); i++) {
-            if (tipo == INDEXADOR_AND) {
+            if (tipo == INDEXAR_AND) {
                 docs = calcularInterseccion(docs, tabla[palabras[i]][0]);
             } else {
                 docs = calcularUnion(docs, tabla[palabras[i]][0]);
@@ -341,6 +325,24 @@ vector<int> indexarLibro::calcularInterseccion(vector<int> &v1, vector<int> &v2)
         }
     }
     return resultado;
+}
+
+/**
+ * @brief Obtiene la siguiente palabra de una consulta.
+ * 
+ * @param consulta La consulta de búsqueda.
+ * @param palabra La palabra obtenida.
+ * @param pos La posición actual de la consulta.
+ * @return true si se obtuvo una palabra, false de lo contrario.
+ */
+int indexarLibro::contarPalabrasEnDocumento(string palabra, int id_doc){
+    int contador = 0;
+    for (auto &pos_doc: indice[palabra]) {
+        if (pos_doc.getDocumento().getId() == id_doc) { // Cambia doc_id a id_doc
+            contador += pos_doc.getPosiciones().size();
+        }
+    }
+    return contador;
 }
 
 /**
@@ -404,16 +406,16 @@ vector<pair<int, int>> indexarLibro::obtenerParrafosRelevantes(string consulta, 
         palabras.push_back(palabra);
     }
 
-    int tipo = INDEXADOR_AND;
+    int tipo = INDEXAR_AND;
     if (palabras.size() > 0 && palabras[palabras.size() - 1] == "or") {
-        tipo = INDEXADOR_OR;
+        tipo = INDEXAR_OR;
         palabras.pop_back();
     }
 
     if (palabras.size() > 0) {
         vector<int> docs = tabla[palabras[0]][0];
         for (int i = 1; i < palabras.size(); i++) {
-            if (tipo == INDEXADOR_AND) {
+            if (tipo == INDEXAR_AND) {
                 docs = calcularInterseccion(docs, tabla[palabras[i]][0]);
             } else {
                 docs = calcularUnion(docs, tabla[palabras[i]][0]);
