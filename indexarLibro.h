@@ -43,7 +43,7 @@ private:
     vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2); // calcula la intersección entre dos vectores
     
 public:
-    indexarLibro();
+    indexarLibro(); // constructor
 
     void indexar(string ruta); // indexa los libros en la ruta dada
     vector<pair<int, double>> buscar(string consulta); // retorna los documentos que contienen la consulta
