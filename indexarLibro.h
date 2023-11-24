@@ -6,6 +6,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <cmath>
 #include <unordered_map>
 #include <cctype>
 #include <algorithm>
@@ -36,9 +37,9 @@ class indexarLibro{
 private:
     // atributos
     TablaHash tabla; // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
-    map<int, Documento> documentos; // map que almacena los documentos indexados
     map<int, int> contadorDocumentos; // map que almacena la cantidad de palabras de cada documento
     map<string, vector<PosicionPalabra>> indice; // map que almacena el índice invertido
+    map<int, Documento> mapaDocumentos; // map que almacena los documentos indexados
 
     // métodos privados
     void procesarRuta(const std::string& ruta); // procesa la ruta de un libro
@@ -47,6 +48,7 @@ private:
     
 public:
     indexarLibro(); // constructor
+    indexarLibro(std::string); // constructor con parámetros
 
     // métodos públicos
     void indexar(string ruta); // indexa los libros en la ruta dada

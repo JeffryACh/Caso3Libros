@@ -5,6 +5,10 @@ using namespace std; // para no tener que escribir std::vector, std::string, etc
 indexarLibro::indexarLibro() {
 } // constructor
 
+indexarLibro::indexarLibro(string ruta) {
+    indexar(ruta);
+} // constructor
+
 /**
  * @brief Indexa un libro a partir de una ruta especificada.
  * 
@@ -16,9 +20,9 @@ void indexarLibro::indexar(string ruta) {
     // se calcula el tf-idf(palabra, documento) para cada palabra y cada documento
     for (auto &palabra: this->indice) {
         for (auto &pos_doc: palabra.second) {
-            double tf = (double)pos_doc.getPosiciones().size() / (double)this->contadorDocumentos[pos_doc.getDocumento().getId()];
-            double idf = log10((double)this->contadorDocumentos.size() / (double)palabra.second.size());
-            pos_doc.setTfIdf(tf * idf);
+            int tf = pos_doc.getPosiciones().size() / this->contadorDocumentos[pos_doc.getDocumento().getId()];
+            int idf = this->contadorDocumentos.size() / palabra.second.size());
+            pos_doc.agregarPosicion(tf * idf);
         }
     }
 }

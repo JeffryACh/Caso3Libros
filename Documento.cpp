@@ -102,3 +102,12 @@ void Documento::agregarParrafo(int id, long inicio, long final) {
 Parrafo& Documento::getParrafo(int id) {
     return this->parrafos[id];
 }
+
+/**
+ * Obtiene una referencia al map de párrafos del documento.
+ *
+ * @return Una referencia al map de párrafos del documento.
+ */
+std::map<int, Parrafo>& Documento::getParrafos() {
+    return this->parrafos;
+}

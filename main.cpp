@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <sstream>
+#include <cmath>
 #include <algorithm>
 #include "SusAndAdj.cpp"
 //#include "RankingLibros.h"
@@ -52,18 +53,23 @@ vector <string> split(string str, char delimiter) {
 
 
 int main() {
-    std::string frase;
+    string ruta = "Libros/";
 
-    std::cout << "Ingresa una frase: ";
-    std::getline(std::cin, frase);
+    indexarLibro indexador = indexarLibro(ruta);
+    bool salir = false;
 
-    std::cout << "Sustantivos y Adjetivos en la frase:" << std::endl;
-    for (auto& palabra : split(frase, ' ')) {
-        if (esSustantivo(palabra)) {
-            std::cout << palabra << " es un sustantivo" << std::endl;
-        } else if (esAdjetivo(palabra)) {
-            std::cout << palabra << " es un adjetivo" << std::endl;
-        } else {
+    while(!salir){
+        string consulta;
+        cout << "Ingrese la consulta a buscar (\"salir\" termina el programa): ";
+        getline(cin, consulta);
+        if (consulta == "salir") {
+            salir = true;
+        }
+        else if (consulta.empty()) {
+            cout << "Debe ingresar una consulta" << endl;
+            continue;
+        }
+        else {
             continue;
         }
     }

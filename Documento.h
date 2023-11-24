@@ -27,6 +27,7 @@ public:
     void setAutor(std::string autor); // establece el autor del documento
     void agregarParrafo(int id, long inicio, long final); // agrega un parrafo al documento (con su id, inicio y fin)
     Parrafo& getParrafo(int id); // devuelve el parrafo con el id especificado
+    std::map<int, Parrafo>& getParrafos(); // devuelve una referencia al map de parrafos
 };
 
 #endif //__DOCUMENTO_H__
