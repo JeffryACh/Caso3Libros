@@ -57,6 +57,8 @@ public:
     vector<pair<int, int>> obtenerParrafosRelevantes(string consulta, int id_doc); // retorna los párrafos relevantes de un documento
     string textoParrafo(int id_doc, int id_parrafo); // retorna el texto de un párrafo
     int cantidadDocumentos(); // retorna la cantidad de documentos indexados
+    vector<int> calcularUnion(vector<int> &v1, vector<int> &v2); // calcula la unión entre dos vectores
+    vector<int> calcularInterseccion(vector<int> &v1, vector<int> &v2); // calcula la intersección entre dos vectores
 };
 
 #endif //CASO3_INDEXARLIBRO_H

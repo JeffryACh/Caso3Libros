@@ -15,15 +15,10 @@ indexarLibro::indexarLibro(string ruta) {
  * @param ruta La ruta del libro a indexar.
  */
 void indexarLibro::indexar(string ruta) {
-    procesarRuta(ruta);
-
-    // se calcula el tf-idf(palabra, documento) para cada palabra y cada documento
-    for (auto &palabra: this->indice) {
-        for (auto &pos_doc: palabra.second) {
-            int tf = pos_doc.getPosiciones().size() / this->contadorDocumentos[pos_doc.getDocumento().getId()];
-            int idf = this->contadorDocumentos.size() / palabra.second.size());
-            pos_doc.agregarPosicion(tf * idf);
-        }
+    this->procesarRuta(ruta);
+    // se itera por el mapa de documentos
+    for (auto &x : this->mapaDocumentos) {
+        this->indexarDocumento(x.second);
     }
 }
 
@@ -81,19 +76,6 @@ std::string removerCaracteresEspeciales(std::string str) {
 }
 
 /**
- * @brief Remueve los caracteres especiales de una cadena de texto.
- * 
- * @param str La cadena de texto de la cual se removerán los caracteres especiales.
- * @return La cadena de texto sin caracteres especiales.
- */
-std::string removerCaracteresEspeciales(std::string str) {
-    str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char x) {
-        return !std::isprint(x);
-    }), str.end());
-    return str;
-}
-
-/**
  * Verifica si una cadena está vacía.
  * 
  * @param str La cadena a verificar.
@@ -119,29 +101,88 @@ std::string removerUltimoCaracter(std::string str) {
  * @param ruta La ruta del directorio a procesar.
  */
 void indexarLibro::procesarRuta(const string& ruta) {
-    DIR *dp;
-    struct dirent *entrada;
+    std::cout << "Indexando archivo: " << documento.getRuta() << std::endl;
+    std::ifstream file = std::ifstream(documento.getRuta());
+    std::string linea;
+    int contadorParrafos = 0;
+    // para controlar si hay lineas vacias entre parrafos
+    int lineasParrafo = 0;
+    if (file.is_open()) {
+        long ult_pos = file.tellg();
+        while (getline(file, linea)) {
+            if (EN_WINDOWS) {
+                // en el caso de Windows, se remueve el caracter \r del final
+                linea = removerUltimoCaracter(linea);
+            }
+            // verificar si la linea es vacia o contiene solo espacios
+            if (cadenaVacia(linea)) {
+                if (lineasParrafo > 0) {
+                    long pos = file.tellg();
+                    pos = pos - linea.length() - 2 * (LARGO_CAMBIOLINEA) - 1; // se le restan dos cambios de linea por los dos caracteres de fin de linea
+                    // se almacena el numero de parrafo, junto con las posiciones fisicas de inicio y final del mismo
+                    // dentro del archivo
+                    documento.agregarParrafo(contadorParrafos, ult_pos, pos);
+                    // se actualiza la ultima posicion para el siguiente parrafo
+                    ult_pos = file.tellg();
+                    contadorParrafos++;
+                    lineasParrafo = 0;
+                }
+                continue;
+            }
+            // revisar si la linea es el titulo
+            if (linea.find("Title:") != std::string::npos) {
+                // se remueve el titulo del documento
+                linea = linea.substr(linea.find("Title:") + 6);
+                documento.setTitulo(linea);
+                continue;
+            }
+            else if (linea.find("Author:") != std::string::npos) {
+                // se remueve el autor del documento
+                linea = linea.substr(linea.find("Author:") + 7);
+                documento.setAutor(linea);
+                continue;
+            }
 
-    dp = opendir(ruta.c_str());
-    if (dp == NULL) {
-        std::cerr << "Error abriendo directorio " << ruta << std::endl;
-        return;
-    }
-    std::cout << "Procesando directorio " << ruta << " ..." << std::endl;
-
-    int id_doc = 0;
-    while((entrada = readdir(dp))) {
-        std::string str_entrada = std::string(entrada->d_name);
-        if (str_entrada == "." || str_entrada == "..") {
-            continue;
+            lineasParrafo++;
+            // dividir la linea en palabras
+            std::vector<string> palabras = dividir(linea, " ,.;\":()[]{}-_!¡¿?'*+&%$#@/");
+            for (auto &palabra: palabras) {
+                // std::cout << palabra << std::endl;
+                // se agrega la palabra al indice
+                palabra = removerCaracteresEspeciales(palabra);
+                if (cadenaVacia(palabra))
+                    continue;
+                transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
+                if (this->indice.find(palabra) == this->indice.end()) {
+                    // si no existe la palabra en el indice, se crea
+                    this->indice[palabra] = std::vector<PosicionPalabra>();
+                    this->indice[palabra].push_back(PosicionPalabra(palabra, documento));
+                    this->indice[palabra].back().agregarPosicion(contadorParrafos);
+                    continue;
+                }
+                // se agrega la posicion de la palabra en el documento (nivel parrafo)
+                // pero primero hay que buscar si ya existe el documento
+                // en el vector de documentos, y si así es, se agrega la contadorParrafos
+                bool existe = false;
+                for (auto &pos_doc: this->indice[palabra]) {
+                    if (pos_doc.getDocumento().getId() == documento.getId()) {
+                        pos_doc.agregarPosicion(contadorParrafos);
+                        existe = true;
+                        break;
+                    }
+                }
+                if (!existe) {
+                    this->indice[palabra].push_back(PosicionPalabra(palabra, documento));
+                    this->indice[palabra].back().agregarPosicion(contadorParrafos);
+                }
+                // incrementa el contador de palabras del documento
+                this->contadorDocumentos[documento.getId()]++;
+            }
         }
-        std::string ruta_completa = ruta + slash + str_entrada;
-        Documento documento(ruta_completa, id_doc);
-        indexarDocumento(documento);
-        mapaDocumentos[id_doc] = documento;
-        id_doc++;
+        file.close();
+    } else {
+        std::cerr << "Error abriendo archivo " << documento.getRuta() << std::endl;
     }
-    closedir(dp);
 }
 
 /**
