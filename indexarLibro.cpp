@@ -29,6 +29,29 @@ void indexarLibro::indexar(string ruta) {
 }
 
 /**
+ * @brief Indexa asia la tabla hash
+ * @param vector de palabras para añadir a la tablahash
+*/
+void indexarLibro::indexarTablaHash(vector<string> palabras) {
+    for (auto &palabra : palabras) {
+        // se pasa la palabra a minusculas
+        transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
+        // no se encuentra la palabra en el indice, se continua con la siguiente
+        if (tabla.estaVacia()){
+            tabla.insertar(palabra, mapaDocumentos[0]);
+        }
+        else{
+            for (auto &pos_doc: tabla.buscar(palabra)) {
+                if (pos_doc.first.getTitulo() == mapaDocumentos[0].getTitulo()) {
+                    pos_doc.second++;
+                    break;
+                }
+            } 
+        }
+    }
+}
+
+/**
  * @brief imprime el indice invertido
  * 
 */
@@ -535,4 +558,8 @@ string indexarLibro::textoParrafo(int id_doc, int id_parrafo) {
 
 int indexarLibro::cantidadDocumentos() {
     return documentos.size();
+}
+
+TablaHash indexarLibro::getTablaHash() {
+    return tabla;
 }

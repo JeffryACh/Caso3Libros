@@ -65,6 +65,8 @@ public:
     vector<pair<int, double>> buscarConOperador(string consulta, int operador); // retorna los documentos que contienen la consulta
     void imprimirIndice(); // imprime el índice invertido
     void imprimirDocumentos(); // imprime los documentos indexados
+    void indexarTablaHash(vector<string>); // indexa los libros en la ruta dada
+    TablaHash getTablaHash(); // retorna la tabla hash
 };
 
 #endif //CASO3_INDEXARLIBRO_H

@@ -72,6 +72,7 @@ int main() {
         }
         else {
             vector<pair<int, double>> resultados = indexador.buscar(consulta);
+            vector<string> palabras = split(consulta, ' ');
             if (resultados.empty()) {
                 cout << "No se encontraron resultados" << endl;
             }
@@ -81,6 +82,8 @@ int main() {
                     cout << "Documento: " << indexador.getDocumento(resultado.first).getTitulo() << " - Relevancia: " << resultado.second << endl;
                 }
             }
+            indexador.indexarTablaHash(palabras);
+            indexador.getTablaHash().imprimir();
         }
     }
 

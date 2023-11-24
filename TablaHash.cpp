@@ -233,3 +233,22 @@ Documento TablaHash::libroConMasApariciones() {
     }
     return libroConMasApariciones;
 }
+
+/**
+ * Retorna los libros asociados a una palabra.
+ * 
+ * @param palabra La palabra a buscar.
+ * @return Un vector de Documento con los libros asociados a la palabra.
+ *         Si no se encuentra la palabra, se retorna un vector vacío.
+ */
+vector<Documento> TablaHash::getLibrosDePalabra(string palabra) {
+    if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna un vector vacío
+        return vector<Documento>();
+    } else {
+        vector<Documento> libros;
+        for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
+            libros.push_back(it->first);
+        }
+        return libros;
+    }
+}

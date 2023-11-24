@@ -26,6 +26,7 @@ public:
     unordered_map<string, vector<pair<Documento, int> > > getTabla(); // retorna la tabla hash
     int cantidadDePalabrasEnLibro(string palabra, Documento libro); // retorna la cantidad de veces que aparece una palabra en un libro
     Documento libroConMasApariciones(); // retorna el libro con más apariciones
+    vector<Documento> getLibrosDePalabra(string palabra); // retorna los libros asociados a una palabra
 }; 
 
 #endif // CASO3_EDATOS_TABLAHASH_H
