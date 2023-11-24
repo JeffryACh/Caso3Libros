@@ -9,20 +9,21 @@
 //#include "RankingLibros.h"
 #include "IndexarLibro.h"
 
+
 /**
- * @brief Divide a string into substrings based on a delimiter.
+ * @brief Divide una cadena en subcadenas utilizando un delimitador específico.
  * 
- * @param str The string to be split.
- * @param delimiter The character used to separate the substrings.
- * @return vector<string> A vector containing the substrings.
+ * @param str La cadena que se va a dividir.
+ * @param delimiter El delimitador utilizado para separar las subcadenas.
+ * @return vector<string> Un vector que contiene las subcadenas resultantes.
  */
 vector <string> split(string str, char delimiter) {
     vector<string> internal;
     stringstream ss(str);
     string tok;
 
-    while(getline(ss, tok, delimiter)) {
-        internal.push_back(tok);
+    while(getline(ss, tok, delimiter)) { // getline() lee hasta el delimitador y lo elimina de la cadena original
+        internal.push_back(tok); // Se agrega la subcadena al vector
     }
 
     return internal;
