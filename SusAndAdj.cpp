@@ -1,10 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream> // Add this line to import the fstream library
-#include <algorithm>
-
-using namespace std;
+#include "SusAndAdj.h"
 
 /**
  * @brief Función que elimina los caracteres '"', '[' y ']' de una cadena de texto.

@@ -17,6 +17,7 @@
 #include "PosicionPalabra.h"
 #include "TablaHash.h"
 #include "Documento.h"
+#include "SusAndAdj.h"
 
 
 

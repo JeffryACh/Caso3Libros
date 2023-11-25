@@ -1,5 +1,4 @@
 #include "indexarLibro.h" // incluye el archivo indexarLibro.h
-#include "SusAndAdj.cpp"
 #include <sstream> // incluye el archivo sstream
 
 using namespace std; // para no tener que escribir std::vector, std::string, etc.
@@ -213,7 +212,7 @@ void indexarLibro::indexarDocumento(Documento &documento) {
                 if (cadenaVacia(palabra))
                     continue;
                 transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-                if (this->indice.find(palabra) == this->indice.end()) {
+                if (this->indice.find(palabra) == this->indice.end() && (esAdjetivo(palabra) || esSustantivo(palabra))) {
                     // si no existe la palabra en el indice, se crea
                     this->indice[palabra] = std::vector<PosicionPalabra>();
                     this->indice[palabra].push_back(PosicionPalabra(palabra, documento));
