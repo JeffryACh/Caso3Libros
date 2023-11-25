@@ -59,7 +59,7 @@ int main() {
     bool salir = false;
     indexador.indexar(ruta);
     indexador.imprimirDocumentos();
-//    indexador.imprimirIndice();
+    indexador.imprimirIndice();
     while(!salir){
         string consulta;
         cout << "Ingrese la consulta a buscar (\"salir\" termina el programa): ";

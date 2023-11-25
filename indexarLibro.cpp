@@ -1,4 +1,5 @@
 #include "indexarLibro.h" // incluye el archivo indexarLibro.h
+#include "SusAndAdj.cpp"
 #include <sstream> // incluye el archivo sstream
 
 using namespace std; // para no tener que escribir std::vector, std::string, etc.
@@ -47,14 +48,6 @@ void indexarLibro::indexarTablaHash(vector<string> palabras) {
 void indexarLibro::imprimirIndice() {
     for (auto &x : this->indice) {
         std::cout << x.first << std::endl;
-        for (auto &y : x.second) {
-            cout << "\t" << y.getDocumento().getTitulo() << endl;
-            cout << "\t" << y.getDocumento().getAutor() << endl;
-            std::cout << "\t" << y.getDocumento().getId() << std::endl;
-            for (auto &z : y.getPosiciones()) {
-                std::cout << "\t\t" << z << std::endl;
-            }
-        }
     }
 }
 
