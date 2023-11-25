@@ -21,21 +21,13 @@ vector <string> split(string str){
     vector <string> resultado;
     stringstream ss(str);
     string token;
-    while(getline(ss, token, ' ')){
-        resultado.push_back(token);
-    }
-    while(getline(ss, token, ',')){
-        resultado.push_back(token);
-    }
-    while(getline(ss, token, ';')){
-        resultado.push_back(token);
-    }
-    while(getline(ss, token, '.')){
-        resultado.push_back(token);
-    }
-    cout << "Resultado: " << endl;
-    for (int i = 0; i < resultado.size(); i++) {
-        cout << resultado[i] << endl;
+    while(getline(ss, token, ' ') || getline(ss, token, ',') || getline(ss, token, ';') || getline(ss, token, '.') || getline(ss, token, ':')){
+        if(esAdjetivo(token) || esSustantivo(token)){
+            resultado.push_back(token);
+        }
+        else {
+            continue;
+        }
     }
     return resultado;
 }
@@ -82,8 +74,9 @@ int main() {
         else {
             //vector<pair<int, double>> resultados = indexador.buscar(consulta);
             vector<string> palabras = split(consulta);
-            indexador.indexarTablaHash(palabras);
-            indexador.getTablaHash().imprimir();
+
+                indexador.indexarTablaHash(palabras);
+                indexador.getTablaHash().imprimir();
         }
     }
 

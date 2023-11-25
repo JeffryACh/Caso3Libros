@@ -34,24 +34,9 @@ void indexarLibro::indexar(string ruta) {
 */
 void indexarLibro::indexarTablaHash(vector<string> palabras) {
     cout << "Indexando..." << endl;
-    if (tabla.estaVacia()) {
-        cout << "La tabla hash está vacía" << endl;
-        for (auto &palabra : palabras) {
-            cout << "Palabra: " << palabra << endl;
-            for (auto &doc : documentos) {
-                cout << "Documento: " << doc.getTitulo() << endl;
-                tabla.insertar(palabra, doc); // se inserta la palabra y el documento en la tabla hash
-            }
-        }
-    }
-    else {
-        cout << "La tabla hash no está vacía" << endl;
-        for (auto &palabra : palabras) {
-            cout << "Palabra: " << palabra << endl;
-            for (auto &doc : documentos) {
-                cout << "Documento: " << doc.getTitulo() << endl;
-                tabla.insertar(palabra, doc); // se inserta la palabra y el documento en la tabla hash
-            }
+    for (auto &palabra : palabras) {
+        for (auto &pos_doc : this->indice[palabra]) {
+            tabla.insertar(palabra, pos_doc.getDocumento());
         }
     }
 }
