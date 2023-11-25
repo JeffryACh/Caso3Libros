@@ -74,9 +74,13 @@ int main() {
         else {
             //vector<pair<int, double>> resultados = indexador.buscar(consulta);
             vector<string> palabras = split(consulta);
-
-                indexador.indexarTablaHash(palabras);
-                indexador.getTablaHash().imprimir();
+            indexador.indexarTablaHash(palabras);
+            cout << "Resultados de la búsqueda: " << endl;
+            indexador.getTablaHash().imprimir();
+            cout << "Libros: " << endl;
+            indexador.getTablaHash().imprimirLibros();
+            cout << "Libro con más apariciones: " << endl;
+            indexador.getTablaHash().libroConMasApariciones();
         }
     }
 
