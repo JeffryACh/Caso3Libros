@@ -69,7 +69,6 @@ void indexarLibro::imprimirDocumentos() {
         std::cout << "\t" << x.second.getAutor() << std::endl;
         std::cout << "\t" << x.second.getRuta() << std::endl;
         for (auto &y : x.second.getParrafos()) {
-            std::cout << "\t\t" << y.first << std::endl;
             std::cout << "\t\t" << y.second.getInicio() << std::endl;
             std::cout << "\t\t" << y.second.getFinal() << std::endl;
         }

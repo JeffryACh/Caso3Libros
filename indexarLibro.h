@@ -40,7 +40,7 @@ private:
     // atributos
     TablaHash tabla = TablaHash(); // la key es la palabra, el value es un vector de pares <Libro, int> (libro, cantidad de veces que aparece la palabra en el libro)
     map<int, int> contadorDocumentos; // map que almacena la cantidad de palabras de cada documento
-    map<string, vector<PosicionPalabra>> indice; // map que almacena el índice invertido
+    map<string, vector<PosicionPalabra>> indice; // map que almacena el índice invertido (la key es la palabra, el value es un vector de PosicionPalabra)
     map<int, Documento> mapaDocumentos; // map que almacena los documentos indexados
     vector<Documento> documentos; // vector que almacena los documentos indexados
 

@@ -7,7 +7,6 @@
 #include <cmath>
 #include <algorithm>
 #include "SusAndAdj.cpp"
-//#include "RankingLibros.h"
 #include "IndexarLibro.h"
 
 
@@ -59,7 +58,8 @@ int main() {
     string ruta = "Libros";
     bool salir = false;
     indexador.indexar(ruta);
-    //indexador.imprimirDocumentos();
+    indexador.imprimirDocumentos();
+//    indexador.imprimirIndice();
     while(!salir){
         string consulta;
         cout << "Ingrese la consulta a buscar (\"salir\" termina el programa): ";
