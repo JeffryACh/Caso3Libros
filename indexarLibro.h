@@ -51,7 +51,6 @@ private:
     
 public:
     indexarLibro(); // constructor
-    indexarLibro(std::string); // constructor con parámetros
 
     // métodos públicos
     void indexar(string ruta); // indexa los libros en la ruta dada

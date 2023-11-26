@@ -11,10 +11,6 @@ using namespace std; // para no tener que escribir std::vector, std::string, etc
 indexarLibro::indexarLibro() {
 } // constructor
 
-indexarLibro::indexarLibro(string ruta) {
-    indexar(ruta);
-} // constructor con parámetros
-
 /**
  * @brief Indexa un libro a partir de una ruta especificada.
  * 

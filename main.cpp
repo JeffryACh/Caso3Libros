@@ -13,7 +13,6 @@
 /**
  * @brief Divide una cadena en subcadenas utilizando delimitadores como ' ' o ',' o ';' o '.' o ':'.  
  * @param str La cadena que se va a dividir.
- * @param delimiter El delimitador utilizado para separar las subcadenas.
  * @return vector<string> Un vector que contiene las subcadenas resultantes.
  */
 vector <string> split(string str){
@@ -95,6 +94,7 @@ int main() {
                 cout << "Autor: " << libro.getAutor() << endl;
                 cout << "----------------------------------------" << endl;
             }
+            cout << "----------------------------------------" << endl;
         }
     }
 
