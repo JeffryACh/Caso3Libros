@@ -212,7 +212,7 @@ void indexarLibro::indexarDocumento(Documento &documento) {
                 if (cadenaVacia(palabra))
                     continue;
                 transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-                if (this->indice.find(palabra) == this->indice.end() && (esAdjetivo(palabra) || esSustantivo(palabra))) {
+                if (this->indice.find(palabra) == this->indice.end() && (esAdjetivo(palabra) || esSustantivo(palabra))) { // si no existe la palabra en el indice, se crea y se agrega el documento
                     //cout << "Agregando palabra " << palabra << " al indice." << endl;
                     // si no existe la palabra en el indice, se crea
                     this->indice[palabra] = std::vector<PosicionPalabra>();
@@ -547,13 +547,13 @@ TablaHash indexarLibro::getTablaHash() {
 
 void indexarLibro::actualizarTablaHash(vector<string> palabras) {
     for (auto &palabra : palabras) {
-        if (tabla.find(palabra) == tabla.end()) {
-            tabla.insertar(palabra, this->indice[palabra]);
+        if (!tabla.existePalabra(palabra)) { 
+            for (auto &pos_doc : this->indice[palabra]) {
+                tabla.insertar(palabra, pos_doc.getDocumento());
+            }
         }
         else {
-            for (auto &pos_doc : this->indice[palabra]) {
-                tabla.insertar(palabra, pos_doc);
-            }
+            continue;
         }
     }
 }

@@ -222,15 +222,16 @@ int TablaHash::cantidadDePalabrasEnLibro(string palabra, Documento libro) {
 Documento TablaHash::libroConMasApariciones() {
     int max = 0;
     Documento libroConMasApariciones;
-    for (auto it = tabla.begin(); it != tabla.end(); it++) {
-        for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++) {
-            if (it2->second > max) {
-                max = it2->second;
+    for (auto it = tabla.begin(); it != tabla.end(); it++) { // se recorre la tabla hash
+        for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++) {   // se recorre el vector asociado a la palabra
+            if (it2->second > max) {   // si la frecuencia del libro es mayor que el máximo, se actualiza el máximo
+                max = it2->second; 
                 libroConMasApariciones = it2->first;
             }
         }
     }
-    return libroConMasApariciones;
+    cout << "Libro con más apariciones: " << libroConMasApariciones.getTitulo() << " (" << max << ")" << endl; // se imprime el libro con más apariciones
+    return libroConMasApariciones; 
 }
 
 /**

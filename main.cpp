@@ -87,6 +87,14 @@ int main() {
             indexador.getTablaHash().imprimirLibros();
             cout << "Libro con más apariciones: " << endl;
             cout << indexador.getTablaHash().libroConMasApariciones().getTitulo() << endl;
+            cout << "top 10 matches: " << endl;
+            vector<Documento> topMatches = indexador.getTablaHash().getTopMatches(palabras);
+            for (auto& libro : topMatches) {
+                cout << "----------------------------------------" << endl;
+                cout << "Libro: " << libro.getTitulo() << endl;
+                cout << "Autor: " << libro.getAutor() << endl;
+                cout << "----------------------------------------" << endl;
+            }
         }
     }
 
