@@ -20,7 +20,7 @@ vector <string> split(string str){
     vector <string> resultado;
     stringstream ss(str);
     string token;
-    while(getline(ss, token, ' ') || getline(ss, token, ',') || getline(ss, token, ';') || getline(ss, token, '.') || getline(ss, token, ':')){
+    while(getline(ss, token, ' ') || getline(ss, token, ',') || getline(ss, token, ';') || getline(ss, token, '.') || getline(ss, token, ':') || getline(ss, token, '?') || getline(ss, token, '!')){
         if(esAdjetivo(token) || esSustantivo(token)){
             resultado.push_back(token);
         }
@@ -54,12 +54,12 @@ vector <string> split(string str){
 
 
 int main() {
+    
     indexarLibro indexador;
     string ruta = "Libros";
     bool salir = false;
     indexador.indexar(ruta);
     indexador.imprimirDocumentos();
-    indexador.imprimirIndice();
     while(!salir){
         string consulta;
         cout << "Ingrese la consulta a buscar (\"salir\" termina el programa): ";
@@ -74,15 +74,22 @@ int main() {
         else {
             //vector<pair<int, double>> resultados = indexador.buscar(consulta);
             vector<string> palabras = split(consulta);
-            indexador.indexarTablaHash(palabras);
+            if (indexador.getTablaHash().estaVacia()) {
+                cout << "Indexando la tabla" << endl;
+                indexador.indexarTablaHash(palabras);
+            }else{
+                cout << "Actualizando la tabla" << endl;
+                indexador.actualizarTablaHash(palabras);
+            }
             cout << "Resultados de la búsqueda: " << endl;
             indexador.getTablaHash().imprimir();
             cout << "Libros: " << endl;
             indexador.getTablaHash().imprimirLibros();
             cout << "Libro con más apariciones: " << endl;
-            indexador.getTablaHash().libroConMasApariciones();
+            cout << indexador.getTablaHash().libroConMasApariciones().getTitulo() << endl;
         }
     }
+
 
     return 0;
 }

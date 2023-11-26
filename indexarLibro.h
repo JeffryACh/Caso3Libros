@@ -68,6 +68,7 @@ public:
     void imprimirDocumentos(); // imprime los documentos indexados
     void indexarTablaHash(vector<string>); // indexa los libros en la ruta dada
     TablaHash getTablaHash(); // retorna la tabla hash
+    void actualizarTablaHash(vector<string>); // indexa los libros en la ruta dada
 };
 
 #endif //CASO3_INDEXARLIBRO_H

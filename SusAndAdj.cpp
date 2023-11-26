@@ -57,3 +57,45 @@ bool esAdjetivo(string palabra) {
     }
     return false;
 }
+
+/**
+ * @brief elimina las palabras repetidas de un archivo.
+ * 
+ * @param ruta La ruta del archivo.
+*/
+void eliminarPalabrasRepetidas(string ruta) {
+    ifstream file(ruta);
+    unordered_set<string> palabras;
+    string palabra;
+
+    while (file >> palabra) {
+        palabras.insert(palabra);
+    }
+
+    file.close();
+
+    ofstream file2(ruta);
+    for (auto& palabra : palabras) {
+        if (!esPalabraRepetida(palabra, ruta)) {
+            file2 << palabra << endl;
+        }
+    }
+
+    file2.close();
+}
+
+bool esPalabraRepetida(string palabra, string ruta) {
+    ifstream file(ruta);
+    string palabraActual;
+
+    while (file >> palabraActual) {
+        if (palabraActual == palabra) {
+            cout << palabraActual << endl;
+            file.close();
+            return true;
+        }
+    }
+
+    file.close();
+    return false;
+}

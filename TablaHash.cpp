@@ -25,9 +25,9 @@ void TablaHash::insertar(string palabra, Documento libro) {
         tabla[palabra] = libros;
     } else {
         bool libroEncontrado = false;
-        for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
-            if (it->first.getTitulo() == libro.getTitulo()) {
-                it->second++;
+        for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) { // se busca el libro en el vector asociado a la palabra
+            if (it->first.getTitulo() == libro.getTitulo()) { // si el libro se encuentra, se incrementa su frecuencia en 1
+                it->second++; // se incrementa la frecuencia del libro en 1
                 libroEncontrado = true;
                 break;
             }
@@ -79,8 +79,7 @@ void TablaHash::imprimirLibros() {
     for (auto it = tabla.begin(); it != tabla.end(); it++) {
         cout << it->first << ": " << endl;
         for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++) {
-            cout << "Titulo:" << "\t" << it2->first.getTitulo() << endl;
-            cout << "Autor:" << "\t" << it2->first.getAutor() << endl;
+            cout << "Titulo: " << it2->first.getTitulo() << " - " << "Autor: "<< it2->first.getAutor() << endl;
         }
     }
 }
@@ -251,4 +250,14 @@ vector<Documento> TablaHash::getLibrosDePalabra(string palabra) {
         }
         return libros;
     }
+}
+
+/**
+ * Verifica si una palabra existe en la tabla hash.
+ * 
+ * @param palabra La palabra a buscar.
+ * @return true si la palabra existe en la tabla hash, false en caso contrario.
+ */
+bool TablaHash::existePalabra(string palabra) {
+    return tabla.find(palabra) != tabla.end();
 }
