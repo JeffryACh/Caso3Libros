@@ -208,7 +208,7 @@ void indexarLibro::indexarDocumento(Documento &documento) {
                 if (cadenaVacia(palabra))
                     continue;
                 transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
-                if (this->indice.find(palabra) == this->indice.end() && (esAdjetivo(palabra) || esSustantivo(palabra))) { // si no existe la palabra en el indice, se crea y se agrega el documento
+                if (this->indice.find(palabra) == this->indice.end()) { // si no existe la palabra en el indice, se crea y se agrega el documento
                     //cout << "Agregando palabra " << palabra << " al indice." << endl;
                     // si no existe la palabra en el indice, se crea
                     this->indice[palabra] = std::vector<PosicionPalabra>();

@@ -96,6 +96,7 @@ int main() {
                 cout << "----------------------------------------" << endl;
             }
             cout << "----------------------------------------" << endl;
+            cout << topMatches.size() << " resultados" << endl;
         }
     }
 

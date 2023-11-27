@@ -137,7 +137,7 @@ vector<Documento> TablaHash::getTopMatches(string palabra) {
 }
 
 /**
- * Obtiene los documentos con las mejores coincidencias para un conjunto de palabras dadas.
+ * Obtiene los documentos con las mejores 10 coincidencias para un conjunto de palabras dadas.
  * 
  * @param palabras El conjunto de palabras para las cuales se desean obtener las mejores coincidencias.
  * @return Un vector de Documento con los documentos que tienen las mejores coincidencias para las palabras dadas.
@@ -147,40 +147,78 @@ vector<Documento> TablaHash::getTopMatches(string palabra) {
 vector<Documento> TablaHash::getTopMatches(vector<string> palabras) {
     vector<Documento> topMatches;
     vector<Documento> topMatchesAux;
-    for (int i = 0; i < palabras.size(); i++) {
-        topMatchesAux = getTopMatches(palabras[i]);
-        if (topMatchesAux.empty()) {
-            return vector<Documento>();
-        } else {
-            if (topMatches.empty()) {
-                topMatches = topMatchesAux;
-            } else {
-                for (int j = 0; j < topMatches.size(); j++) {
-                    bool encontrado = false;
-                    for (int k = 0; k < topMatchesAux.size(); k++) {
-                        if (topMatches[j].getTitulo() == topMatchesAux[k].getTitulo()) {
-                            encontrado = true;
-                            break;
+    Documento libro;
+    for (auto& palabra : palabras) {
+        cout << "Palabra: " << palabra << endl;
+        topMatchesAux = getTopMatches(palabra);
+        topMatches.push_back(libroConMasApariciones( topMatchesAux, palabra));
+    }
+    topMatches = interseccion(topMatches, topMatchesAux);
+    topMatches = quitarLibrosRepetidos(topMatches);
+    cout << "Salio del primer for" << endl;
+    if (topMatches.size() < 10) {
+        cout << "Top matches: " << topMatches.size() << endl;
+        while(topMatches.size() != 10) {
+            for (auto& palabra : palabras){
+                topMatchesAux = getLibrosDePalabra(palabra);
+                Documento librito;
+                librito = segundoLibroConMasApariciones(palabra, topMatchesAux);
+                if (libroExiste(topMatches, librito)) {
+                    librito = tercerLibroConMasApariciones(palabra, topMatchesAux);
+                    if (libroExiste(topMatches, librito)) {
+                        librito = libroConMasApariciones(palabra);
+                        if (libroExiste(topMatches, librito)){
+                            librito = segundoLibroConMasApariciones(palabra);
+                            topMatches.push_back(librito);
+                        }
+                        else {
+                            cout << "Libro no existe" << endl;
+                            cout << "Libro: " << librito.getTitulo() << endl;
+                            topMatches.push_back(librito);
                         }
                     }
-                    if (!encontrado) {
-                        topMatches.erase(topMatches.begin() + j);
-                        j--;
+                    else {
+                        cout << "Libro no existe" << endl;
+                        cout << "Libro: " << librito.getTitulo() << endl;
+                        topMatches.push_back(librito);
                     }
                 }
-            }
+                else {
+                    cout << "Libro no existe" << endl;
+                    cout << "Libro: " << librito.getTitulo() << endl;
+                    topMatches.push_back(librito);
+                }
+                if (topMatches.size() == 10) {
+                    break;
+                }
+            } 
         }
     }
+    else {
+        cout << "Top matches: " << topMatches.size() << endl;
+        while(topMatches.size() != 10) {
+            std::vector<Documento> nuevosTopMatches;
+            for (auto& libro : topMatches) {
+                bool libroValido = true;
+                for (auto& palabra : palabras) {
+                    if (vecesPalabraEnLibro(palabra, libro) == 0) {
+                        cout << "Libro no valido" << endl;
+                        libroValido = false;
+                        break;
+                    }
+                }
+                if (libroValido) {
+                    nuevosTopMatches.push_back(libro);
+                }
+            }
+            if (nuevosTopMatches.size() == 0) {
+                break;
+            }
+            topMatches = nuevosTopMatches;
+        }
+    }
+    topMatches = quitarLibrosRepetidos(topMatches);
     return topMatches;
-}
-
-/**
- * Verifica si la tabla hash está vacía.
- * 
- * @return true si la tabla hash está vacía, false en caso contrario.
- */
-bool TablaHash::estaVacia() {
-    return tabla.empty();
 }
 
 /**
@@ -261,4 +299,244 @@ vector<Documento> TablaHash::getLibrosDePalabra(string palabra) {
  */
 bool TablaHash::existePalabra(string palabra) {
     return tabla.find(palabra) != tabla.end();
+}
+
+/**
+ * Verifica si la tabla hash está vacía.
+ * 
+ * @return true si la tabla hash está vacía, false en caso contrario.
+ */
+bool TablaHash::estaVacia() {
+    return tabla.empty();
+}
+
+/**
+ * @brief Retorna los libros que hacen match con las palabras ingresadas. 
+ * 
+ * @param palabras El conjunto de palabras para las cuales se desean obtener los libros que hacen match.
+ * @return Un vector de Documento con los libros que hacen match con las palabras ingresadas.
+*/
+vector<Documento> TablaHash::getLibrosMacth(vector<string> palabras) {
+    vector<Documento> librosMatch;
+    for (auto& palabra : palabras) { // se recorre el vector de palabras
+        if (existePalabra(palabra)) { // si la palabra se encuentra en la tabla hash
+            for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) { // se recorre el vector asociado a la palabra
+                librosMatch.push_back(it->first); // se agrega el libro al vector de libros match
+            }
+        }
+    }
+    return librosMatch;
+}
+
+/**
+ * Retorna la cantidad de veces que aparece una palabra en un libro.
+ * 
+ * @param palabra La palabra a buscar.
+ * @param libro El libro en el cual se busca la palabra.
+ * @return La cantidad de veces que aparece la palabra en el libro.
+ *         Si no se encuentra la palabra, se retorna 0.
+ */
+int TablaHash::vecesPalabraEnLibro(string palabra, Documento libro) {
+    if (tabla.find(palabra) == tabla.end()) { // si no se encuentra la palabra, se retorna 0
+        return 0;
+    } else {
+        for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
+            if (it->first.getTitulo() == libro.getTitulo()) {
+                return it->second;
+            }
+        }
+        return 0;
+    }
+}
+
+/**
+ * Retorna la intersección de dos vectores de libros.
+ * 
+ * @param libros1 El primer vector de libros.
+ * @param libros2 El segundo vector de libros.
+ * @return Un vector de Documento con la intersección de los dos vectores de libros.
+ */
+vector<Documento> TablaHash::interseccion(vector<Documento> libros1, vector<Documento> libros2) {
+    vector<Documento> interseccion;
+    for (auto& libro1 : libros1) { // se recorre el primer vector de libros
+        for (auto& libro2 : libros2) { // se recorre el segundo vector de libros
+            if (libro1.getTitulo() == libro2.getTitulo()) { // si el libro se encuentra en los dos vectores, se agrega a la intersección
+                interseccion.push_back(libro1);
+            }
+        }
+    }
+    return interseccion;
+}
+
+/**
+ * @brief Saca el libro con más apariciones de una palabra.
+ * 
+ * @param palabra La palabra a buscar.
+ * @return El libro con más apariciones de una palabra.
+ *        Si no se encuentra la palabra, se retorna un libro vacío.
+ */
+Documento TablaHash::libroConMasApariciones(string palabra) {
+    if (!existePalabra(palabra)) { // si no se encuentra la palabra, se retorna un libro vacío
+        return Documento();
+    } else {
+        int max = 0;
+        Documento libroConMasApariciones;
+        for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
+            if (it->second > max) {
+                max = it->second;
+                libroConMasApariciones = it->first;
+            }
+        }
+        return libroConMasApariciones;
+    }
+}
+
+/**
+ * @brief Saca el libro con más apariciones de una palabra.
+ * 
+ * @param libros El vector de libros.
+ * @param palabra La palabra a buscar.
+ * @return El libro con más apariciones de una palabra.
+ *        Si no se encuentra la palabra, se retorna un libro vacío.
+ */
+Documento TablaHash::libroConMasApariciones(vector<Documento> libros, string palabra) {
+    if (!existePalabra(palabra)) { // si no se encuentra la palabra, se retorna un libro vacío
+        return Documento();
+    } else {
+        int max = 0;
+        Documento Libro;
+        for (auto& libro : libros) {
+            if (vecesPalabraEnLibro(palabra, libro) > max) {
+                max = vecesPalabraEnLibro(palabra, libro);
+                Libro = libro;
+            }
+        }
+        return Libro;
+    }
+}
+
+bool TablaHash::libroExiste(vector<Documento> libros, Documento libro) {
+    for (auto& libroAux : libros) {
+        if (libroAux.getTitulo() == libro.getTitulo()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * @brief Saca el segundo libro con más apariciones de una palabra.
+ * 
+ * @param palabra La palabra a buscar.
+ * @return El segundo libro con más apariciones de una palabra.
+ *        Si no se encuentra la palabra, se retorna un libro vacío.
+ */
+Documento TablaHash::segundoLibroConMasApariciones(string palabra, vector<Documento> libros) {
+    if (!existePalabra(palabra)) { // si no se encuentra la palabra, se retorna un libro vacío
+        return Documento();
+    } else {
+        int max = 0;
+        Documento libroConMasApariciones;
+        for (auto& libro : libros) {
+            if (vecesPalabraEnLibro(palabra, libro) > max) {
+                max = vecesPalabraEnLibro(palabra, libro);
+                libroConMasApariciones = libro;
+            }
+        }
+        int segundoMax = 0;
+        Documento segundoLibroConMasApariciones;
+        for (auto& libro : libros) {
+            if (vecesPalabraEnLibro(palabra, libro) > segundoMax && libro.getTitulo() != libroConMasApariciones.getTitulo()) {
+                segundoMax = vecesPalabraEnLibro(palabra, libro);
+                segundoLibroConMasApariciones = libro;
+            }
+        }
+        return segundoLibroConMasApariciones;
+    }
+}
+
+/**
+ * @brief Quita los libros repetidos de un vector de libros.
+ * 
+ * @param libros El vector de libros.
+ * @return Un vector de Documento con los libros sin repetir.
+ */
+vector<Documento> TablaHash::quitarLibrosRepetidos(vector<Documento> libros) {
+    vector<Documento> librosSinRepetir;
+    for (auto& libro : libros) {
+        if (!libroExiste(librosSinRepetir, libro)) {
+            librosSinRepetir.push_back(libro);
+        }
+    }
+    return librosSinRepetir;
+}
+
+/**
+ * @brief Saca el tercer libro con más apariciones de una palabra.
+ * 
+ * @param palabra La palabra a buscar.
+ * @return El tercer libro con más apariciones de una palabra.
+ *        Si no se encuentra la palabra, se retorna un libro vacío.
+ */
+Documento TablaHash::tercerLibroConMasApariciones(string palabra, vector<Documento> libros) {
+    if (!existePalabra(palabra)) { // si no se encuentra la palabra, se retorna un libro vacío
+        return Documento();
+    } else {
+        int max = 0;
+        Documento libroConMasApariciones;
+        for (auto& libro : libros) {
+            if (vecesPalabraEnLibro(palabra, libro) > max) {
+                max = vecesPalabraEnLibro(palabra, libro);
+                libroConMasApariciones = libro;
+            }
+        }
+        int segundoMax = 0;
+        Documento segundoLibroConMasApariciones;
+        for (auto& libro : libros) {
+            if (vecesPalabraEnLibro(palabra, libro) > segundoMax && libro.getTitulo() != libroConMasApariciones.getTitulo()) {
+                segundoMax = vecesPalabraEnLibro(palabra, libro);
+                segundoLibroConMasApariciones = libro;
+            }
+        }
+        int tercerMax = 0;
+        Documento tercerLibroConMasApariciones;
+        for (auto& libro : libros) {
+            if (vecesPalabraEnLibro(palabra, libro) > tercerMax && libro.getTitulo() != libroConMasApariciones.getTitulo() && libro.getTitulo() != segundoLibroConMasApariciones.getTitulo()) {
+                tercerMax = vecesPalabraEnLibro(palabra, libro);
+                tercerLibroConMasApariciones = libro;
+            }
+        }
+        return tercerLibroConMasApariciones;
+    }
+}
+
+/**
+ * @brief Saca el segundo libro con más apariciones de una palabra.
+ * 
+ * @param palabra La palabra a buscar.
+ * @return El segundo libro con más apariciones de una palabra.
+ *        Si no se encuentra la palabra, se retorna un libro vacío.
+ */
+Documento TablaHash::segundoLibroConMasApariciones(string palabra) {
+    if (!existePalabra(palabra)) { // si no se encuentra la palabra, se retorna un libro vacío
+        return Documento();
+    } else {
+        int max = 0;
+        Documento libroConMasApariciones;
+        for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
+            if (it->second > max) {
+                max = it->second;
+                libroConMasApariciones = it->first;
+            }
+        }
+        int segundoMax = 0;
+        Documento segundoLibroConMasApariciones;
+        for (auto it = tabla[palabra].begin(); it != tabla[palabra].end(); it++) {
+            if (it->second > segundoMax && it->first.getTitulo() != libroConMasApariciones.getTitulo()) {
+                segundoMax = it->second;
+                segundoLibroConMasApariciones = it->first;
+            }
+        }
+        return segundoLibroConMasApariciones;
+    }
 }

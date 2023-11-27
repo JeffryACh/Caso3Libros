@@ -1,6 +1,7 @@
 #ifndef CASO3_EDATOS_TABLAHASH_H
 #define CASO3_EDATOS_TABLAHASH_H
 #include <string>
+#include <queue>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
@@ -28,6 +29,16 @@ public:
     Documento libroConMasApariciones(); // retorna el libro con más apariciones
     vector<Documento> getLibrosDePalabra(string palabra); // retorna los libros asociados a una palabra
     bool existePalabra(string palabra); // retorna true si la palabra existe en la tabla hash
+    vector<Documento> getLibrosMacth(vector<string> palabras); // retorna los libros que hacen match con las palabras ingresadas
+    int vecesPalabraEnLibro(string palabra, Documento libro); // retorna la cantidad de veces que aparece una palabra en un libro
+    vector<Documento> interseccion(vector<Documento> libros1, vector<Documento> libros2); // retorna la intersección de dos vectores de libros
+    Documento libroConMasApariciones(string); // retorna el libro con más apariciones de una palabra
+    Documento libroConMasApariciones(vector<Documento>, string); // retorna el libro con más apariciones de una palabra
+    bool libroExiste(vector<Documento>, Documento); // retorna true si un libro existe en un vector de libros
+    Documento segundoLibroConMasApariciones(string, vector<Documento>); // retorna el segundo libro con más apariciones de una palabra
+    vector<Documento> quitarLibrosRepetidos(vector<Documento>); // quita los libros repetidos de un vector de libros
+    Documento tercerLibroConMasApariciones(string, vector<Documento>); // retorna el tercer libro con más apariciones de una palabra
+    Documento segundoLibroConMasApariciones(string); // retorna el segundo libro con más apariciones de una palabra
 }; 
 
 #endif // CASO3_EDATOS_TABLAHASH_H
