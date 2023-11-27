@@ -32,7 +32,11 @@ void indexarLibro::indexarTablaHash(vector<string> palabras) {
     cout << "Indexando..." << endl;
     for (auto &palabra : palabras) {
         for (auto &pos_doc : this->indice[palabra]) {
-            tabla.insertar(palabra, pos_doc.getDocumento());
+            if (esAdjetivo(palabra) || esSustantivo(palabra)) {
+                tabla.insertar(palabra, pos_doc.getDocumento());
+            } else {
+                continue;
+            }
         }
     }
 }

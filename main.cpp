@@ -20,12 +20,7 @@ vector <string> split(string str){
     stringstream ss(str);
     string token;
     while(getline(ss, token, ' ') || getline(ss, token, ',') || getline(ss, token, ';') || getline(ss, token, '.') || getline(ss, token, ':') || getline(ss, token, '?') || getline(ss, token, '!')){
-        if(esAdjetivo(token) || esSustantivo(token)){
-            resultado.push_back(token);
-        }
-        else {
-            continue;
-        }
+        resultado.push_back(token);
     }
     return resultado;
 }
