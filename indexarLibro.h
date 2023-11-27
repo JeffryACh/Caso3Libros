@@ -18,6 +18,7 @@
 #include "TablaHash.h"
 #include "Documento.h"
 #include "SusAndAdj.h"
+#include "ArbolB.h"
 
 
 
@@ -44,6 +45,7 @@ private:
     map<string, vector<PosicionPalabra>> indice; // map que almacena el índice invertido (la key es la palabra, el value es un vector de PosicionPalabra)
     map<int, Documento> mapaDocumentos; // map que almacena los documentos indexados
     vector<Documento> documentos; // vector que almacena los documentos indexados
+    
 
     // métodos privados
     void procesarRuta(const std::string& ruta); // procesa la ruta de un libro

@@ -39,3 +39,12 @@ vector<int> &PosicionPalabra::getPosiciones() {
 Documento & PosicionPalabra::getDocumento() {
     return this->doc;
 }
+
+/**
+ * @brief Obtiene la palabra a buscar en el documento.
+ * 
+ * @return La palabra a buscar en el documento.
+ */
+string PosicionPalabra::getPalabra() {
+    return this->palabra;
+}

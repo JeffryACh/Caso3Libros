@@ -2,58 +2,69 @@
 #define ARBOL_B_H
 
 #include <iostream>
+#include <vector>
+
+#include "IndexarLibro.h"
+#include "PosicionPalabra.h"
+#include "TablaHash.h"
+
 
 using namespace std;
+struct Nodo {
+    PosicionPalabra valor;
+    Nodo *hijoIzquierdo;
+    Nodo *hijoDerecho;
+  };
 
 /**
- * Clase que representa un árbol B.
- * @tparam T Tipo de dato genérico.
+ * @brief Clase que representa un árbol B.
 */
-template <typename T> // Clase genérica para el tipo de dato T
 class ArbolB {
 public:
-
   ArbolB(int orden); // Constructor
 
-  ~ArbolB();  // Destructor
+  ~ArbolB(); // Destructor
 
   // Métodos públicos
+  void insertar(PosicionPalabra valor);
 
-  void insertar(T valor); // Insertar un valor en el árbol
+  bool buscar(PosicionPalabra valor);
 
-  bool buscar(T valor); // Buscar un valor en el árbol
+  void eliminar(PosicionPalabra valor);
 
-  void eliminar(T valor); // Eliminar un valor del árbol
+  void imprimir();
 
-  void imprimir();  // Imprimir el árbol
+  void eliminarNodo(Nodo *nodo);
+
+  Nodo* buscarRecursivo(Nodo* nodo, string palabra);
+
+  int cantidadNodos(Nodo *nodo);
+
+  bool esHoja(Nodo *nodo);
 
 private:
 
-  int orden;  // Orden del árbol
+  // Atributos privados
+  Nodo *raiz;
 
-  /**
-   * @brief Estructura de datos para representar un nodo de un árbol B.
-   * 
-   * Esta estructura contiene el valor del nodo y los punteros a sus hijos izquierdo y derecho.
-   */
-  struct Nodo {
-    T valor;  // Valor del nodo
-    Nodo *hijoIzquierdo;  // Puntero al hijo izquierdo
-    Nodo *hijoDerecho;  // Puntero al hijo derecho
-  };
-
-  Nodo *raiz; // Puntero a la raíz del árbol
+  int orden;
 
   // Métodos privados
+  void insertar(PosicionPalabra valor, Nodo *nodo);
 
-  void insertar(T valor, Nodo *nodo); // Insertar un valor en el árbol
+  bool buscar(PosicionPalabra valor, Nodo *nodo);
 
-  bool buscar(T valor, Nodo *nodo); // Buscar un valor en el árbol
+  void eliminar(PosicionPalabra valor, Nodo *nodo);
 
-  void eliminar(T valor, Nodo *nodo); // Eliminar un valor del árbol
+  void imprimir(Nodo *nodo);
+  
+  void eliminarNodo(Nodo *nodo);
 
-  void imprimir(Nodo *nodo);  // Imprimir el árbol
+  Nodo* buscarRecursivo(Nodo* nodo, string palabra);
 
+  int cantidadNodos(Nodo *nodo);
+
+  bool esHoja(Nodo *nodo);
 };
 
 #endif // ARBOL_B_H

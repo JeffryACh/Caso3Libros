@@ -1,13 +1,11 @@
 #include "ArbolB.h"
-
-template <typename T>
-ArbolB<T>::ArbolB(int orden) {
+ArbolB::ArbolB(int orden) {
   this->orden = orden;
   this->raiz = NULL;
 } // Constructor
 
-template <typename T>
-ArbolB<T>::~ArbolB() {
+
+ArbolB::~ArbolB() {
   if (this->raiz != NULL) {
     eliminarNodo(this->raiz);
   }
@@ -17,8 +15,8 @@ ArbolB<T>::~ArbolB() {
  * Inserta un valor en el árbol B.
  * @param valor El valor a insertar.
  */
-template <typename T>
-void ArbolB<T>::insertar(T valor) {
+
+void ArbolB::insertar(PosicionPalabra valor) {
   insertar(valor, this->raiz);
 }
 
@@ -28,8 +26,8 @@ void ArbolB<T>::insertar(T valor) {
  * @param valor El valor a buscar.
  * @return true si el valor se encuentra en el árbol, false en caso contrario.
  */
-template <typename T>
-bool ArbolB<T>::buscar(T valor) {
+
+bool ArbolB::buscar(PosicionPalabra valor) {
   return buscar(valor, this->raiz);
 }
 
@@ -38,8 +36,8 @@ bool ArbolB<T>::buscar(T valor) {
  * @param valor El valor a eliminar.
  * @tparam T El tipo de dato de los elementos del árbol.
  */
-template <typename T>
-void ArbolB<T>::eliminar(T valor) {
+
+void ArbolB::eliminar(PosicionPalabra valor) {
   eliminar(valor, this->raiz);
 }
 
@@ -47,8 +45,8 @@ void ArbolB<T>::eliminar(T valor) {
  * Imprime los elementos del árbol B.
  * @tparam T El tipo de dato de los elementos del árbol.
  */
-template <typename T>
-void ArbolB<T>::imprimir() {
+
+void ArbolB::imprimir() {
   imprimir(this->raiz);
 }
 
@@ -59,11 +57,12 @@ void ArbolB<T>::imprimir() {
  * @param nodo El nodo actual en el que se está realizando la inserción.
  * @tparam T El tipo de dato de los elementos del árbol.
  */
-template <typename T>
-void ArbolB<T>::insertar(T valor, Nodo *nodo) {
+
+void ArbolB::insertar(PosicionPalabra valor, Nodo *nodo) {
   if (nodo == NULL) {
     Nodo *nuevoNodo = new Nodo();
-    nuevoNodo->valor = valor;
+    PosicionPalabra *pos = new PosicionPalabra();
+    nuevoNodo->valor = 
     nuevoNodo->hijoIzquierdo = NULL;
     nuevoNodo->hijoDerecho = NULL;
     this->raiz = nuevoNodo;
@@ -85,7 +84,7 @@ void ArbolB<T>::insertar(T valor, Nodo *nodo) {
     nodo->hijoIzquierdo = nuevoNodo;
   }
 
-  if (nodo->hijoIzquierdo != NULL && nodo->hijoIzquierdo->hijos > this->orden - 1) {
+  if (nodo->hijoIzquierdo != NULL && nodo->hijoIzquierdo->hijo > this->orden - 1) {
     desbalancear(nodo, true);
   }
 }
@@ -98,17 +97,15 @@ void ArbolB<T>::insertar(T valor, Nodo *nodo) {
  * @param nodo Nodo actual en la búsqueda.
  * @return true si el valor se encuentra en el árbol, false en caso contrario.
  */
-template <typename T>
-bool ArbolB<T>::buscar(T valor, Nodo *nodo) {
+
+bool ArbolB::buscar(PosicionPalabra valor, Nodo *nodo) {
   if (nodo == NULL) {
     return false;
   }
 
-  if (valor == nodo->valor) {
+  if (valor.getPalabra() == nodo->valor.getPalabra()) {
     return true;
-  } else if (valor < nodo->valor) {
-    return buscar(valor, nodo->hijoIzquierdo);
-  } else {
+    } else {
     return buscar(valor, nodo->hijoDerecho);
   }
 }
@@ -119,21 +116,21 @@ bool ArbolB<T>::buscar(T valor, Nodo *nodo) {
  * @param valor El valor a eliminar.
  * @param nodo El nodo actual en el recorrido del árbol.
  */
-template <typename T>
-void ArbolB<T>::eliminar(T valor, Nodo *nodo) {
+
+void ArbolB::eliminar(PosicionPalabra valor, Nodo *nodo) {
   if (nodo == NULL) {
     return;
   }
 
   int i = 0;
-  while (i < this->orden - 1 && valor > nodo->valor) {
+  while (i < this->orden - 1 && valor.getPalabra() == nodo->valor.getPalabra()) {
     i++;
   }
 
   if (i < this->orden - 1) {
     eliminar(valor, nodo->hijoIzquierdo);
   } else {
-    if (nodo->hijoIzquierdo != NULL && nodo->hijoIzquierdo->valor == valor) {
+    if (nodo->hijoIzquierdo != NULL && nodo->hijoIzquierdo->valor.getPalabra() == valor.getPalabra()) {
       eliminarNodo(nodo->hijoIzquierdo);
       nodo->hijoIzquierdo = NULL;
     } else {
@@ -148,13 +145,55 @@ void ArbolB<T>::eliminar(T valor, Nodo *nodo) {
  * @param nodo Puntero al nodo raíz del árbol.
  * @tparam T Tipo de dato de los valores en el árbol.
  */
-template <typename T>
-void ArbolB<T>::imprimir(Nodo *nodo) {
+
+void ArbolB::imprimir(Nodo *nodo) {
   if (nodo == NULL) {
     return;
   }
 
   imprimir(nodo->hijoIzquierdo);
-  cout << nodo->valor << endl;
+  cout << nodo->valor.getPalabra() << endl;
   imprimir(nodo->hijoDerecho);
+}
+
+void ArbolB::eliminarNodo(Nodo *nodo) {
+  if (nodo == NULL) {
+    eliminarNodo(nodo->hijoIzquierdo);
+    eliminarNodo(nodo->hijoDerecho);
+    delete nodo;
+  }
+}
+
+Nodo* ArbolB::buscarRecursivo(Nodo* nodo, std::string palabra) {
+  // Aquí va la lógica de búsqueda dentro de un nodo
+  int i = 0;
+  while (i < cantidadNodos(this->raiz) && palabra != nodo->valor.getPalabra()) {
+      i++;
+  }
+
+  if (i < cantidadNodos(this->raiz) && palabra != nodo->valor.getPalabra()) {
+      return nodo;  // Palabra encontrada
+  }
+
+  if (esHoja(nodo)) {
+      return nullptr;  // Palabra no encontrada
+  }
+
+  return buscarRecursivo(nodo, palabra);
+}
+
+int ArbolB::cantidadNodos(Nodo *nodo) {
+  return cantidadNodos(this->raiz);
+}
+
+int ArbolB::cantidadNodos(Nodo *nodo) {
+  if (nodo == NULL) {
+    return 0;
+  }
+
+  return 1 + cantidadNodos(nodo->hijoIzquierdo) + cantidadNodos(nodo->hijoDerecho);
+}
+
+bool ArbolB::esHoja(Nodo *nodo) {
+  return nodo->hijoIzquierdo == NULL && nodo->hijoDerecho == NULL;
 }

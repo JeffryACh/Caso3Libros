@@ -22,6 +22,7 @@ public:
     void agregarPosicion(int posicion); // agrega una posicion a la lista de posiciones de la palabra
     vector<int> &getPosiciones();   // devuelve una referencia al vector de posiciones
     Documento& getDocumento();  // devuelve el documento asociado a la posicion de la palabra
+    string getPalabra();    // devuelve la palabra a buscar en el documento
 private:
     // atributos privados
     vector<int> posiciones; // las posiciones de la palabra en el documento
