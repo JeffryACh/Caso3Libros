@@ -1,9 +1,21 @@
+/**
+ * @file ArbolB.h
+ * 
+ * @brief Implementación de la clase ArbolB.
+ * 
+ * @author Jeffry Araya Ch
+ *
+ * @date 28/11/2023 14:00 
+*/
+
 #ifndef ARBOL_B_H
 #define ARBOL_B_H
 
 #include <iostream>
 #include <vector>
 #include <map>
+#include <string>
+#include <algorithm>
 
 #include "IndexarLibro.h"
 #include "PosicionPalabra.h"
@@ -22,7 +34,7 @@ using namespace std;
  * vector<Nodo*> hijos: vector de hijos del nodo.
 */
 struct Nodo {
-    map<string, vector<PosicionPalabra>> valor;
+    pair<string, vector<PosicionPalabra>> valor;
     Nodo *hijoIzquierdo;
     Nodo *hijoDerecho;
     int hijo;

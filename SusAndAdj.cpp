@@ -1,3 +1,13 @@
+/**
+ * @file SusAndAdj.cpp
+ * 
+ * @brief Implementación de las funciones de SusAndAdj.h.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #include "SusAndAdj.h"
 
 /**

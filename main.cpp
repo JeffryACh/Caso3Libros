@@ -1,3 +1,13 @@
+/**
+ * @file main.cpp
+ * 
+ * @brief Implementación del programa principal.
+ * 
+ * @author Jeffry Araya Ch
+ * 
+ * @date 28/11/2023 14:00
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>

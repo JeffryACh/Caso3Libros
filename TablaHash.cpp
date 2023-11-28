@@ -1,3 +1,13 @@
+/**
+ * @file TablaHash.cpp
+ * 
+ * @brief Implementación de la clase TablaHash.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #include "TablaHash.h"
 #include <iostream>
 #include <string>

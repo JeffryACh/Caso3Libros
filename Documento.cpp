@@ -1,3 +1,14 @@
+/**
+ * @file Documento.cpp
+ * 
+ * @brief Implementación de la clase Documento.
+ * Un documento es un archivo de texto que contiene un título, un autor y uno o más párrafos.
+ * 
+ * @author Jeffry Araya Ch
+ * 
+ * @date 28/11/2023 14:00
+*/
+
 #include "Documento.h"
 #include <string>
 

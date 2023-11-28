@@ -1,3 +1,13 @@
+/**
+ * @file PosicionPalabra.cpp
+ * 
+ * @brief Implementación de la clase PosicionPalabra.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #include "PosicionPalabra.h"
 
 /**

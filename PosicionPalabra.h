@@ -1,3 +1,13 @@
+/**
+ * @file PosicionPalabra.h
+ * 
+ * @brief Implementación de la clase PosicionPalabra.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #ifndef __POSDOCUMENTO_H__
 #define __POSDOCUMENTO_H__
 #include <vector>

@@ -1,3 +1,13 @@
+/**
+ * @file indexarLibro.h
+ * 
+ * @brief Implementación de la clase indexarLibro.
+ * 
+ * @author Jeffry Araya Ch
+ * 
+ * @date 28/11/2023 14:00
+*/
+
 #ifndef CASO3_INDEXARLIBRO_H
 #define CASO3_INDEXARLIBRO_H
 

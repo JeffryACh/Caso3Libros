@@ -1,3 +1,13 @@
+/**
+ * @file ArbolB.cpp
+ * 
+ * @brief Implementación de la clase ArbolB.
+ * 
+ * @author Jeffry Araya Ch
+ *
+ * @date 28/11/2023 14:00 
+*/
+
 #include "ArbolB.h"
 
 ArbolB::ArbolB(int orden) {
@@ -50,18 +60,20 @@ void ArbolB::imprimir() {
 /**
  * @brief Inserta un valor en el árbol B.
  * 
- * @tparam T Tipo de dato de los valores en el árbol.
  * @param valor Valor a insertar en el árbol.
  * @param nodo Nodo actual en la búsqueda.
  */
 void ArbolB::insertar(string palabra, Nodo *nodo) {
   if (nodo == NULL) {
     Nodo *nuevoNodo = new Nodo();
-    map<string, vector<PosicionPalabra>> *mapa = new map<string, vector<PosicionPalabra>>();
-    (*mapa)[palabra] = indexador.obtenerPosiciones(palabra);
+    pair<string, vector<PosicionPalabra>> *mapa = new pair<string, vector<PosicionPalabra>>();
+    mapa->first = palabra;
+    mapa->second = indexador.indexarPalabra(palabra);
     nuevoNodo->hijoIzquierdo = NULL;
     nuevoNodo->hijoDerecho = NULL;
     nuevoNodo->hijo = 0;
+    nuevoNodo->hijos = nullptr;
+    nuevoNodo->valor = mapa;
     this->raiz = nuevoNodo;
     return;
   }
@@ -90,7 +102,6 @@ void ArbolB::insertar(string palabra, Nodo *nodo) {
 /**
  * @brief Busca un valor en el árbol B.
  * 
- * @tparam T Tipo de dato de los valores en el árbol.
  * @param valor Valor a buscar en el árbol.
  * @param nodo Nodo actual en la búsqueda.
  * @return true si el valor se encuentra en el árbol, false en caso contrario.
@@ -110,7 +121,6 @@ bool ArbolB:: buscar(PosicionPalabra valor, Nodo *nodo) {
 /**
  * @brief Elimina un valor específico del árbol B.
  * 
- * @tparam T Tipo de dato de los valores en el árbol.
  * @param valor Valor a eliminar del árbol.
  * @param nodo Nodo actual en la búsqueda.
  */
@@ -147,7 +157,7 @@ void ArbolB::imprimir(Nodo *nodo) {
   }
 
   imprimir(nodo->hijoIzquierdo);
-  cout << nodo->valor.getPalabra() << endl;
+  cout << nodo->valor.first() << endl;
   imprimir(nodo->hijoDerecho);
 }
 

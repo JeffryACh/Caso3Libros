@@ -1,3 +1,13 @@
+/**
+ * @file indexarLibro.cpp
+ * 
+ * @brief Implementación de la clase indexarLibro.
+ * 
+ * @author Jeffry Araya Ch
+ * 
+ * @date 28/11/2023 14:00
+*/
+
 #include "indexarLibro.h" // incluye el archivo indexarLibro.h
 #include <sstream> // incluye el archivo sstream
 

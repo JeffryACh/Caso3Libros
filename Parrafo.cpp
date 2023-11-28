@@ -1,3 +1,13 @@
+/**
+ * @file Parrafo.cpp
+ * 
+ * @brief Implementación de la clase Parrafo.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #include "Parrafo.h"
 
 /**

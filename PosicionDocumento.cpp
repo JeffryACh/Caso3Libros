@@ -1,3 +1,13 @@
+/**
+ * @file PosicionDocumento.cpp
+ * 
+ * @brief Implementación de la clase PosicionDocumento.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #include "PosicionDocumento.h"
 
 /**

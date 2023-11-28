@@ -1,3 +1,13 @@
+/**
+ * @file PosicionDocumento.h
+ * 
+ * @brief Implementación de la clase PosicionDocumento.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #ifndef POSICIONDOCUMENTO_H
 #define POSICIONDOCUMENTO_H
 

@@ -1,3 +1,13 @@
+/**
+ * @file Documento.h
+ * 
+ * @brief Implementación de la clase Documento. 
+ * 
+ * @author Jeffry Araya Ch
+ * 
+ * @date 28/11/2023 14:00
+*/
+
 #ifndef __DOCUMENTO_H__
 #define __DOCUMENTO_H__
 #include <string>

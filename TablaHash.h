@@ -1,3 +1,13 @@
+/**
+ * @file TablaHash.h
+ * 
+ * @brief Implementación de la clase TablaHash.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Ch
+*/
+
 #ifndef CASO3_EDATOS_TABLAHASH_H
 #define CASO3_EDATOS_TABLAHASH_H
 #include <string>

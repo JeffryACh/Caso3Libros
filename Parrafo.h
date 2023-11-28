@@ -1,3 +1,13 @@
+/**
+ * @file Parrafo.h
+ * 
+ * @brief Implementación de la clase Parrafo.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #ifndef __PARRAFO_H__
 #define __PARRAFO_H__
 /**

@@ -1,3 +1,13 @@
+/**
+ * @file SusAndAdj.h
+ * 
+ * @brief Implementación de la clase SusAndAdj.
+ * 
+ * @date 28/11/2023 14:00
+ * 
+ * @author Jeffry Araya Chaves
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
