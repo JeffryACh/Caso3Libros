@@ -185,15 +185,15 @@ Nodo* ArbolB::buscarRecursivo(string palabra, Nodo* nodo) {
   // Aquí va la lógica de búsqueda dentro de un nodo
   int i = 0;
   while (i < nodo->hijo && palabra > nodo->valor.begin()->first()) { // Revisar si es menor o mayor
-      i++;
+    i++;
   }
 
   if (i < nodo->hijo && palabra == nodo->valor.begin()->first()) {
-      return nodo;  // Palabra encontrada
+    return nodo;  // Palabra encontrada
   }
 
   if (esHoja(nodo)) {
-      return nullptr;  // Palabra no encontrada
+    return nullptr;  // Palabra no encontrada
   }
 
   return buscarRecursivo(nodo->hijos[i], palabra); // Palabra no encontrada, buscar en el hijo correspondiente
@@ -239,6 +239,7 @@ bool ArbolB::esHoja(Nodo *nodo) {
 */
 void ArbolB::desbalancear(Nodo *nodo, bool esHijoIzquierdo) {
   if (nodo == NULL) {
+    cout << "No se puede desbalancear un nodo nulo" << endl;
     return;
   }
 
@@ -253,7 +254,7 @@ void ArbolB::desbalancear(Nodo *nodo, bool esHijoIzquierdo) {
       nodo->hijoDerecho = nodo->hijoIzquierdo->hijoDerecho;
       nodo->hijoIzquierdo->hijoDerecho = nodo->hijoIzquierdo->hijoIzquierdo;
       nodo->hijoIzquierdo->hijoIzquierdo = nodo->hijoIzquierdo->hijoIzquierdo;
-    } else {
+    } else { // Desbalancear el hijo izquierdo
       desbalancear(nodo->hijoIzquierdo, true);
     }
   } else {
@@ -267,7 +268,7 @@ void ArbolB::desbalancear(Nodo *nodo, bool esHijoIzquierdo) {
       nodo->hijoDerecho = nuevoNodo;
       nodo->hijoDerecho->hijoDerecho = nodo->hijoDerecho->hijoDerecho;
       nodo->hijoDerecho->hijoIzquierdo = nodo->hijoDerecho->hijoIzquierdo;
-    } else {
+    } else { // Desbalancear el hijo derecho
       desbalancear(nodo->hijoDerecho, false);
     }
   }
