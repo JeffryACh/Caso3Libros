@@ -1,4 +1,5 @@
 #include "ArbolB.h"
+
 ArbolB::ArbolB(int orden) {
   this->orden = orden;
   this->raiz = NULL;
@@ -12,10 +13,10 @@ ArbolB::~ArbolB() {
 } // Destructor
 
 /**
- * Inserta un valor en el árbol B.
+ * @brief Inserta un valor en el árbol B.
+ * 
  * @param valor El valor a insertar.
  */
-
 void ArbolB::insertar(string palabra) {
   insertar(valor, this->raiz);
 }
@@ -26,25 +27,33 @@ void ArbolB::insertar(string palabra) {
  * @param valor El valor a buscar.
  * @return true si el valor se encuentra en el árbol, false en caso contrario.
  */
-
 bool ArbolB::buscar(PosicionPalabra valor) {
   return buscar(valor, this->raiz);
 }
 
 /**
- * Elimina un valor específico del árbol B.
+ * @brief Elimina un valor del árbol B.
+ * 
  * @param valor El valor a eliminar.
- * @tparam T El tipo de dato de los elementos del árbol.
  */
-
 void ArbolB::eliminar(PosicionPalabra valor) {
   eliminar(valor, this->raiz);
 }
 
+/**
+ * Imprime los valores del árbol B.
+ */
 void ArbolB::imprimir() {
   imprimir(this->raiz);
 }
 
+/**
+ * @brief Inserta un valor en el árbol B.
+ * 
+ * @tparam T Tipo de dato de los valores en el árbol.
+ * @param valor Valor a insertar en el árbol.
+ * @param nodo Nodo actual en la búsqueda.
+ */
 void ArbolB::insertar(string palabra, Nodo *nodo) {
   if (nodo == NULL) {
     Nodo *nuevoNodo = new Nodo();
@@ -86,7 +95,6 @@ void ArbolB::insertar(string palabra, Nodo *nodo) {
  * @param nodo Nodo actual en la búsqueda.
  * @return true si el valor se encuentra en el árbol, false en caso contrario.
  */
-
 bool ArbolB:: buscar(PosicionPalabra valor, Nodo *nodo) {
   if (nodo == NULL) {
     return false;
@@ -100,12 +108,12 @@ bool ArbolB:: buscar(PosicionPalabra valor, Nodo *nodo) {
 }
 
 /**
- * Elimina un valor específico del árbol B.
+ * @brief Elimina un valor específico del árbol B.
  * 
- * @param valor El valor a eliminar.
- * @param nodo El nodo actual en el recorrido del árbol.
+ * @tparam T Tipo de dato de los valores en el árbol.
+ * @param valor Valor a eliminar del árbol.
+ * @param nodo Nodo actual en la búsqueda.
  */
-
 void ArbolB::eliminar(PosicionPalabra valor, Nodo *nodo) {
   if (nodo == NULL) {
     return;
@@ -128,6 +136,11 @@ void ArbolB::eliminar(PosicionPalabra valor, Nodo *nodo) {
   }
 }
 
+/**
+ * @brief Imprime los valores del árbol B.
+ * 
+ * @param nodo Nodo actual en el recorrido del árbol.
+ */
 void ArbolB::imprimir(Nodo *nodo) {
   if (nodo == NULL) {
     return;
@@ -138,6 +151,11 @@ void ArbolB::imprimir(Nodo *nodo) {
   imprimir(nodo->hijoDerecho);
 }
 
+/**
+ * @brief Elimina un nodo del árbol B.
+ * 
+ * @param nodo Nodo a eliminar.
+ */
 void ArbolB::eliminarNodo(Nodo *nodo) {
   if (nodo == NULL) {
     eliminarNodo(nodo->hijoIzquierdo);
@@ -146,33 +164,57 @@ void ArbolB::eliminarNodo(Nodo *nodo) {
   }
 }
 
+/**
+ * @brief Busca un valor en el árbol B.
+ * 
+ * @param valor Valor a buscar en el árbol.
+ * @return el nodo que contiene el valor buscado, nullptr en caso de no encontrarlo.
+*/
 Nodo* ArbolB::buscarRecursivo(string palabra) {
   return buscarRecursivo(palabra, this->raiz);
 }
 
+/**
+ * @brief Busca un valor en el árbol B.
+ * 
+ * @param valor Valor a buscar en el árbol.
+ * @param nodo Nodo actual en la búsqueda.
+ * @return el nodo que contiene el valor buscado, nullptr en caso de no encontrarlo.
+*/
 Nodo* ArbolB::buscarRecursivo(string palabra, Nodo* nodo) {
   // Aquí va la lógica de búsqueda dentro de un nodo
   int i = 0;
-  while (i < nodo->numClaves && palabra > nodo->claves[i].getPalabra()) {
+  while (i < nodo->hijo && palabra > nodo->valor.begin()->first()) { // Revisar si es menor o mayor
       i++;
   }
 
-  if (i < nodo->numClaves && palabra == nodo->claves[i].getPalabra()) {
+  if (i < nodo->hijo && palabra == nodo->valor.begin()->first()) {
       return nodo;  // Palabra encontrada
   }
 
-  if (nodo->esHoja) {
+  if (esHoja(nodo)) {
       return nullptr;  // Palabra no encontrada
   }
 
-  return buscarRecursivo(nodo->hijos[i], palabra);
+  return buscarRecursivo(nodo->hijos[i], palabra); // Palabra no encontrada, buscar en el hijo correspondiente
 
 }
 
+/**
+ * @brief Calcula la cantidad de nodos en el árbol.
+ * 
+ * @return La cantidad de nodos en el árbol.
+*/
 int ArbolB::cantidadNodos() {
   return cantidadNodos(this->raiz);
 }
 
+/**
+ * @brief Calcula la cantidad de nodos en el árbol.
+ * 
+ * @param nodo Nodo actual en el recorrido del árbol.
+ * @return La cantidad de nodos en el árbol.
+*/
 int ArbolB::cantidadNodos(Nodo *nodo) {
   if (nodo == NULL) {
     return 0;
@@ -180,12 +222,21 @@ int ArbolB::cantidadNodos(Nodo *nodo) {
 
   return 1 + cantidadNodos(nodo->hijoIzquierdo) + cantidadNodos(nodo->hijoDerecho);
 }
-
+/**
+ * @brief Determina si un nodo es hoja.
+ * 
+ * @param nodo Nodo a evaluar.
+*/
 bool ArbolB::esHoja(Nodo *nodo) {
   return nodo->hijoIzquierdo == NULL && nodo->hijoDerecho == NULL;
 }
 
-// crea la función desbalancear
+/**
+ * @brief Desbalancea un nodo.
+ * 
+ * @param nodo Nodo a desbalancear.
+ * @param esHijoIzquierdo true si el nodo a desbalancear es hijo izquierdo, false en caso contrario.
+*/
 void ArbolB::desbalancear(Nodo *nodo, bool esHijoIzquierdo) {
   if (nodo == NULL) {
     return;
