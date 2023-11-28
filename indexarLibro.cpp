@@ -557,3 +557,13 @@ void indexarLibro::actualizarTablaHash(vector<string> palabras) {
         }
     }
 }
+
+/**
+ * @brief Obtiene las posiciones de una palabra en el índice.
+ * 
+ * @param palabra La palabra a buscar.
+ * @return Un vector de PosicionPalabra que contiene las posiciones de la palabra en el índice.
+*/
+vector<PosicionPalabra> indexarLibro::obtenerPosiciones(string palabra) {
+    return indice[palabra];
+}

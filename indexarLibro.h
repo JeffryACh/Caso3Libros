@@ -58,6 +58,7 @@ public:
     void indexar(string ruta); // indexa los libros en la ruta dada
     vector<pair<int, double>> buscar(string consulta); // retorna los documentos que contienen la consulta
     Documento& getDocumento(int id_doc); // retorna el documento con el id dado
+    vector<PosicionPalabra> obtenerPosiciones(string palabra); // retorna las posiciones de una palabra
     vector<pair<int, int>> obtenerParrafosRelevantes(string consulta, int id_doc); // retorna los párrafos relevantes de un documento
     string textoParrafo(int id_doc, int id_parrafo); // retorna el texto de un párrafo
     int cantidadDocumentos(); // retorna la cantidad de documentos indexados

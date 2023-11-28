@@ -11,9 +11,10 @@
 
 using namespace std;
 struct Nodo {
-    PosicionPalabra valor;
+    map<string, vector<PosicionPalabra>> valor;
     Nodo *hijoIzquierdo;
     Nodo *hijoDerecho;
+    int hijo;
   };
 
 /**
@@ -26,7 +27,7 @@ public:
   ~ArbolB(); // Destructor
 
   // Métodos públicos
-  void insertar(PosicionPalabra valor);
+  void insertar(string palabra);
 
   bool buscar(PosicionPalabra valor);
 
@@ -36,9 +37,9 @@ public:
 
   void eliminarNodo(Nodo *nodo);
 
-  Nodo* buscarRecursivo(Nodo* nodo, string palabra);
+  Nodo* buscarRecursivo(string palabra);
 
-  int cantidadNodos(Nodo *nodo);
+  int cantidadNodos();
 
   bool esHoja(Nodo *nodo);
 
@@ -49,8 +50,10 @@ private:
 
   int orden;
 
+  indexarLibro indexador;
+
   // Métodos privados
-  void insertar(PosicionPalabra valor, Nodo *nodo);
+  void insertar(string palabra, Nodo *nodo);
 
   bool buscar(PosicionPalabra valor, Nodo *nodo);
 
@@ -60,11 +63,13 @@ private:
   
   void eliminarNodo(Nodo *nodo);
 
-  Nodo* buscarRecursivo(Nodo* nodo, string palabra);
+  Nodo* buscarRecursivo( string palabra, Nodo* nodo);
 
   int cantidadNodos(Nodo *nodo);
 
   bool esHoja(Nodo *nodo);
+
+  void desbalancear(Nodo *nodo, bool esHijoIzquierdo);
 };
 
 #endif // ARBOL_B_H
