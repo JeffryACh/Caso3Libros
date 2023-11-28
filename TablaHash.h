@@ -16,7 +16,9 @@
 #include <unordered_map>
 #include <vector>
 #include <utility>
+
 #include "Documento.h"
+
 using namespace std;
 
 class TablaHash {
