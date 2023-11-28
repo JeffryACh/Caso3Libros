@@ -174,41 +174,49 @@ void ArbolB::eliminarNodo(Nodo *nodo) {
   }
 }
 
-/**
- * @brief Busca un valor en el árbol B.
- * 
- * @param valor Valor a buscar en el árbol.
- * @return el nodo que contiene el valor buscado, nullptr en caso de no encontrarlo.
-*/
-Nodo* ArbolB::buscarRecursivo(string palabra) {
-  return buscarRecursivo(palabra, this->raiz);
-}
 
-/**
- * @brief Busca un valor en el árbol B.
- * 
- * @param valor Valor a buscar en el árbol.
- * @param nodo Nodo actual en la búsqueda.
- * @return el nodo que contiene el valor buscado, nullptr en caso de no encontrarlo.
-*/
-Nodo* ArbolB::buscarRecursivo(string palabra, Nodo* nodo) {
-  // Aquí va la lógica de búsqueda dentro de un nodo
-  int i = 0;
-  while (i < nodo->hijo && palabra > nodo->valor.begin()->first()) { // Revisar si es menor o mayor
-    i++;
+// @param palabra: La palabra a buscar.
+    // @return vector<PosicionPalabra>*: Un puntero al vector de PosicionPalabra si la palabra se encuentra,
+    //                                   o nullptr si la palabra no está en el árbol.
+    vector<PosicionPalabra>* buscarR(const std::string& palabra) {
+        // Comenzar la búsqueda desde la raíz del árbol.
+        Nodo* nodoEncontrado = buscarRecursivo(raiz, palabra);
+
+        // Si buscarRecursivo retorna un nodo, devuelve un puntero al vector de PosicionPalabra.
+        if (nodoEncontrado != nullptr) {
+            return &(nodoEncontrado->valor.second);
+        } 
+        // Si no se encuentra la palabra, retorna nullptr.
+        else {
+            return nullptr;
+        }
+    }
+
+ // Método auxiliar para buscar recursivamente una palabra en el árbol.
+  // @param nodo: Nodo actual en el que se está buscando.
+  // @param palabra: La palabra a buscar.
+  // @return Nodo*: El nodo donde se encontró la palabra, o nullptr si no se encuentra.
+  Nodo* buscarRecursivo(Nodo* nodo, const std::string& palabra) {
+      // Caso base: si el nodo es nullptr, la palabra no está en el árbol.
+      if (nodo == nullptr) {
+          return nullptr;
+      }
+
+      // Si la palabra buscada es menor que la palabra en el nodo actual,
+      // busca en el hijo izquierdo.
+      if (palabra < nodo->valor.first) {
+          return buscarRecursivo(nodo->hijoIzquierdo, palabra);
+      } 
+      // Si la palabra buscada es mayor que la palabra en el nodo actual,
+      // busca en el hijo derecho.
+      else if (palabra > nodo->valor.first) {
+          return buscarRecursivo(nodo->hijoDerecho, palabra);
+      } 
+      // Si la palabra es igual a la del nodo actual, hemos encontrado la palabra.
+      else {
+          return nodo;
+      }
   }
-
-  if (i < nodo->hijo && palabra == nodo->valor.begin()->first()) {
-    return nodo;  // Palabra encontrada
-  }
-
-  if (esHoja(nodo)) {
-    return nullptr;  // Palabra no encontrada
-  }
-
-  return buscarRecursivo(nodo->hijos[i], palabra); // Palabra no encontrada, buscar en el hijo correspondiente
-
-}
 
 /**
  * @brief Calcula la cantidad de nodos en el árbol.
